@@ -76,6 +76,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    //noinspection GradleDependency
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
     //coroutines flow
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
