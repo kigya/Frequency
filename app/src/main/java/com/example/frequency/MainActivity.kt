@@ -82,19 +82,21 @@ class MainActivity : AppCompatActivity(), Navigator {
             binding.toolbar.title = ""
         }
 
-        /*if (supportFragmentManager.backStackEntryCount > 0) {
+        if (supportFragmentManager.backStackEntryCount > 0) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowHomeEnabled(true)
         } else {
             supportActionBar?.setDisplayHomeAsUpEnabled(false)
             supportActionBar?.setDisplayShowHomeEnabled(false)
-        }*/
+        }
 
         if (fragment is ProvidesCustomActions) {
             createCustomToolbarAction(fragment.getCustomActions())
         } else {
             binding.toolbar.menu.clear()
         }
+
+        binding.navMenu.root.isVisible = false
     }
 
     private fun createCustomToolbarAction(actions: List<Action>) {
@@ -150,7 +152,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     private fun clearBackStack() =
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
-    private fun expandMenu(){
+    private fun expandMenu() {
         binding.navMenu.root.isVisible = !binding.navMenu.root.isVisible
     }
 
