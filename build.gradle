@@ -3,6 +3,9 @@ buildscript {
     dependencies {
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'
     }
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }
 plugins {
     id 'com.android.application' version '7.1.1' apply false
