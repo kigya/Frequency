@@ -2,7 +2,7 @@
     <string name="app_name">Frequency</string>
     <string name="profile">Profile</string>
     <string name="user">User</string>
-    <string name="hello">Hello,</string>
+    <string name="hello_username">Hello, %1$s</string>
     <string name="home">Home</string>
     <string name="menu">Home</string>
     <string name="lyrics">Lyrics</string>
