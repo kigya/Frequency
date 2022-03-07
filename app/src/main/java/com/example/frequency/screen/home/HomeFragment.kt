@@ -13,8 +13,11 @@ import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.model.CustomAction
 import com.example.frequency.foundation.model.MenuAction
 import com.example.frequency.foundation.views.BaseFragment
+import com.example.frequency.screen.lyrics.LyricsFragment
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions {
 
     override val viewModel by viewModels<HomeVM>()
@@ -67,5 +70,13 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
         snackbar.show()
     }
 
+    companion object {
+        @JvmStatic
+        fun newInstance() = HomeFragment().apply {
+            arguments = Bundle().apply {
+
+            }
+        }
+    }
 
 }
