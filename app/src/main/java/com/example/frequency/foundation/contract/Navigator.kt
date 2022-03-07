@@ -31,6 +31,8 @@ interface Navigator{
 
     fun openLyrics() // TODO
 
+    fun openProfile() //TODO
+
     fun goBack()
 
     fun goToMenu()

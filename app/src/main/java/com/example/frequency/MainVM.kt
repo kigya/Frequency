@@ -1,8 +1,8 @@
 package com.example.frequency
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.frequency.foundation.views.BaseVM
+import com.example.frequency.preferences.AppDefaultPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainVM @Inject constructor( ): BaseVM() {
+class MainVM @Inject constructor(
+    private val shearedPreferences: AppDefaultPreferences
+): BaseVM() {
 
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()

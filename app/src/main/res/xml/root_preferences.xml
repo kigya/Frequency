@@ -1,35 +1,55 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
-
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+    <PreferenceCategory
+        app:icon="@drawable/ic_outline_settings_24"
+        app:title="Main">
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="AUTOLOGIN"
+            app:summaryOff="Login will be done manually"
+            app:summaryOn="User will be login automatically"
+            app:title="@string/autologin_cb_text" />
 
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
+            app:defaultValue="en"
+            app:entries="@array/language_entries"
+            app:entryValues="@array/language_values"
+            app:key="LANGUAGE"
+            app:title="@string/language"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory
+        app:icon="@drawable/ic_baseline_notifications_24"
+        app:title="Notification">
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+        <SeekBarPreference
+            app:defaultValue="50"
+            app:key="NOTIFICATION_VOLUME"
+            app:showSeekBarValue="true"
+            app:title="Volume" />
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            app:key="DISABLE_NOTIFICATIONS"
+            app:summaryOff="You will receive all notifications"
+            app:summaryOn="You will no longer receive notifications"
+            app:title="Disable notifications" />
 
     </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="Other">
+
+        <EditTextPreference
+            app:key="USERNAME"
+            app:title="@string/change_name"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue=""/>
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

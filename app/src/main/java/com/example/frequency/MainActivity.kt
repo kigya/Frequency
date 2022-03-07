@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.example.frequency.databinding.ActivityMainBinding
 import com.example.frequency.databinding.ActivityMainBinding.inflate
+import com.example.frequency.databinding.NavigationMenuLayoutBinding
 import com.example.frequency.foundation.contract.Navigator
 import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
@@ -26,6 +27,8 @@ import com.example.frequency.foundation.model.Action
 import com.example.frequency.model.Options
 import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.screen.home.HomeFragment
+import com.example.frequency.screen.profile.ProfileFragment
+import com.example.frequency.screen.settings.SettingsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,6 +37,8 @@ class MainActivity : AppCompatActivity(), Navigator {
     private lateinit var binding: ActivityMainBinding
 
     private val viewModel by viewModels<MainVM>()
+
+    private lateinit var navigationMenu: NavigationMenuLayoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +49,17 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
         binding = inflate(layoutInflater).also { setContentView(it.root) }
         setSupportActionBar(binding.toolbar)
+        navigationMenu = binding.navMenu
 
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.main_container, HomeFragment())
                 .commit()
+        }
+
+        navigationMenu.navProfileMb.setOnClickListener {
+            openFragment(ProfileFragment())
         }
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
@@ -96,7 +106,7 @@ class MainActivity : AppCompatActivity(), Navigator {
             binding.toolbar.menu.clear()
         }
 
-        binding.navMenu.root.isVisible = false
+        navigationMenu.root.isVisible = false
     }
 
     private fun createCustomToolbarAction(actions: List<Action>) {
@@ -122,7 +132,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                 menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
                 menuItem.icon = iconDrawable
                 menuItem.setOnMenuItemClickListener {
-                    action.onCustomAction.run()
+                    action.onCustomAction?.run()
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -153,7 +163,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
     private fun expandMenu() {
-        binding.navMenu.root.isVisible = !binding.navMenu.root.isVisible
+        navigationMenu.root.isVisible = !navigationMenu.root.isVisible
     }
 
     override fun openSignInRequest() {
@@ -169,7 +179,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun openSettings() {
-        //TODO("Not yet implemented")
+        openFragment(SettingsFragment())
     }
 
     override fun openSong() {
@@ -178,6 +188,10 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     override fun openLyrics() {
         //TODO("Not yet implemented")
+    }
+
+    override fun openProfile() {
+        openFragment(ProfileFragment())
     }
 
     override fun goBack() {
@@ -212,7 +226,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun onBackPressed() {
-        if (binding.navMenu.root.isVisible) {
+        if (navigationMenu.root.isVisible) {
             expandMenu()
         } else {
             super.onBackPressed()
