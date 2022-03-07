@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="ebony_clay">#293241</color>
+    <color name="east_bay">#3D5A80</color>
+    <color name="burnt_sienna">#98C1D9</color>
+    <color name="foam">#E0FBFC</color>
 </resources>
