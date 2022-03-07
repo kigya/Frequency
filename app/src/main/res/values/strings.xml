@@ -13,11 +13,11 @@
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
 
-    <!-- Messages Preferences -->
+    <!-- Messages com.example.frequency.preferences.Preferences -->
     <string name="signature_title">Your signature</string>
     <string name="reply_title">Default reply action</string>
 
-    <!-- Sync Preferences -->
+    <!-- Sync com.example.frequency.preferences.Preferences -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
@@ -25,5 +25,8 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="guest">Guest</string>
     <string name="menu">Menu</string>
+    <string name="change_name">Change your name</string>
+    <string name="language">Language</string>
+    <string name="autologin_cb_text">Auto login</string>
 
 </resources>
