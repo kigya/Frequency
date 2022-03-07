@@ -24,7 +24,9 @@ import com.example.frequency.foundation.contract.ResultListener
 import com.example.frequency.foundation.model.Action
 import com.example.frequency.model.Options
 import com.example.frequency.screen.home.HomeFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), Navigator {
 
     private lateinit var binding: ActivityMainBinding
