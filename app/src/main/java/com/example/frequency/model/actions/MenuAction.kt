@@ -7,5 +7,5 @@ import com.example.frequency.foundation.model.Action
 class MenuAction(
     @DrawableRes override val iconRes: Int,
     @StringRes override val textRes: Int,
-    override val onCustomAction: Runnable
+    override val onCustomAction: Runnable?
 ): Action()
