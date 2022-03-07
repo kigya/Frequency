@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
     override fun openSignInRequest() {
-        //TODO("Not yet implemented")
+        //openFragment()
     }
 
     override fun openSignUp() {

@@ -39,6 +39,8 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
         binding.helloTextview.text = getString(R.string.hello_username, getString(R.string.user))
 
+
+
         return binding.root
     }
 
