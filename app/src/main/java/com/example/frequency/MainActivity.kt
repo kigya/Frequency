@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
@@ -107,7 +108,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                 binding.toolbar.navigationIcon = iconDrawableMenu
                 binding.toolbar.setNavigationContentDescription(action.textRes)
                 binding.toolbar.setNavigationOnClickListener {
-                    action.onCustomAction.run()
+                    expandMenu()
                 }
 
             } else {
@@ -148,6 +149,10 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private fun clearBackStack() =
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
+    private fun expandMenu(){
+        binding.navMenu.root.isVisible = !binding.navMenu.root.isVisible
+    }
 
     override fun openSignInRequest() {
         //openFragment()
@@ -202,6 +207,14 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onBackPressed() {
+        if (binding.navMenu.root.isVisible) {
+            expandMenu()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     companion object {
