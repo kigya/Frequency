@@ -23,6 +23,7 @@ import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.ResultListener
 import com.example.frequency.foundation.model.Action
 import com.example.frequency.model.Options
+import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.screen.home.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -75,17 +76,18 @@ class MainActivity : AppCompatActivity(), Navigator {
 
         if (fragment is ProvidesCustomTitle) {
             binding.toolbar.title = getString(fragment.getTitleRes())
+            binding.toolbar.isTitleCentered = true
         } else {
             binding.toolbar.title = ""
         }
 
-        if (supportFragmentManager.backStackEntryCount > 0) {
+        /*if (supportFragmentManager.backStackEntryCount > 0) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowHomeEnabled(true)
         } else {
             supportActionBar?.setDisplayHomeAsUpEnabled(false)
             supportActionBar?.setDisplayShowHomeEnabled(false)
-        }
+        }*/
 
         if (fragment is ProvidesCustomActions) {
             createCustomToolbarAction(fragment.getCustomActions())
@@ -97,31 +99,30 @@ class MainActivity : AppCompatActivity(), Navigator {
     private fun createCustomToolbarAction(actions: List<Action>) {
         binding.toolbar.menu.clear()
 
-        /*if (actions.contains()){
+        for (action in actions) {
+            if (action is MenuAction) {
+                val iconDrawableMenu =
+                    DrawableCompat.wrap(ContextCompat.getDrawable(this, action.iconRes)!!)
+                iconDrawableMenu.setTint(Color.WHITE)
+                binding.toolbar.navigationIcon = iconDrawableMenu
+                binding.toolbar.setNavigationContentDescription(action.textRes)
+                binding.toolbar.setNavigationOnClickListener {
+                    action.onCustomAction.run()
+                }
 
-        }*/
+            } else {
+                val iconDrawable =
+                    DrawableCompat.wrap(ContextCompat.getDrawable(this, action.iconRes)!!)
+                iconDrawable.setTint(Color.WHITE)
 
-        val iconDrawableMenu = DrawableCompat.wrap(ContextCompat.getDrawable(this, actions[0].iconRes)!!)
-        iconDrawableMenu.setTint(Color.WHITE)
-
-        val menuItemMenu = binding.toolbar.menu.add(actions[0].textRes)
-        menuItemMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        menuItemMenu.icon = iconDrawableMenu
-        menuItemMenu.setOnMenuItemClickListener {
-            actions[0].onCustomAction.run()
-            return@setOnMenuItemClickListener true
-        }
-
-
-        val iconDrawable = DrawableCompat.wrap(ContextCompat.getDrawable(this, actions[1].iconRes)!!)
-        iconDrawable.setTint(Color.WHITE)
-
-        val menuItem = binding.toolbar.menu.add(actions[1].textRes)
-        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        menuItem.icon = iconDrawable
-        menuItem.setOnMenuItemClickListener {
-            actions[1].onCustomAction.run()
-            return@setOnMenuItemClickListener true
+                val menuItem = binding.toolbar.menu.add(action.textRes)
+                menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                menuItem.icon = iconDrawable
+                menuItem.setOnMenuItemClickListener {
+                    action.onCustomAction.run()
+                    return@setOnMenuItemClickListener true
+                }
+            }
         }
     }
 
