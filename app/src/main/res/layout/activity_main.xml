@@ -23,8 +23,6 @@
             android:background="@color/ebony_clay"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:menu="@menu/menu"
-            app:navigationIcon="@drawable/ic_navigation_menu"
             app:title=""
             tools:viewBindingType="com.google.android.material.appbar.MaterialToolbar">
 

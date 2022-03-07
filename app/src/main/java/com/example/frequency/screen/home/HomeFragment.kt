@@ -10,10 +10,9 @@ import com.example.frequency.databinding.FragmentHomeBinding
 import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
-import com.example.frequency.foundation.model.CustomAction
-import com.example.frequency.foundation.model.MenuAction
+import com.example.frequency.model.actions.CustomAction
+import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.screen.lyrics.LyricsFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +38,14 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
         // initialise listeners
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.fooLD.observe(viewLifecycleOwner){
+
+        }
     }
 
 
