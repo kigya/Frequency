@@ -4,60 +4,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/ebony_clay"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/white"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/nav_menu_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="25sp"
-        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
-        tools:ignore="TextContrastCheck"
+        android:textColor="@color/foam"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@+id/nav_menu_user_ib"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:ignore="TextContrastCheck" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/nav_menu_user_ib"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_white_round"
-        android:contentDescription="@string/guest"
         android:layout_margin="8dp"
-        app:srcCompat="@drawable/ic_abstract_user_flat_2"
-        app:layout_constraintTop_toBottomOf="@id/nav_menu_title"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/guest"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nav_menu_title"
+        app:srcCompat="@drawable/ic_unknown_user_photo_120"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/nav_menu_login_button"
         style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/guest"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/foam"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/nav_menu_user_ib"
+        app:layout_constraintStart_toStartOf="@+id/nav_menu_user_ib"
         app:layout_constraintTop_toBottomOf="@id/nav_menu_user_ib"
-        android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
         tools:ignore="SmallSp,TouchTargetSizeCheck" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nav_profile_mb"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="16dp"
-        android:textSize="20sp"
-        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintTop_toBottomOf="@id/nav_menu_login_button"
+        android:layout_marginTop="32dp"
+        android:text="@string/profile"
+        android:textAlignment="textStart"
+        android:textColor="@color/foam"
+        app:icon="@drawable/ic_user"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/menu" />
+        app:layout_constraintTop_toBottomOf="@id/nav_menu_login_button"
+        tools:ignore="RtlSymmetry" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nav_liked_songs"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:padding="0dp"
+        android:paddingStart="4dp"
+        android:text="@string/liked_songs"
+        android:textAlignment="textStart"
+        android:textColor="@color/foam"
+        app:icon="@drawable/ic_user"
+        app:layout_constraintEnd_toEndOf="@+id/nav_profile_mb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nav_profile_mb"
+        tools:ignore="RtlSymmetry" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nav_contact_us"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:padding="0dp"
+        android:paddingStart="4dp"
+        app:icon="@drawable/ic_user"
+        android:text="@string/contact_us"
+        android:textAlignment="textStart"
+        android:textColor="@color/foam"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nav_liked_songs"
+        tools:ignore="RtlSymmetry" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
