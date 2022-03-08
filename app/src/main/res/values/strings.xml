@@ -8,6 +8,7 @@
     <string name="faqs">FAQs</string>
     <string name="contact_us">Contact us</string>
     <string name="liked_songs">Liked songs</string>
+    <string name="song">Song</string>
     <string name="lyrics">Lyrics</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -28,5 +29,8 @@
     <string name="change_name">Change your name</string>
     <string name="language">Language</string>
     <string name="autologin_cb_text">Auto login</string>
+    <string name="user_email">useremail@foo.com</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
 
 </resources>
