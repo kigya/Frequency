@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private lateinit var navigationMenu: NavigationMenuLayoutBinding
 
+    private val currentFragment: Fragment get() = supportFragmentManager.findFragmentById(R.id.main_container)!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
@@ -58,11 +60,26 @@ class MainActivity : AppCompatActivity(), Navigator {
                 .commit()
         }
 
-        navigationMenu.navProfileMb.setOnClickListener {
-            openFragment(ProfileFragment())
-        }
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
+    }
+
+    private fun setNavMenuButton() {
+
+        with(navigationMenu) {
+            navProfileMb.setOnClickListener {
+                /*if ( ) {
+                    openFragment(ProfileFragment())
+                } else {
+
+                }*/
+
+
+            }
+
+
+        }
+
     }
 
     private val fragmentListener = object : FragmentManager.FragmentLifecycleCallbacks() {
@@ -74,6 +91,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         ) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
             updateUI()
+            navigationMenu.root.isVisible = false
         }
     }
 
@@ -83,7 +101,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     private fun updateUI() {
-        val fragment = supportFragmentManager.findFragmentById(R.id.main_container)
+        val fragment = currentFragment
 
         if (fragment is ProvidesCustomTitle) {
             binding.toolbar.title = getString(fragment.getTitleRes())
@@ -92,7 +110,8 @@ class MainActivity : AppCompatActivity(), Navigator {
             binding.toolbar.title = ""
         }
 
-        if (supportFragmentManager.backStackEntryCount > 0) {
+        if (navigationMenu.root.isVisible) {
+            // show arrow
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowHomeEnabled(true)
         } else {
@@ -105,8 +124,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         } else {
             binding.toolbar.menu.clear()
         }
-
-        navigationMenu.root.isVisible = false
     }
 
     private fun createCustomToolbarAction(actions: List<Action>) {
@@ -164,6 +181,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private fun expandMenu() {
         navigationMenu.root.isVisible = !navigationMenu.root.isVisible
+        updateUI()
     }
 
     override fun openSignInRequest() {
