@@ -43,6 +43,8 @@
     <PreferenceCategory
         app:title="Other">
 
+        <Preference android:title="@string/user_email"/>
+
         <EditTextPreference
             app:key="USERNAME"
             app:title="@string/change_name"
