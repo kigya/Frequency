@@ -33,7 +33,7 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle {
         return binding.root
     }
 
-    override fun getTitleRes() = R.string.lyrics
+    override fun getTitleRes() = R.string.song
 
     override fun onDestroyView() {
         super.onDestroyView()

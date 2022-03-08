@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/bg_white_round"
-        android:src="@drawable/ic_abstract_user_flat_2"
+        android:src="@drawable/ic_unknown_user_photo_90"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

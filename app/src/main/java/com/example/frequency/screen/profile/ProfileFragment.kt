@@ -50,7 +50,7 @@ class ProfileFragment : BaseFragment(), ProvidesCustomActions, ProvidesCustomTit
         return binding.root
     }
 
-    override fun getTitleRes() = R.string.lyrics
+    override fun getTitleRes() = R.string.profile
 
     override fun onDestroyView() {
         super.onDestroyView()
