@@ -31,7 +31,7 @@
         android:contentDescription="@string/guest"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nav_menu_title"
-        app:srcCompat="@drawable/ic_unknown_user_photo_120"
+        app:srcCompat="@drawable/ic_unknown_user_photo_90"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <com.google.android.material.button.MaterialButton
@@ -55,16 +55,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
+        android:paddingStart="4dp"
         android:text="@string/profile"
         android:textAlignment="textStart"
         android:textColor="@color/foam"
-        app:icon="@drawable/ic_user"
+        app:icon="@drawable/ic_user_22"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nav_menu_login_button"
         tools:ignore="RtlSymmetry" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/nav_liked_songs"
+        android:id="@+id/nav_liked_songs_mb"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -74,14 +75,14 @@
         android:text="@string/liked_songs"
         android:textAlignment="textStart"
         android:textColor="@color/foam"
-        app:icon="@drawable/ic_user"
+        app:icon="@drawable/ic_like_22"
         app:layout_constraintEnd_toEndOf="@+id/nav_profile_mb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nav_profile_mb"
         tools:ignore="RtlSymmetry" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/nav_contact_us"
+        android:id="@+id/nav_contact_us_mb"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -91,9 +92,44 @@
         android:text="@string/contact_us"
         android:textAlignment="textStart"
         android:textColor="@color/foam"
-        app:icon="@drawable/ic_user"
+        app:icon="@drawable/ic_message_22"
+        app:layout_constraintEnd_toEndOf="@+id/nav_liked_songs_mb"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nav_liked_songs"
+        app:layout_constraintTop_toBottomOf="@id/nav_liked_songs_mb"
+        tools:ignore="RtlSymmetry" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nav_faqs_mb"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:padding="0dp"
+        android:paddingStart="4dp"
+        android:text="@string/faqs"
+        android:textAlignment="textStart"
+        android:textColor="@color/foam"
+        app:icon="@drawable/ic_flashlight_22"
+        app:layout_constraintEnd_toEndOf="@+id/nav_liked_songs_mb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nav_contact_us_mb"
+        tools:ignore="RtlSymmetry" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nav_settings_mb"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:padding="0dp"
+        android:paddingStart="4dp"
+        android:text="@string/settings"
+        android:textAlignment="textStart"
+        android:textColor="@color/foam"
+        app:icon="@drawable/ic_settings_22"
+        app:layout_constraintEnd_toEndOf="@+id/nav_liked_songs_mb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nav_faqs_mb"
         tools:ignore="RtlSymmetry" />
 
 
