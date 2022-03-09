@@ -7,10 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.frequency.R
 import com.example.frequency.databinding.FragmentLyricsBinding
+import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
+import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
+import com.example.frequency.utils.ActionStore.menuAction
+import com.example.frequency.utils.ActionStore.provideProfileAction
+import dagger.hilt.android.AndroidEntryPoint
 
-class SongFragment : BaseFragment(), ProvidesCustomTitle {
+@AndroidEntryPoint
+class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions {
 
     override val viewModel by viewModels<SongVM>()
 
@@ -33,7 +39,6 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle {
         return binding.root
     }
 
-    override fun getTitleRes() = R.string.song
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -48,5 +53,11 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle {
             }
         }
     }
+
+    override fun getTitleRes() = R.string.song
+
+    override fun getCustomActions() = listOf(
+        menuAction, provideProfileAction { navigator().openProfile() }
+    )
 
 }
