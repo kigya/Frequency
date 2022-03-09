@@ -36,5 +36,6 @@
     <string name="auth_success">Authorization success</string>
     <string name="user_image">User image</string>
     <string name="logout">Logout</string>
+    <string name="username">username</string>
 
 </resources>
