@@ -32,5 +32,9 @@
     <string name="user_email">useremail@foo.com</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
+    <string name="auth_fail">Authorization failed</string>
+    <string name="auth_success">Authorization success</string>
+    <string name="user_image">User image</string>
+    <string name="logout">Logout</string>
 
 </resources>
