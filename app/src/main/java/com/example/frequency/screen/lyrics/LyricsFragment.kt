@@ -5,17 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.frequency.R
-import com.example.frequency.databinding.FragmentHomeBinding
 import com.example.frequency.databinding.FragmentLyricsBinding
-import com.example.frequency.databinding.ProfileMenuLayoutBinding
+import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
+import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.screen.home.HomeFragment
-import com.example.frequency.screen.home.HomeVM
+import com.example.frequency.utils.ActionStore.menuAction
+import com.example.frequency.utils.ActionStore.provideProfileAction
+import dagger.hilt.android.AndroidEntryPoint
 
-class LyricsFragment : BaseFragment(), ProvidesCustomTitle {
+@AndroidEntryPoint
+class LyricsFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions {
 
     override val viewModel by viewModels<LyricsVM>()
 
@@ -37,7 +38,6 @@ class LyricsFragment : BaseFragment(), ProvidesCustomTitle {
 
         return binding.root
     }
-    override fun getTitleRes() = R.string.lyrics
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -52,5 +52,13 @@ class LyricsFragment : BaseFragment(), ProvidesCustomTitle {
             }
         }
     }
+
+    override fun getTitleRes() = R.string.lyrics
+
+    override fun getCustomActions() = listOf(
+        menuAction,
+        provideProfileAction { navigator().openProfile() }
+    )
+
 
 }
