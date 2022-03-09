@@ -64,8 +64,7 @@ class ProfileFragment : BaseFragment(), ProvidesCustomActions, ProvidesCustomTit
     private fun setListeners(){
         binding.logoutTb.setOnClickListener {
             viewModel.clearUserRootPreferences()
-            Handler(Looper.getMainLooper()).postDelayed(
-                {
+            Handler(Looper.getMainLooper()).postDelayed({
                     triggerRebirth(requireContext())
                 }, 1000
             )
