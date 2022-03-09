@@ -6,4 +6,6 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class FrequencyApplication: Application() {
 
+
+
 }
