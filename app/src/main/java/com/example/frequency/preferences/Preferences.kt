@@ -12,8 +12,9 @@ import com.example.frequency.utils.SettingTags.LANGUAGE
 import com.example.frequency.utils.SettingTags.NOTIFICATION_VOLUME
 import com.example.frequency.utils.SettingTags.TOKEN
 import com.example.frequency.utils.SettingTags.USERNAME
+import javax.inject.Inject
 
-class Preferences private constructor() : AppDefaultPreferences {
+class Preferences @Inject constructor() : AppDefaultPreferences {
 
     companion object {
 
