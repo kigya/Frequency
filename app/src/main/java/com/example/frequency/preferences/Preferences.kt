@@ -3,6 +3,7 @@ package com.example.frequency.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.example.frequency.utils.SettingTags.AUTOLOGIN
 import com.example.frequency.utils.SettingTags.DISABLE_NOTIFICATIONS
@@ -85,15 +86,7 @@ class Preferences @Inject constructor() : AppDefaultPreferences {
     override fun getToken(): String = rootPreferences?.getString(TOKEN, "") ?: ""
 
     override fun clearAllPreferences() {
-        rootPreferences?.edit()?.putBoolean(AUTOLOGIN, true)?.apply() ?: Unit
-        rootPreferences?.edit()?.putBoolean(DISABLE_NOTIFICATIONS, false)?.apply() ?: Unit
-        rootPreferences?.edit()?.putString(LANGUAGE, "en")?.apply() ?: Unit
-        rootPreferences?.edit()?.putString(NOTIFICATION_VOLUME, "50")?.apply() ?: Unit
-        // User
-        rootPreferences?.edit()?.putString(USERNAME, "")?.apply() ?: Unit
-        rootPreferences?.edit()?.putString(EMAIL, "")?.apply() ?: Unit
-        rootPreferences?.edit()?.putString(ICON_URI, "")?.apply() ?: Unit
-        rootPreferences?.edit()?.putString(TOKEN, "")?.apply() ?: Unit
+        rootPreferences?.edit { clear() }
     }
 
     override fun clearUserPreferences() {
