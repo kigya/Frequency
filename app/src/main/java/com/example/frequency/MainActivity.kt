@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.example.frequency.databinding.ActivityMainBinding
 import com.example.frequency.databinding.ActivityMainBinding.inflate
-import com.example.frequency.databinding.NavigationMenuLayoutBinding
 import com.example.frequency.foundation.contract.Navigator
 import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
@@ -26,10 +24,17 @@ import com.example.frequency.foundation.contract.ResultListener
 import com.example.frequency.foundation.model.Action
 import com.example.frequency.model.Options
 import com.example.frequency.model.actions.MenuAction
+import com.example.frequency.model.actions.ProfileAction
+import com.example.frequency.screen.contact_us.ContactUsFragment
 import com.example.frequency.screen.home.HomeFragment
 import com.example.frequency.screen.profile.ProfileFragment
 import com.example.frequency.screen.settings.SettingsFragment
+import com.example.frequency.screen.sign_in.SignInFragment
+import com.example.frequency.utils.isValidEmail
+import com.example.frequency.utils.setUserImageByGlide
 import dagger.hilt.android.AndroidEntryPoint
+import de.hdodenhof.circleimageview.CircleImageView
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), Navigator {
@@ -37,8 +42,6 @@ class MainActivity : AppCompatActivity(), Navigator {
     private lateinit var binding: ActivityMainBinding
 
     private val viewModel by viewModels<MainVM>()
-
-    private lateinit var navigationMenu: NavigationMenuLayoutBinding
 
     private val currentFragment: Fragment get() = supportFragmentManager.findFragmentById(R.id.main_container)!!
 
@@ -51,34 +54,63 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
         binding = inflate(layoutInflater).also { setContentView(it.root) }
         setSupportActionBar(binding.toolbar)
-        navigationMenu = binding.navMenu
 
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.main_container, HomeFragment())
-                .commit()
-        }
+        appStatusCheckAndStart(savedInstanceState)
 
-
+        setListeners()
+        setObservers()
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
     }
 
-    private fun setNavMenuButton() {
+    private fun appStatusCheckAndStart(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            val userEmail = viewModel.userEmailLD.value
+            val autologin = viewModel.autologinLD.value
 
-        with(navigationMenu) {
+            if (isValidEmail(userEmail) && autologin == true) {
+                openFragment(HomeFragment(), firstTime = true)
+            } else {
+                openFragment(SignInFragment(), firstTime = true)
+            }
+        }
+    }
+
+    private fun setListeners() {
+
+        with(binding) {
+
+            navMenuUserIb.setOnClickListener {
+                openProfile()
+            }
+            navMenuLoginButton.setOnClickListener {
+                openProfile()
+            }
             navProfileMb.setOnClickListener {
-                /*if ( ) {
-                    openFragment(ProfileFragment())
-                } else {
-
-                }*/
+                openProfile()
+            }
+            // todo like song
 
 
+            navContactUsMb.setOnClickListener {
+                openContactUs()
+            }
+
+
+
+            navSettingsMb.setOnClickListener {
+                openSettings()
             }
 
 
         }
+
+    }
+
+    private fun setObservers() {
+        viewModel.userIconLD.observe(this) {
+            setUserImageByGlide(this@MainActivity, binding.navMenuUserIb, it, 20)
+        }
+
 
     }
 
@@ -91,34 +123,35 @@ class MainActivity : AppCompatActivity(), Navigator {
         ) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
             updateUI()
-            navigationMenu.root.isVisible = false
+            changeNavigationStatusAndIcon(hideNavigationOnly = true)
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        updateUI()
+        menuInflater.inflate(R.menu.menu, menu)
+        val fragment = currentFragment
+        titleFormatting(fragment)
+
+        val visibilityStatus = fragment is ProvidesCustomActions && fragment.getCustomActions()
+            .any { it is ProfileAction }
+        menu.findItem(R.id.profile).isVisible = visibilityStatus
+
+        if (visibilityStatus) {
+            val menuItem = menu.findItem(R.id.profile)
+            val profileImage: CircleImageView =
+                menuItem.actionView.findViewById(R.id.toolbar_profile_image)
+            setUserImageByGlide(this, profileImage, viewModel.userIconLD.value, 20)
+            profileImage.setOnClickListener {
+                openProfile()
+            }
+        }
+
         return true
     }
 
     private fun updateUI() {
         val fragment = currentFragment
-
-        if (fragment is ProvidesCustomTitle) {
-            binding.toolbar.title = getString(fragment.getTitleRes())
-            binding.toolbar.isTitleCentered = true
-        } else {
-            binding.toolbar.title = ""
-        }
-
-        if (navigationMenu.root.isVisible) {
-            // show arrow
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setDisplayShowHomeEnabled(true)
-        } else {
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            supportActionBar?.setDisplayShowHomeEnabled(false)
-        }
-
+        titleFormatting(fragment)
         if (fragment is ProvidesCustomActions) {
             createCustomToolbarAction(fragment.getCustomActions())
         } else {
@@ -126,66 +159,123 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
+    private fun titleFormatting(fragment: Fragment) {
+        if (fragment is ProvidesCustomTitle) {
+            binding.toolbar.title = getString(fragment.getTitleRes())
+            binding.toolbar.isTitleCentered = true
+        } else {
+            binding.toolbar.title = ""
+        }
+    }
+
     private fun createCustomToolbarAction(actions: List<Action>) {
         binding.toolbar.menu.clear()
 
         for (action in actions) {
-            if (action is MenuAction) {
-                val iconDrawableMenu =
-                    DrawableCompat.wrap(ContextCompat.getDrawable(this, action.iconRes)!!)
-                iconDrawableMenu.setTint(Color.WHITE)
-                binding.toolbar.navigationIcon = iconDrawableMenu
-                binding.toolbar.setNavigationContentDescription(action.textRes)
-                binding.toolbar.setNavigationOnClickListener {
-                    expandMenu()
+            when (action) {
+                is MenuAction -> {
+                    val iconDrawableMenu =
+                        DrawableCompat.wrap(ContextCompat.getDrawable(this, action.iconRes)!!)
+                    iconDrawableMenu.setTint(Color.WHITE)
+
+                    binding.toolbar.navigationIcon = iconDrawableMenu
+                    binding.toolbar.setNavigationContentDescription(action.textRes)
+                    binding.toolbar.setNavigationOnClickListener {
+                        changeNavigationStatusAndIcon()
+                    }
                 }
+                is ProfileAction -> {
+                    binding.toolbar.inflateMenu(R.menu.menu)
 
-            } else {
-                val iconDrawable =
-                    DrawableCompat.wrap(ContextCompat.getDrawable(this, action.iconRes)!!)
-                iconDrawable.setTint(Color.WHITE)
-
-                val menuItem = binding.toolbar.menu.add(action.textRes)
-                menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-                menuItem.icon = iconDrawable
-                menuItem.setOnMenuItemClickListener {
-                    action.onCustomAction?.run()
-                    return@setOnMenuItemClickListener true
+                    val menuItem = binding.toolbar.menu.findItem(R.id.profile)
+                    menuItem.isVisible = true
+                    val profileImage: CircleImageView =
+                        menuItem.actionView.findViewById(R.id.toolbar_profile_image)
+                    setUserImageByGlide(this, profileImage, viewModel.userIconLD.value, 20)
+                    profileImage.setOnClickListener {
+                        action.onCustomAction.run()
+                    }
                 }
             }
         }
     }
 
-    private fun openFragment(
+    override fun openFragment(
         fragment: Fragment,
-        clearBackstack: Boolean = false
+        firstTime: Boolean,
+        addToBackStack: Boolean,
+        clearBackstack: Boolean
     ) {
         if (clearBackstack) {
             clearBackStack()
         }
-        supportFragmentManager
-            .beginTransaction()
-            /*.setCustomAnimations(
-                R.anim.slide_in,
-                R.anim.fade_out,
-                R.anim.fade_in,
-                R.anim.slide_out
-            )*/
-            .addToBackStack(fragment.javaClass.name)
-            .replace(R.id.main_container, fragment, fragment.javaClass.name)
-            .commit()
+        when {
+            firstTime -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.main_container, fragment)
+                    .commit()
+            }
+            addToBackStack -> {
+                supportFragmentManager
+                    .beginTransaction() //TODO Animation
+                    .setCustomAnimations(
+                        R.anim.enter,
+                        R.anim.exit,
+                        R.anim.pop_enter,
+                        R.anim.pop_exit
+                    )
+                    .addToBackStack(fragment.javaClass.name)
+                    .replace(R.id.main_container, fragment, fragment.javaClass.name)
+                    .commit()
+            }
+            else -> {
+                supportFragmentManager
+                    .beginTransaction() //TODO Animation
+                    .setCustomAnimations(
+                        R.anim.enter,
+                        R.anim.exit,
+                        R.anim.pop_enter,
+                        R.anim.pop_exit
+                    )
+                    .replace(R.id.main_container, fragment, fragment.javaClass.name)
+                    .commit()
+            }
+        }
     }
 
-    private fun clearBackStack() =
+    override fun clearBackStack() =
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
-    private fun expandMenu() {
-        navigationMenu.root.isVisible = !navigationMenu.root.isVisible
-        updateUI()
+    private fun changeNavigationStatusAndIcon(
+        hideNavigationOnly: Boolean = false,
+        hideNavAndSetMenuIcon: Boolean = false
+    ) {
+        val navigationStatus = !binding.navigationMenu.isVisible
+
+        when {
+            hideNavigationOnly && !hideNavAndSetMenuIcon -> {
+                binding.navigationMenu.isVisible = false
+            }
+            hideNavAndSetMenuIcon -> {
+                binding.navigationMenu.isVisible = false
+                binding.toolbar.setNavigationIcon(R.drawable.ic_navigation_menu)
+            }
+            else -> {
+                if (navigationStatus) {
+                    binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_close_24)
+                    binding.toolbar.setNavigationIconTint(Color.WHITE)
+                } else {
+                    binding.toolbar.setNavigationIcon(R.drawable.ic_navigation_menu)
+                }
+                binding.navigationMenu.isVisible = navigationStatus
+            }
+        }
+
     }
 
     override fun openSignInRequest() {
-        //openFragment()
+        openFragment(SignInFragment())
     }
 
     override fun openSignUp() {
@@ -197,7 +287,9 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun openSettings() {
-        openFragment(SettingsFragment())
+        if (currentFragment !is SettingsFragment) {
+            openFragment(SettingsFragment())
+        }
     }
 
     override fun openSong() {
@@ -209,7 +301,17 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun openProfile() {
-        openFragment(ProfileFragment())
+        if (currentFragment !is ProfileFragment) {
+            openFragment(ProfileFragment())
+        }
+    }
+
+    override fun openContactUs() {
+        if (currentFragment !is ContactUsFragment) openFragment(ContactUsFragment())
+    }
+
+    override fun openFaqs() {
+        // TODO("Not yet implemented") intent to github web page
     }
 
     override fun goBack() {
@@ -244,22 +346,31 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun onBackPressed() {
-        if (navigationMenu.root.isVisible) {
-            expandMenu()
-        } else {
-            super.onBackPressed()
+        if (binding.navigationMenu.isVisible) {
+            changeNavigationStatusAndIcon()
+            return
         }
+        when (currentFragment) {
+            !is HomeFragment -> openFragment(
+                HomeFragment(),
+                clearBackstack = true,
+                addToBackStack = false
+            )
+            else -> super.onBackPressed()
+        }
+
     }
+
 
     companion object {
         @JvmStatic
         private val KEY_RESULT = "KEY_RESULT"
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentListener)
     }
-
 
 }
