@@ -7,38 +7,33 @@
     android:background="@color/ebony_clay"
     tools:context=".screen.profile.ProfileFragment">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/user_icon"
+    <FrameLayout
+        android:id="@+id/frame_include"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/ic_unknown_user_photo_90"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/user_name_tv"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/user_icon"
-        app:layout_constraintTop_toBottomOf="@id/user_icon"
-        tools:text="User name" />
+        <include
+            android:id="@+id/included_profile_info"
+            layout="@layout/item_user_info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </FrameLayout>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/user_email_tv"
-        android:layout_width="0dp"
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/logout_tb"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/user_name_tv"
-        app:layout_constraintTop_toBottomOf="@id/user_name_tv"
-        tools:text="User email" />
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        android:text="@string/logout"
+        android:textAlignment="center"
+        android:textColor="#546E7A"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frame_include" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
