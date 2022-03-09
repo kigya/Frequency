@@ -12,9 +12,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class ProvidesModule {
 
     @Provides
@@ -28,8 +29,9 @@ class ProvidesModule {
         return appRoom.getUserDao()
     }
     /*@Provides
+      @Singleton
     fun bindWeatherDao(@ApplicationContext context: Context): UserDao {
-        val appRoom = Room.databaseBuilder(context, AppDatabase::class.java, "AppRoomDB").build()
+        val appRoom = Room.databaseBuilder(context, com.example.frequency.repositorys.room.app_database.AppDatabase::class.java, "AppRoomDB").build()
         return appRoom.getUserDao()
     }*/
 
