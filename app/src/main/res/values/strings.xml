@@ -36,5 +36,12 @@
     <string name="auth_success">Authorization success</string>
     <string name="user_image">User image</string>
     <string name="logout">Logout</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="log_in_into_existing_app">Log in into existing app</string>
+    <string name="log_in_into_exesting_account">Log in into exesting account</string>
+    <string name="email_adress">Email adress</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="log_in">Log in</string>
 
 </resources>

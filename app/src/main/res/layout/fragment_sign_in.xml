@@ -1,30 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ebony_clay"
-    tools:context=".screen.sign_in.SignInFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/ebony_clay">
 
-    <include
-        android:id="@+id/included_profile_info"
-        layout="@layout/item_user_info"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        android:id="@+id/top_panel_welcome_back">
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/gog_sign_in"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_icon"
+            android:background="@android:color/transparent"
+            android:layout_marginStart="20dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/click_sign_up_welcome_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/poppins"
+            android:text="@string/sign_up"
+            android:textColor="@color/foam"
+            android:textSize="16sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_marginEnd="40dp" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:background="@android:color/transparent"
-        android:paddingStart="4dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="4dp"
-        android:src="@drawable/ic_google"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/welcome_back"
+        android:textColor="@color/foam"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_panel_welcome_back" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/subtitle_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center"
+        android:text="@string/log_in_into_exesting_account"
+        android:textColor="@color/foam"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_email_address_welcome_back"
+        style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitle_welcome"
+        android:layout_marginTop="50dp"
+        app:boxBackgroundColor="@color/foam"
+        android:hint="@string/email_adress"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeColor="@color/foam"
+        app:counterTextColor="@color/ebony_clay"
+        android:alpha="1.0"
+        app:hintAnimationEnabled="true"
+        app:endIconMode="clear_text"
+        app:hintTextColor="@color/ebony_clay"
+        app:counterOverflowTextColor="@color/ebony_clay"
+        android:textColorHint="@color/ebony_clay"
+        app:endIconTint="@color/ebony_clay"
+        app:boxStrokeWidthFocused="1.5dp"
+        app:boxStrokeWidth="0.5dp"
+        app:startIconDrawable="@drawable/ic_mail"
+        app:startIconTint="@color/ebony_clay">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/ebony_clay"
+            android:textColorHint="@color/ebony_clay"
+            android:textSize="14sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_password_address_welcome_back"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_email_address_welcome_back"
+        app:boxBackgroundColor="@color/foam"
+        android:hint="@string/password"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeColor="@color/ebony_clay"
+        app:counterTextColor="@color/ebony_clay"
+        android:alpha="1.0"
+        app:hintAnimationEnabled="true"
+        app:endIconMode="password_toggle"
+        app:hintTextColor="@color/ebony_clay"
+        app:counterOverflowTextColor="@color/ebony_clay"
+        android:textColorHint="@color/ebony_clay"
+        app:endIconTint="@color/ebony_clay"
+        app:boxStrokeWidthFocused="1.5dp"
+        app:boxStrokeWidth="0.5dp"
+        app:startIconDrawable="@drawable/ic_lock"
+        app:startIconTint="@color/ebony_clay">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:inputType="textPassword"
+            android:textColor="@color/foam"
+            android:textColorHint="@color/foam"
+            android:textSize="14sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/forgot_password_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="50dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/poppins"
+        android:gravity="end"
+        android:text="@string/forgot_password"
+        android:textColor="@color/foam"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_password_address_welcome_back" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/log_in_welcome_back"
+        android:fitsSystemWindows="true"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/foam"
+        android:text="@string/log_in"
+        android:textColor="@color/ebony_clay"
+        android:textAllCaps="false"
+        android:textSize="13sp"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="50dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
