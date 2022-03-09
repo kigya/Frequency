@@ -4,12 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.frequency.R
+import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
+import com.example.frequency.utils.ActionStore.menuAction
+import com.example.frequency.utils.SettingTags.EMAIL
+import dagger.hilt.android.AndroidEntryPoint
 
-class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle {
+@AndroidEntryPoint
+class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle, ProvidesCustomActions {
 
     private val viewModel by viewModels<SettingsVM>()
 
@@ -27,6 +34,21 @@ class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.rootView.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.ebony_clay
+            )
+        )
+
+        val emailField = findPreference<Preference>(EMAIL)
+        emailField?.title = viewModel.usersEmailLD.value
+    }
+
     override fun getTitleRes() = R.string.settings
+
+    override fun getCustomActions() = listOf(menuAction)
 
 }
