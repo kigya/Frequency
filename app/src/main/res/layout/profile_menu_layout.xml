@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clipToPadding="false"
-    android:padding="5dp"
+    android:paddingEnd="12dp"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    tools:ignore="RtlSymmetry">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/toolbar_profile_image"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
         android:src="@drawable/ic_unknown_user_photo"/>
 
 </FrameLayout>

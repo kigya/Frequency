@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.frequency.R
+import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.databinding.FragmentHomeBinding
 import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
-import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.utils.menuAction
-import com.example.frequency.model.actions.CustomAction
-import com.google.android.material.snackbar.Snackbar
+import com.example.frequency.preferences.AppDefaultPreferences
+import com.example.frequency.utils.ActionStore.menuAction
+import com.example.frequency.utils.ActionStore.provideProfileAction
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions {
@@ -23,6 +24,9 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var sharedPreferences: AppDefaultPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +41,8 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         // initialise listeners
 
-        binding.helloTextview.text = getString(R.string.hello_username, getString(R.string.user))
-
-
+        binding.helloTextview.text =
+            getString(R.string.hello_username, sharedPreferences.getUsername())
 
         return binding.root
     }
@@ -47,11 +50,10 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.fooLD.observe(viewLifecycleOwner){
+        viewModel.fooLD.observe(viewLifecycleOwner) {
 
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -62,20 +64,8 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
     override fun getCustomActions() = listOf(
         menuAction,
-        CustomAction(
-            iconRes = R.drawable.ic_unknown_user_photo,
-            textRes = R.string.user,
-            onCustomAction = { navigator().run { showSnackbar("user") } }
-        )
+        provideProfileAction { navigator().openProfile() }
     )
-
-    private fun showSnackbar(message: String) {
-        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-        snackbar.view.setOnClickListener {
-            snackbar.dismiss()
-        }
-        snackbar.show()
-    }
 
     companion object {
         @JvmStatic

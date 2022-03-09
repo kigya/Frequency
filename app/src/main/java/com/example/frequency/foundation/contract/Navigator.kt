@@ -16,7 +16,7 @@ fun Fragment.navigator(): Navigator {
 /**
  * Interface for moving between fragments and transferring data
  * */
-interface Navigator{
+interface Navigator {
 
     // TODO необходимо определить сущьности перемещающиеся между фрагментами у всех функций перемещения и поместить в аргументы.
     fun openSignInRequest() // TODO
@@ -33,12 +33,29 @@ interface Navigator{
 
     fun openProfile() //TODO
 
+    fun openContactUs() //TODO
+
+    fun openFaqs()
+
     fun goBack()
 
     fun goToMenu()
 
-    fun <T: Parcelable> provideResult(result: T)
+    fun openFragment(
+        fragment: Fragment,
+        firstTime: Boolean = false,
+        addToBackStack: Boolean = true,
+        clearBackstack: Boolean = false
+    )
 
-    fun <T: Parcelable> listenResults(clazz: Class<T>, owner: LifecycleOwner, listener: ResultListener<T>)
+    fun clearBackStack()
+
+    fun <T : Parcelable> provideResult(result: T)
+
+    fun <T : Parcelable> listenResults(
+        clazz: Class<T>,
+        owner: LifecycleOwner,
+        listener: ResultListener<T>
+    )
 
 }

@@ -13,7 +13,7 @@ const val KEY_USER = "KEY_USER"
 
 @HiltViewModel
 class ProfileVM @Inject constructor(
-    shearedPreferences: AppDefaultPreferences,
+    private val shearedPreferences: AppDefaultPreferences,
     savedStateHandle: SavedStateHandle
 ) : BaseVM() {
 
@@ -24,7 +24,11 @@ class ProfileVM @Inject constructor(
         shearedPreferences.getToken(),
         )
 
-    private val _userLD = savedStateHandle.getLiveData<User>(KEY_USER, userFormPref)
+    private val _userLD = savedStateHandle.getLiveData(KEY_USER, userFormPref)
     val user: LiveData<User> = _userLD.share()
+
+    fun clearUserRootPreferences() {
+        shearedPreferences.clearAllPreferences()
+    }
 
 }
