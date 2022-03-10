@@ -1,4 +1,4 @@
-package com.example.frequency.screen.sign_in
+package com.example.frequency.screen.welcome
 
 import android.net.Uri
 import android.os.Bundle
@@ -7,22 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isVisible
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.viewModels
 import com.example.frequency.R
-import com.example.frequency.databinding.FragmentSignInBinding
+import com.example.frequency.databinding.FragmnetWelcomeBinding
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.screen.home.HomeFragment
+import com.example.frequency.screen.sign_in.SignInFragment
 import com.example.frequency.screen.song.SongFragment
-import com.example.frequency.utils.setUserImageByGlide
+import com.example.frequency.utils.ERROR
+import com.example.frequency.utils.FAILURE
+import com.example.frequency.utils.SUCCESS
+import com.example.frequency.utils.showSnackbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -30,24 +32,23 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignInFragment : BaseFragment(), ProvidesCustomTitle {
+class WelcomeFragment : BaseFragment(), ProvidesCustomTitle {
 
     private val launchGoogleRegister =
         registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult(),
+            StartActivityForResult(),
             ::onUserDataReceived
         )
     private lateinit var auth: FirebaseAuth
 
-    override val viewModel by viewModels<SignInVM>()
+    override val viewModel by viewModels<WelcomeVM>()
 
-    private var _binding: FragmentSignInBinding? = null
+    private var _binding: FragmnetWelcomeBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // initialise all data
-
         auth = Firebase.auth
 
     }
@@ -57,24 +58,36 @@ class SignInFragment : BaseFragment(), ProvidesCustomTitle {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSignInBinding.inflate(inflater, container, false)
+        _binding = FragmnetWelcomeBinding.inflate(inflater, container, false)
         // initialise listeners
 
-        binding.gogSignIn.setOnClickListener {
-            launchGoogleRegister.launch(getClient().signInIntent)
-        }
-
+        initiateListeners()
         initiateObservers()
         return binding.root
+    }
+
+    private fun initiateListeners() {
+        with(binding) {
+            continueGoogle.setOnClickListener {
+                launchGoogleRegister.launch(getClient().signInIntent)
+            }
+            continueEmailButton.setOnClickListener {
+                navigator().openSignInRequest()
+            }
+            clickSignUpWelcome.setOnClickListener {
+                navigator().openSignUp()
+            }
+
+
+        }
+
+
     }
 
     private fun initiateObservers() {
 
         viewModel.registerUserLD.observe(viewLifecycleOwner) {
             provideDataFirebase(it.gToken)
-            binding.includedProfileInfo.userNameTv.text = it.name
-            setUserImageByGlide(requireContext(), binding.includedProfileInfo.userIcon, it.icon)
-            binding.includedProfileInfo.central.isVisible = true
         }
 
 
@@ -95,7 +108,7 @@ class SignInFragment : BaseFragment(), ProvidesCustomTitle {
                 Log.d(TAG, "account == null")
             }
         } catch (e: ApiException) {
-            showSnackbar("Error ${e.message.toString()} ApiException")
+            showSnackbar(binding.root, "Error ${e.message.toString()} ApiException", ERROR)
         }
 
     }
@@ -114,20 +127,16 @@ class SignInFragment : BaseFragment(), ProvidesCustomTitle {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-                showSnackbar(getString(R.string.auth_success))
-                navigator().openFragment(HomeFragment(), clearBackstack = true, addToBackStack = false)
+                showSnackbar(binding.root, getString(R.string.auth_success), SUCCESS)
+                navigator().openFragment(
+                    HomeFragment(),
+                    clearBackstack = true,
+                    addToBackStack = false
+                )
             } else {
-                showSnackbar(getString(R.string.auth_fail))
+                showSnackbar(binding.root, getString(R.string.auth_fail), FAILURE)
             }
         }
-    }
-
-    private fun showSnackbar(message: String) {
-        val snackBar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-        snackBar.view.setOnClickListener {
-            snackBar.dismiss()
-        }
-        snackBar.show()
     }
 
     override fun onDestroyView() {
