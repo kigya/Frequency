@@ -42,6 +42,8 @@ class SignInFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // initialise all data
@@ -60,9 +62,24 @@ class SignInFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
         /*binding.gogSignIn.setOnClickListener {
             launchGoogleRegister.launch(getClient().signInIntent)
         }*/
-
+        initiateListeners()
         initiateObservers()
         return binding.root
+    }
+
+    private fun initiateListeners(){
+        with(binding){
+            backIb.setOnClickListener {
+                navigator().openWelcome()
+            }
+            toSignUpWelcomeBack.setOnClickListener {
+                navigator().openSignUp()
+            }
+            logInWelcomeBack.setOnClickListener {
+                // viewModel.login() TODO
+            }
+
+        }
     }
 
     private fun initiateObservers() {
@@ -82,7 +99,7 @@ class SignInFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
         try {
             val account = task.getResult(ApiException::class.java)
             if (account != null) {
-                viewModel.registerUser(
+                viewModel.updateUser(
                     account.displayName.toString(),
                     account.email.toString(),
                     account.photoUrl ?: Uri.EMPTY,
