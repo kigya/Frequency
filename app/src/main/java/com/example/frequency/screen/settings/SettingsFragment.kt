@@ -51,4 +51,13 @@ class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle, Provid
 
     override fun getCustomActions() = listOf(menuAction)
 
+    companion object {
+        @JvmStatic
+        fun newInstance() = SettingsFragment().apply {
+            arguments = Bundle().apply {
+
+            }
+        }
+    }
+
 }

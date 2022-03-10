@@ -18,7 +18,6 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.screen.song.SongFragment
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.setUserImageByGlide
 import dagger.hilt.android.AndroidEntryPoint
@@ -87,16 +86,17 @@ class ProfileFragment : BaseFragment(), ProvidesCustomActions, ProvidesCustomTit
         _binding = null
     }
 
+    override fun getTitleRes() = R.string.profile
+
+    override fun getCustomActions() = listOf(menuAction)
+
+
     companion object {
         @JvmStatic
-        fun newInstance() = SongFragment().apply {
+        fun newInstance() = ProfileFragment().apply {
             arguments = Bundle().apply {
 
             }
         }
     }
-
-    override fun getTitleRes() = R.string.profile
-
-    override fun getCustomActions() = listOf(menuAction)
 }

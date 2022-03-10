@@ -8,12 +8,12 @@ import androidx.fragment.app.viewModels
 import com.example.frequency.R
 import com.example.frequency.databinding.FragmentSignUpBinding
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
+import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.screen.song.SongFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignUpFragment : BaseFragment(), ProvidesCustomTitle {
+class SignUpFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
 
     override val viewModel by viewModels<SignUpVM>()
 
@@ -42,15 +42,14 @@ class SignUpFragment : BaseFragment(), ProvidesCustomTitle {
         _binding = null
     }
 
+    override fun getTitleRes() = R.string.sign_up
+
     companion object {
         @JvmStatic
-        fun newInstance() = SongFragment().apply {
+        fun newInstance() = SignUpFragment().apply {
             arguments = Bundle().apply {
 
             }
         }
     }
-
-    override fun getTitleRes() = R.string.sign_up
-
 }

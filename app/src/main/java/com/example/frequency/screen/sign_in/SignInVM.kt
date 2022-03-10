@@ -1,4 +1,4 @@
-package com.example.frequency.screen.welcome
+package com.example.frequency.screen.sign_in
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class WelcomeVM @Inject constructor(
+class SignInVM @Inject constructor(
     private val sharedPreferences: AppDefaultPreferences,
     savedStateHandle: SavedStateHandle
 ) : BaseVM() {
@@ -25,14 +25,7 @@ class WelcomeVM @Inject constructor(
         gToken: String
     ) {
         _registerUserLD.value = User(name, email, icon, gToken)
-    }
 
-    fun addUserToShearedPrefs(
-        name: String,
-        email: String,
-        icon: Uri,
-        gToken: String
-    ) {
         sharedPreferences.setUsername(name)
         sharedPreferences.setEmail(email)
         sharedPreferences.setIconUri(icon)

@@ -36,16 +36,24 @@ class MainVM @Inject constructor(
         }
     }
 
-    fun updateUser() {
-        val newUserValue = User(
-            shearedPreferences.getUsername(),
-            shearedPreferences.getEmail(),
-            shearedPreferences.getIconUri(),
-            shearedPreferences.getToken(),
-        )
-        if (_userLD.value != newUserValue) {
-            _userLD.value = newUserValue
-            savedStateHandle.set(STATE_USER, newUserValue)
+    private fun initializeUser(user: User) {
+        if (_userLD.value != user) {
+            _userLD.value = user
+            savedStateHandle.set(STATE_USER, user)
+        }
+    }
+
+    fun updateUser(user: User? = null) {
+        if (user == null) {
+            val newUserValue = User(
+                shearedPreferences.getUsername(),
+                shearedPreferences.getEmail(),
+                shearedPreferences.getIconUri(),
+                shearedPreferences.getToken(),
+            )
+            initializeUser(newUserValue)
+        } else {
+            initializeUser(user)
         }
     }
 

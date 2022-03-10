@@ -44,6 +44,13 @@ class LyricsFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomAction
         _binding = null
     }
 
+    override fun getTitleRes() = R.string.lyrics
+
+    override fun getCustomActions() = listOf(
+        menuAction,
+        provideProfileAction { navigator().openProfile() }
+    )
+
     companion object {
         @JvmStatic
         fun newInstance() = LyricsFragment().apply {
@@ -52,13 +59,5 @@ class LyricsFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomAction
             }
         }
     }
-
-    override fun getTitleRes() = R.string.lyrics
-
-    override fun getCustomActions() = listOf(
-        menuAction,
-        provideProfileAction { navigator().openProfile() }
-    )
-
 
 }

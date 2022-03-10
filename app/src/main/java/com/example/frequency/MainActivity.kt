@@ -24,15 +24,18 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.ResultListener
 import com.example.frequency.foundation.model.Action
+import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.model.User
 import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.model.actions.ProfileAction
 import com.example.frequency.screen.contact_us.ContactUsFragment
 import com.example.frequency.screen.home.HomeFragment
+import com.example.frequency.screen.lyrics.LyricsFragment
 import com.example.frequency.screen.profile.ProfileFragment
 import com.example.frequency.screen.settings.SettingsFragment
 import com.example.frequency.screen.sign_in.SignInFragment
 import com.example.frequency.screen.sign_up.SignUpFragment
+import com.example.frequency.screen.song.SongFragment
 import com.example.frequency.screen.welcome.WelcomeFragment
 import com.example.frequency.utils.isValidEmail
 import com.example.frequency.utils.setToolbarUserIcon
@@ -92,17 +95,17 @@ class MainActivity : AppCompatActivity(), Navigator {
             navProfileMb.setOnClickListener {
                 openProfile()
             }
-            // todo like song
-
-
+            navLikedSongsMb.setOnClickListener {
+                openSong()
+            }
             navContactUsMb.setOnClickListener {
                 openContactUs()
             }
-
-
-
             navSettingsMb.setOnClickListener {
                 openSettings()
+            }
+            listenResults(User::class.java, this@MainActivity) {
+                viewModel.updateUser(it)
             }
 
 
@@ -289,15 +292,21 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun openWelcome() {
-        openFragment(WelcomeFragment())
+        if (currentFragment !is WelcomeFragment) {
+            openFragment(WelcomeFragment.newInstance())
+        }
     }
 
-    override fun openSignInRequest() {
-        openFragment(SignInFragment())
+    override fun openSignIn() {
+        if (currentFragment !is SignInFragment) {
+            openFragment(SignInFragment.newInstance())
+        }
     }
 
     override fun openSignUp() {
-        openFragment(SignUpFragment())
+        if (currentFragment !is SignUpFragment) {
+            openFragment(SignUpFragment.newInstance())
+        }
     }
 
     override fun openHome(
@@ -306,21 +315,25 @@ class MainActivity : AppCompatActivity(), Navigator {
         add: Boolean,
         user: User?
     ) {
-        openFragment(HomeFragment(), clearBackstack = clear, addToBackStack = add)
+        openFragment(HomeFragment.newInstance(), clearBackstack = clear, addToBackStack = add)
     }
 
     override fun openSettings() {
         if (currentFragment !is SettingsFragment) {
-            openFragment(SettingsFragment())
+            openFragment(SettingsFragment.newInstance())
         }
     }
 
     override fun openSong() {
-        //TODO("Not yet implemented")
+        if (currentFragment !is SongFragment) {
+            openFragment(SongFragment.newInstance())
+        }
     }
 
     override fun openLyrics() {
-        //TODO("Not yet implemented")
+        if (currentFragment !is LyricsFragment) {
+            openFragment(LyricsFragment.newInstance())
+        }
     }
 
     override fun openProfile() {
@@ -330,11 +343,13 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun openContactUs() {
-        if (currentFragment !is ContactUsFragment) openFragment(ContactUsFragment())
+        if (currentFragment !is ContactUsFragment) {
+            openFragment(ContactUsFragment())
+        }
     }
 
     override fun openFaqs() {
-        // TODO("Not yet implemented") intent to github web page
+        // TODO openFragment()
     }
 
     override fun goBack() {
@@ -358,7 +373,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         listener: ResultListener<T>
     ) {
         supportFragmentManager.setFragmentResultListener(
-            clazz.name,
+            clazz.name, // tracking received class instances by names
             owner // viewModelOwner from fragment
         ) { _, bundle -> listener.invoke(bundle.getParcelable(KEY_RESULT)!!) } // FragmentResultListener arguments
     }
@@ -374,8 +389,11 @@ class MainActivity : AppCompatActivity(), Navigator {
             return
         }
         when (currentFragment) {
+            is AuthFragments -> {
+                super.onBackPressed()
+            }
             !is HomeFragment -> openFragment(
-                HomeFragment(),
+                HomeFragment.newInstance(),
                 clearBackstack = true,
                 addToBackStack = false
             )
@@ -383,7 +401,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
 
     }
-
 
     companion object {
         @JvmStatic
