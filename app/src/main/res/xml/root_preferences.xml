@@ -2,9 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+        app:icon="@drawable/ic_unknown_user_24"
         app:title="User info">
 
-        <Preference android:title="@string/user_email"
+        <Preference android:title="@string/user_email_address"
+            android:summary="@string/user_email"
             app:key="EMAIL"/>
 
         <EditTextPreference
