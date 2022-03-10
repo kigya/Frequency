@@ -13,9 +13,9 @@ import com.example.frequency.R
 import com.example.frequency.databinding.FragmentSignInBinding
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
+import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.screen.home.HomeFragment
-import com.example.frequency.screen.song.SongFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -28,7 +28,7 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignInFragment : BaseFragment(), ProvidesCustomTitle {
+class SignInFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
 
     private val launchGoogleRegister =
         registerForActivityResult(
@@ -137,7 +137,7 @@ class SignInFragment : BaseFragment(), ProvidesCustomTitle {
         private val TAG = SignInFragment::class.java.simpleName
 
         @JvmStatic
-        fun newInstance() = SongFragment().apply {
+        fun newInstance() = SignInFragment().apply {
             arguments = Bundle().apply {
 
             }

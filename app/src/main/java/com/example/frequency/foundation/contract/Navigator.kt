@@ -21,7 +21,7 @@ interface Navigator {
     // TODO необходимо определить сущьности перемещающиеся между фрагментами у всех функций перемещения и поместить в аргументы.
     fun openWelcome() // TODO
 
-    fun openSignInRequest() // TODO
+    fun openSignIn() // TODO
 
     fun openSignUp() // TODO
 

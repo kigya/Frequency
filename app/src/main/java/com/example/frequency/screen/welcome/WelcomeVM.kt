@@ -25,7 +25,14 @@ class WelcomeVM @Inject constructor(
         gToken: String
     ) {
         _registerUserLD.value = User(name, email, icon, gToken)
+    }
 
+    fun addUserToShearedPrefs(
+        name: String,
+        email: String,
+        icon: Uri,
+        gToken: String
+    ) {
         sharedPreferences.setUsername(name)
         sharedPreferences.setEmail(email)
         sharedPreferences.setIconUri(icon)

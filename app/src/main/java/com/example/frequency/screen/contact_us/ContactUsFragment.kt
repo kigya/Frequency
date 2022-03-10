@@ -60,17 +60,9 @@ class ContactUsFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomAct
         provideProfileAction { navigator().openProfile() }
     )
 
-    private fun showSnackbar(message: String) {
-        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-        snackbar.view.setOnClickListener {
-            snackbar.dismiss()
-        }
-        snackbar.show()
-    }
-
     companion object {
         @JvmStatic
-        fun newInstance() = HomeFragment().apply {
+        fun newInstance() = ContactUsFragment().apply {
             arguments = Bundle().apply {
 
             }
