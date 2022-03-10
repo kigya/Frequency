@@ -37,5 +37,21 @@
     <string name="user_image">User image</string>
     <string name="logout">Logout</string>
     <string name="username">username</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="login_into_existing_account">Login into existing account</string>
+    <string name="email_adress">Email address</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="log_in">Log in</string>
+    <string name="create_account">Create an account</string>
+    <string name="new_user_profile">New user profile</string>
+    <string name="name">Name</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="register">Register</string>
+    <string name="welcome_to_frequency">Welcome to Frequency</string>
+    <string name="radio_app">Radio app</string>
+    <string name="continue_with_email_address">Continue with email address</string>
+    <string name="continue_with_google">Continue with google</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
 
 </resources>
