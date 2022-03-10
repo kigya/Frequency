@@ -44,7 +44,8 @@ class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle, Provid
         )
 
         val emailField = findPreference<Preference>(EMAIL)
-        emailField?.title = viewModel.usersEmailLD.value
+        emailField?.summary = viewModel.usersEmailLD.value
+
     }
 
     override fun getTitleRes() = R.string.settings
@@ -61,3 +62,5 @@ class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle, Provid
     }
 
 }
+
+const val USER_INFO = "USER_INFO"
