@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/back_ib"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -101,7 +102,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/ebony_clay"
             android:textColorHint="@color/ebony_clay"
-            android:textSize="14sp"/>
+            android:textSize="12sp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -110,7 +111,7 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:alpha="1.0"
-        android:hint="@string/email_adress"
+        android:hint="@string/email_address"
         android:textColorHint="@color/ebony_clay"
         app:boxBackgroundColor="@color/foam"
         app:boxCornerRadiusBottomEnd="10dp"
@@ -140,7 +141,7 @@
             android:inputType="textEmailAddress"
             android:textColor="@color/ebony_clay"
             android:textColorHint="@color/ebony_clay"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -179,7 +180,7 @@
             android:inputType="textPassword"
             android:textColor="@color/ebony_clay"
             android:textColorHint="@color/ebony_clay"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -218,7 +219,7 @@
             android:inputType="textPassword"
             android:textColor="@color/ebony_clay"
             android:textColorHint="@color/ebony_clay"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
