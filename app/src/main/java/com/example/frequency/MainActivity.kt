@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity(), Navigator {
             if (isValidEmail(userEmail) && autologin == true) {
                 openFragment(HomeFragment(), firstTime = true)
             } else {
+                //openFragment(SettingsFragment(), firstTime = true)
                 openFragment(WelcomeFragment(), firstTime = true)
             }
         }
