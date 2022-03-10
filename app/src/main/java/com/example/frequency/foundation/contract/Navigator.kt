@@ -3,7 +3,7 @@ package com.example.frequency.foundation.contract
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import com.example.frequency.model.Options
+import com.example.frequency.model.User
 
 
 typealias ResultListener<T> = (T) -> Unit
@@ -19,11 +19,18 @@ fun Fragment.navigator(): Navigator {
 interface Navigator {
 
     // TODO необходимо определить сущьности перемещающиеся между фрагментами у всех функций перемещения и поместить в аргументы.
+    fun openWelcome() // TODO
+
     fun openSignInRequest() // TODO
 
     fun openSignUp() // TODO
 
-    fun openHomeScreen(options: Options) // TODO
+    fun openHome(
+        fragment: Fragment,
+        clear: Boolean,
+        add: Boolean,
+        user: User? = null
+    )
 
     fun openSettings() // TODO
 
