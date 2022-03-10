@@ -1,4 +1,4 @@
-package com.example.frequency.screen.sign_in
+package com.example.frequency.screen.welcome
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInVM @Inject constructor(
+class WelcomeVM @Inject constructor(
     private val sharedPreferences: AppDefaultPreferences,
     savedStateHandle: SavedStateHandle
 ) : BaseVM() {

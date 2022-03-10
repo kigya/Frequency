@@ -74,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/username"
+                android:textAllCaps="false"
                 android:textColor="@color/foam"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/nav_menu_user_ib"

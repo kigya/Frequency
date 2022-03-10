@@ -4,9 +4,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
@@ -22,7 +24,7 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.ResultListener
 import com.example.frequency.foundation.model.Action
-import com.example.frequency.model.Options
+import com.example.frequency.model.User
 import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.model.actions.ProfileAction
 import com.example.frequency.screen.contact_us.ContactUsFragment
@@ -30,7 +32,10 @@ import com.example.frequency.screen.home.HomeFragment
 import com.example.frequency.screen.profile.ProfileFragment
 import com.example.frequency.screen.settings.SettingsFragment
 import com.example.frequency.screen.sign_in.SignInFragment
+import com.example.frequency.screen.sign_up.SignUpFragment
+import com.example.frequency.screen.welcome.WelcomeFragment
 import com.example.frequency.utils.isValidEmail
+import com.example.frequency.utils.setToolbarUserIcon
 import com.example.frequency.utils.setUserImageByGlide
 import dagger.hilt.android.AndroidEntryPoint
 import de.hdodenhof.circleimageview.CircleImageView
@@ -47,13 +52,12 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                viewModel.isLoading.value
-            }
-        }
+        installSplashScreen().apply { setKeepOnScreenCondition { viewModel.isLoading.value } }
         binding = inflate(layoutInflater).also { setContentView(it.root) }
         setSupportActionBar(binding.toolbar)
+
+        // set default night mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         appStatusCheckAndStart(savedInstanceState)
 
@@ -64,13 +68,13 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private fun appStatusCheckAndStart(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            val userEmail = viewModel.userEmailLD.value
+            val userEmail = viewModel.userLD.value?.email
             val autologin = viewModel.autologinLD.value
 
             if (isValidEmail(userEmail) && autologin == true) {
                 openFragment(HomeFragment(), firstTime = true)
             } else {
-                openFragment(SignInFragment(), firstTime = true)
+                openFragment(WelcomeFragment(), firstTime = true)
             }
         }
     }
@@ -107,8 +111,10 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     private fun setObservers() {
-        viewModel.userIconLD.observe(this) {
-            setUserImageByGlide(this@MainActivity, binding.navMenuUserIb, it, 20)
+        viewModel.userLD.observe(this) {
+            setUserImageByGlide(this@MainActivity, binding.navMenuUserIb, it.icon, 20)
+            setImageAndVisibility(currentFragment)
+            binding.navMenuLoginButton.text = it.name
         }
 
 
@@ -124,6 +130,7 @@ class MainActivity : AppCompatActivity(), Navigator {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
             updateUI()
             changeNavigationStatusAndIcon(hideNavigationOnly = true)
+            viewModel.updateUser()
         }
     }
 
@@ -132,21 +139,28 @@ class MainActivity : AppCompatActivity(), Navigator {
         val fragment = currentFragment
         titleFormatting(fragment)
 
+        // проверка фрагмента (установлен ли Profile)
+        setImageAndVisibility(fragment)
+
+        return true
+    }
+
+    private fun setImageAndVisibility(fragment: Fragment) {
+        val menuItem = binding.toolbar.menu.findItem(R.id.profile)
+
+        if (menuItem !is MenuItem) return
+
         val visibilityStatus = fragment is ProvidesCustomActions && fragment.getCustomActions()
             .any { it is ProfileAction }
-        menu.findItem(R.id.profile).isVisible = visibilityStatus
+
+        binding.toolbar.menu.findItem(R.id.profile).isVisible = visibilityStatus
 
         if (visibilityStatus) {
-            val menuItem = menu.findItem(R.id.profile)
-            val profileImage: CircleImageView =
-                menuItem.actionView.findViewById(R.id.toolbar_profile_image)
-            setUserImageByGlide(this, profileImage, viewModel.userIconLD.value, 20)
-            profileImage.setOnClickListener {
+            setToolbarUserIcon(this, menuItem, viewModel.userLD.value?.icon, 20)
+            menuItem.actionView.setOnClickListener {
                 openProfile()
             }
         }
-
-        return true
     }
 
     private fun updateUI() {
@@ -191,7 +205,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                     menuItem.isVisible = true
                     val profileImage: CircleImageView =
                         menuItem.actionView.findViewById(R.id.toolbar_profile_image)
-                    setUserImageByGlide(this, profileImage, viewModel.userIconLD.value, 20)
+                    setUserImageByGlide(this, profileImage, viewModel.userLD.value?.icon, 20)
                     profileImage.setOnClickListener {
                         action.onCustomAction.run()
                     }
@@ -274,16 +288,25 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     }
 
+    override fun openWelcome() {
+        openFragment(WelcomeFragment())
+    }
+
     override fun openSignInRequest() {
         openFragment(SignInFragment())
     }
 
     override fun openSignUp() {
-        //TODO("Not yet implemented")
+        openFragment(SignUpFragment())
     }
 
-    override fun openHomeScreen(options: Options) {
-        openFragment(HomeFragment())
+    override fun openHome(
+        fragment: Fragment,
+        clear: Boolean,
+        add: Boolean,
+        user: User?
+    ) {
+        openFragment(HomeFragment(), clearBackstack = clear, addToBackStack = add)
     }
 
     override fun openSettings() {

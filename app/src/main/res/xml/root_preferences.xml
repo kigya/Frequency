@@ -2,6 +2,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+        app:title="User info">
+
+        <Preference android:title="@string/user_email"
+            app:key="EMAIL"/>
+
+        <EditTextPreference
+            app:key="USERNAME"
+            app:title="@string/change_name"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue=""/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:icon="@drawable/ic_outline_settings_24"
         app:title="Main">
         <SwitchPreferenceCompat
@@ -37,20 +51,6 @@
             app:summaryOff="You will receive all notifications"
             app:summaryOn="You will no longer receive notifications"
             app:title="Disable notifications" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        app:title="Other">
-
-        <Preference android:title="@string/user_email"
-            app:key="EMAIL"/>
-
-        <EditTextPreference
-            app:key="USERNAME"
-            app:title="@string/change_name"
-            app:useSimpleSummaryProvider="true"
-            app:defaultValue=""/>
 
     </PreferenceCategory>
 

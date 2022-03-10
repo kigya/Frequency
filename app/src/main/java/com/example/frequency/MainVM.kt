@@ -1,9 +1,8 @@
 package com.example.frequency
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.frequency.foundation.views.BaseVM
+import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.utils.share
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,22 +14,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainVM @Inject constructor(
-    shearedPreferences: AppDefaultPreferences,
-    savedStateHandle: SavedStateHandle
-) : BaseVM() {
+    private val shearedPreferences: AppDefaultPreferences,
+    private val savedStateHandle: SavedStateHandle
+) : BaseVM(), LifecycleEventObserver {
 
-    // TODO should refactor this field to instance of user
-    private val _userEmailLD =
-        savedStateHandle.getLiveData(STATE_KEY_EMAIL, shearedPreferences.getEmail())
-    val userEmailLD = _userEmailLD.share()
-
-    private val _userIconLD =
-        savedStateHandle.getLiveData(STATE_KEY_ICON, shearedPreferences.getIconUri())
-    val userIconLD = _userIconLD.share()
-
-    private val _userNameLD =
-        savedStateHandle.getLiveData(STATE_KEY_NAME, shearedPreferences.getUsername())
-    val userNameLD = _userNameLD.share()
+    private val _userLD =
+        savedStateHandle.getLiveData<User>(STATE_USER)
+    val userLD = _userLD.share()
 
     private val _autologinLD = MutableLiveData(shearedPreferences.getAutologinStatus())
     val autologinLD = _autologinLD.share()
@@ -39,17 +29,31 @@ class MainVM @Inject constructor(
     val isLoading = _isLoading.asStateFlow()
 
     init {
+        updateUser()
         viewModelScope.launch {
             delay(1500)
             _isLoading.value = false
         }
-        savedStateHandle.set(STATE_KEY_EMAIL, shearedPreferences.getEmail())
+    }
 
+    fun updateUser() {
+        val newUserValue = User(
+            shearedPreferences.getUsername(),
+            shearedPreferences.getEmail(),
+            shearedPreferences.getIconUri(),
+            shearedPreferences.getToken(),
+        )
+        if (_userLD.value != newUserValue) {
+            _userLD.value = newUserValue
+            savedStateHandle.set(STATE_USER, newUserValue)
+        }
     }
 
     companion object {
-
         //user
+        @JvmStatic
+        private val STATE_USER = "STATE_KEY_NAME"
+
         @JvmStatic
         private val STATE_KEY_NAME = "STATE_KEY_NAME"
 
@@ -58,6 +62,10 @@ class MainVM @Inject constructor(
 
         @JvmStatic
         private val STATE_KEY_ICON = "STATE_KEY_ICON"
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        //TODO("Not yet implemented")
     }
 
 }
