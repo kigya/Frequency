@@ -1,4 +1,6 @@
-package com.example.frequency.screen.sign_in.model
+package com.example.frequency.services.sign_up.model
+
+import com.example.frequency.services.sign_up.validation.LoginEntity
 
 class LoginService : ILoginService {
 
@@ -16,20 +18,18 @@ class LoginService : ILoginService {
         }
     }
 
-    override fun emailValidation(email: String) {
-
+    fun emailValidation(email: String) {
     }
 
-    override fun checkPassword(password: String) {
 
+    fun checkPassword(password: String) {
     }
 
-    override fun login(email: String, password: String) {
 
+    fun login(email: String, password: String) {
     }
 
-    override fun provideTuples(loginEntity: LoginEntity) {
 
+    fun provideTuples(loginEntity: LoginEntity) {
     }
-
 }
