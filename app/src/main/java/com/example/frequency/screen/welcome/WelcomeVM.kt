@@ -25,16 +25,16 @@ class WelcomeVM @Inject constructor(
 ) : BaseVM() {
 
     private val _showPbLd = MutableLiveEvent<Boolean>()
-    val showPbLd = _showPbLd.toLD()
+    val showPbLd = _showPbLd.share()
 
     private val _navigateToHome = MutableLiveEvent<User>()
-    val navigateToHome = _navigateToHome.toLD()
+    val navigateToHome = _navigateToHome.share()
 
     private val _showSnackBar = MutableLiveEvent<SnackBarEntity>()
-    val showSnackBar = _showSnackBar.toLD()
+    val showSnackBar = _showSnackBar.share()
 
     private val _currentUserLD = savedStateHandle.getLiveData<User>(STATE_KEY_USER)
-    val currentUserLD = _currentUserLD.toLD()
+    val currentUserLD = _currentUserLD.share()
 
     private fun showPb(state: Boolean){
         _showPbLd.value = Event(state)
