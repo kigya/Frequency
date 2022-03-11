@@ -11,14 +11,18 @@ import androidx.preference.PreferenceFragmentCompat
 import com.example.frequency.R
 import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
+import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.SettingTags.EMAIL
+import com.example.frequency.utils.SettingTags.USERNAME
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle, ProvidesCustomActions {
 
     private val viewModel by viewModels<SettingsVM>()
+
+    private val currentUser get() = viewModel.userLD.value!!
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -43,9 +47,14 @@ class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle, Provid
             )
         )
 
-        val emailField = findPreference<Preference>(EMAIL)
-        emailField?.summary = viewModel.usersEmailLD.value
+        findPreference<Preference>(USERNAME)?.setOnPreferenceChangeListener { _, newValue ->
+            val user = currentUser
+            navigator().provideResult(user.copy(name = newValue as String))
+            return@setOnPreferenceChangeListener true
+        }
 
+        val emailPref = findPreference<Preference>(EMAIL)
+        emailPref?.summary = viewModel.usersEmailLD.value
     }
 
     override fun getTitleRes() = R.string.settings
