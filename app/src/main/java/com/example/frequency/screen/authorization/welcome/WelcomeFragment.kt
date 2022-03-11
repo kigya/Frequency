@@ -1,4 +1,4 @@
-package com.example.frequency.screen.welcome
+package com.example.frequency.screen.authorization.welcome
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,8 +13,8 @@ import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
+import com.example.frequency.screen.authorization.sign_in.SignInFragment
 import com.example.frequency.screen.home.HomeFragment
-import com.example.frequency.screen.sign_in.SignInFragment
 import com.example.frequency.utils.observeEvent
 import com.example.frequency.utils.showSnackbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -76,20 +76,22 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
     }
 
     private fun initiateObservers() {
-        viewModel.showPbLd.observeEvent(viewLifecycleOwner) {
-            navigator().showProgress(it)
-        }
-        viewModel.showSnackBar.observeEvent(viewLifecycleOwner) {
-            showSnackbar(binding.root, getString(it.message), it.iconTag)
-        }
-        viewModel.navigateToHome.observeEvent(viewLifecycleOwner) {
-            with(navigator()) {
-                provideResult(it)
-                openFragment(
-                    HomeFragment(),
-                    clearBackstack = true,
-                    addToBackStack = false
-                )
+        with(viewModel) {
+            showPbLd.observeEvent(viewLifecycleOwner) {
+                navigator().showProgress(it)
+            }
+            showSnackBar.observeEvent(viewLifecycleOwner) {
+                showSnackbar(binding.root, getString(it.message), it.iconTag)
+            }
+            navigateToHome.observeEvent(viewLifecycleOwner) {
+                with(navigator()) {
+                    provideResult(it)
+                    openFragment(
+                        HomeFragment(),
+                        clearBackstack = true,
+                        addToBackStack = false
+                    )
+                }
             }
         }
 
