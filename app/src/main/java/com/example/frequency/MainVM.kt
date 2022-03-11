@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.utils.share
+import com.example.frequency.utils.toLD
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,10 +20,10 @@ class MainVM @Inject constructor(
 
     private val _userLD =
         savedStateHandle.getLiveData<User>(STATE_USER)
-    val userLD = _userLD.share()
+    val userLD = _userLD.toLD()
 
     private val _autologinLD = MutableLiveData(shearedPreferences.getAutologinStatus())
-    val autologinLD = _autologinLD.share()
+    val autologinLD = _autologinLD.toLD()
 
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
