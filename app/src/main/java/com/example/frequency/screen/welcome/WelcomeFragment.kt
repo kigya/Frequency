@@ -1,8 +1,6 @@
 package com.example.frequency.screen.welcome
 
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,23 +13,18 @@ import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.model.User
 import com.example.frequency.screen.home.HomeFragment
 import com.example.frequency.screen.sign_in.SignInFragment
-import com.example.frequency.utils.ERROR
-import com.example.frequency.utils.FAILURE
-import com.example.frequency.utils.SUCCESS
+import com.example.frequency.utils.observeEvent
 import com.example.frequency.utils.showSnackbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
+
+/**
+ * Start screen
+ * */
 @AndroidEntryPoint
 class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
 
@@ -40,19 +33,15 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
             StartActivityForResult(),
             ::onUserDataReceived
         )
-    private lateinit var auth: FirebaseAuth
 
     override val viewModel by viewModels<WelcomeVM>()
 
     private var _binding: FragmnetWelcomeBinding? = null
     private val binding get() = _binding!!
 
-    private val currentUser: User? get() = viewModel.registerUserLD.value
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // initialise all data
-        auth = Firebase.auth
 
     }
 
@@ -81,71 +70,46 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
                 navigator().openSignUp()
             }
 
-
         }
 
 
     }
 
     private fun initiateObservers() {
-        viewModel.registerUserLD.observe(viewLifecycleOwner) {
-            provideDataFirebase(it.gToken)
+        viewModel.showPbLd.observeEvent(viewLifecycleOwner) {
+            navigator().showProgress(it)
         }
-
-
-    }
-
-    private fun onUserDataReceived(result: ActivityResult) {
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(ApiException::class.java)
-            if (account != null) {
-                viewModel.registerUser(
-                    account.displayName.toString(),
-                    account.email.toString(),
-                    account.photoUrl ?: Uri.EMPTY,
-                    account.idToken.toString(),
-                )
-                showSnackbar(binding.root, "Google authorization success!", SUCCESS)
-            } else {
-                Log.d(TAG, "account == null")
-            }
-        } catch (e: ApiException) {
-            showSnackbar(binding.root, "Error ${e.message.toString()} ApiException", ERROR)
+        viewModel.showSnackBar.observeEvent(viewLifecycleOwner) {
+            showSnackbar(binding.root, getString(it.message), it.iconTag)
         }
-
-    }
-
-    private fun getClient(): GoogleSignInClient {
-        val gso = GoogleSignInOptions
-            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestProfile()
-            .requestEmail()
-            .build()
-        return GoogleSignIn.getClient(requireActivity(), gso)
-    }
-
-    private fun provideDataFirebase(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential).addOnCompleteListener {
-            val user = currentUser
-            if (it.isSuccessful) {
-                if (user != null) {
-                    viewModel.addUserToShearedPrefs(user.name, user.email, user.icon, user.gToken)
-                    navigator().provideResult(user)
-                }
-                showSnackbar(binding.root, getString(R.string.auth_success), SUCCESS)
-                navigator().openFragment(
+        viewModel.navigateToHome.observeEvent(viewLifecycleOwner) {
+            with(navigator()) {
+                provideResult(it)
+                openFragment(
                     HomeFragment(),
                     clearBackstack = true,
                     addToBackStack = false
                 )
-            } else {
-                showSnackbar(binding.root, getString(R.string.auth_fail), FAILURE)
-
             }
         }
+
+
+    }
+
+    private fun getClientOptions(dwcId: String) = GoogleSignInOptions
+        .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(dwcId)
+        .requestProfile()
+        .requestEmail()
+        .build()
+
+    private fun getClient() = GoogleSignIn.getClient(
+        requireActivity(),
+        getClientOptions(getString(R.string.default_web_client_id))
+    )
+
+    private fun onUserDataReceived(result: ActivityResult) {
+        viewModel.getAccount(result)
     }
 
     override fun onDestroyView() {
