@@ -98,16 +98,16 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
 
     }
 
-    private fun getClientOptions(dwcId: String) = GoogleSignInOptions
+    private fun getClientOptions() = GoogleSignInOptions
         .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(dwcId)
+        .requestIdToken("1037114837660-u5m57h1rosijrk6el8vlhlcb1il8teg6.apps.googleusercontent.com")
         .requestProfile()
         .requestEmail()
         .build()
 
     private fun getClient() = GoogleSignIn.getClient(
         requireActivity(),
-        getClientOptions(getString(R.string.default_web_client_id))
+        getClientOptions()
     )
 
     private fun onUserDataReceived(result: ActivityResult) {
