@@ -9,8 +9,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.frequency.R
@@ -18,8 +16,6 @@ import com.google.android.material.R.id
 import com.google.android.material.snackbar.Snackbar
 import de.hdodenhof.circleimageview.CircleImageView
 
-
-fun <T> MutableLiveData<T>.share(): LiveData<T> = this
 
 const val SUCCESS = "SUCCESS"
 const val FAILURE = "FAILURE"
@@ -43,7 +39,12 @@ fun isValidEmail(email: String?): Boolean {
     return !email.isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
 
-fun showSnackbar(view: View, message: String, iconPreset: String? = null) {
+fun showSnackbar(
+    view: View,
+    message: String,
+    iconPreset: String? = null,
+    elevation: Float? = null
+) {
     val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
     val snackView = snackbar.view
     snackbar.setBackgroundTint(ContextCompat.getColor(view.context, R.color.dark_slay_gray))
@@ -52,6 +53,7 @@ fun showSnackbar(view: View, message: String, iconPreset: String? = null) {
     snackView.setOnClickListener {
         snackbar.dismiss()
     }
+    if (elevation != null) { snackView.elevation = 1f }
     snackView.textAlignment = View.TEXT_ALIGNMENT_CENTER
     val textView = snackView.findViewById<View>(id.snackbar_text) as TextView
 
