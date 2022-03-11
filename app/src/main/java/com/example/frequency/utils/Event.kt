@@ -16,7 +16,7 @@ class Event<T>(
     fun get(): T? = _value.also { _value = null }
 }
 
-fun <T> MutableLiveData<T>.toLD(): LiveData<T> = this
+fun <T> MutableLiveData<T>.share(): LiveData<T> = this
 
 
 typealias LiveEvent<T> = LiveData<Event<T>>
