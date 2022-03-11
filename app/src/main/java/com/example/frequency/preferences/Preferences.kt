@@ -22,10 +22,23 @@ class Preferences @Inject constructor() : AppDefaultPreferences {
         private var rootPreferences: SharedPreferences? = null
         private var instance: AppDefaultPreferences? = null
 
+        private val preferencesListeners = mutableSetOf<PreferencesListener>()
+
+        private val prefListener =
+            SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+                if (preferencesListeners.isNotEmpty()) {
+                    preferencesListeners.forEach { listener ->
+                        listener.onPreferencesUpdated(prefs, key)
+                    }
+                }
+            }
+
         fun getDefaultPreferenceInstance(context: Context): AppDefaultPreferences {
             if (instance == null) {
                 instance = Preferences()
                 rootPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+                rootPreferences?.registerOnSharedPreferenceChangeListener(prefListener)
             }
             return instance!!
         }
@@ -94,6 +107,18 @@ class Preferences @Inject constructor() : AppDefaultPreferences {
         rootPreferences?.edit()?.putString(EMAIL, "")?.apply() ?: Unit
         rootPreferences?.edit()?.putString(ICON_URI, "")?.apply() ?: Unit
         rootPreferences?.edit()?.putString(TOKEN, "")?.apply() ?: Unit
+    }
+
+    override fun addPreferencesListener(listener: PreferencesListener) {
+        preferencesListeners.add(listener)
+    }
+
+    override fun removePreferencesListener(listener: PreferencesListener) {
+        preferencesListeners.remove(listener)
+    }
+
+    override fun clearPreferencesListeners() {
+        preferencesListeners.clear()
     }
 
 }
