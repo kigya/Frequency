@@ -19,6 +19,7 @@
     <string name="reply_title">Default reply action</string>
 
     <!-- Sync com.example.frequency.preferences.Preferences -->
+    <string name="field_is_empty">Field is empty</string>
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails

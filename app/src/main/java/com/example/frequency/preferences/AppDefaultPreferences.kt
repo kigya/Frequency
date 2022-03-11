@@ -40,5 +40,12 @@ interface AppDefaultPreferences {
 
     fun clearUserPreferences()
 
+    // LISTENERS
+    fun removePreferencesListener(listener: PreferencesListener)
+
+    fun addPreferencesListener(listener: PreferencesListener)
+
+    fun clearPreferencesListeners()
+
 }
 

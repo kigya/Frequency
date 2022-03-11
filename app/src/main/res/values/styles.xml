@@ -13,4 +13,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="NavigationMenuItemStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Icon">
+        <item name="iconTint">@color/white</item>
+        <item name="android:textColor">@color/foam</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
 </resources>

@@ -55,6 +55,8 @@ interface Navigator {
         clearBackstack: Boolean = false
     )
 
+    fun showProgress(state: Boolean)
+
     fun clearBackStack()
 
     fun <T : Parcelable> provideResult(result: T)

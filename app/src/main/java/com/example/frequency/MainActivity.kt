@@ -3,6 +3,7 @@ package com.example.frequency
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -28,15 +29,15 @@ import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.model.User
 import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.model.actions.ProfileAction
+import com.example.frequency.screen.authorization.sign_in.SignInFragment
+import com.example.frequency.screen.authorization.sign_up.SignUpFragment
+import com.example.frequency.screen.authorization.welcome.WelcomeFragment
 import com.example.frequency.screen.contact_us.ContactUsFragment
 import com.example.frequency.screen.home.HomeFragment
 import com.example.frequency.screen.lyrics.LyricsFragment
 import com.example.frequency.screen.profile.ProfileFragment
 import com.example.frequency.screen.settings.SettingsFragment
-import com.example.frequency.screen.sign_in.SignInFragment
-import com.example.frequency.screen.sign_up.SignUpFragment
 import com.example.frequency.screen.song.SongFragment
-import com.example.frequency.screen.welcome.WelcomeFragment
 import com.example.frequency.utils.isValidEmail
 import com.example.frequency.utils.setToolbarUserIcon
 import com.example.frequency.utils.setUserImageByGlide
@@ -262,6 +263,10 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
+    override fun showProgress(state: Boolean) {
+        binding.pbMain.isVisible = state
+    }
+
     override fun clearBackStack() =
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
@@ -366,6 +371,7 @@ class MainActivity : AppCompatActivity(), Navigator {
             result.javaClass.name,
             bundleOf(KEY_RESULT to result)
         )
+        Log.d(TAG, result.toString())
     }
 
     override fun <T : Parcelable> listenResults(
@@ -406,6 +412,9 @@ class MainActivity : AppCompatActivity(), Navigator {
     companion object {
         @JvmStatic
         private val KEY_RESULT = "KEY_RESULT"
+
+        @JvmStatic
+        private val TAG = this::class.java.simpleName
 
     }
 

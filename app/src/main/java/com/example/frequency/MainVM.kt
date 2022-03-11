@@ -1,9 +1,13 @@
 package com.example.frequency
 
+import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
+import com.example.frequency.preferences.PreferencesListener
+import com.example.frequency.utils.SettingTags.USERNAME
 import com.example.frequency.utils.share
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -18,8 +22,7 @@ class MainVM @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : BaseVM(), LifecycleEventObserver {
 
-    private val _userLD =
-        savedStateHandle.getLiveData<User>(STATE_USER)
+    private val _userLD = savedStateHandle.getLiveData<User>(STATE_USER)
     val userLD = _userLD.share()
 
     private val _autologinLD = MutableLiveData(shearedPreferences.getAutologinStatus())

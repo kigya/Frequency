@@ -1,4 +1,4 @@
-package com.example.frequency.screen.sign_up
+package com.example.frequency.screen.authorization.sign_up
 
 import android.os.Bundle
 import android.view.LayoutInflater

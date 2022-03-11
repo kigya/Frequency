@@ -12,4 +12,8 @@
     <color name="east_bay">#3D5A80</color>
     <color name="burnt_sienna">#98C1D9</color>
     <color name="foam">#E0FBFC</color>
+
+    // progress bar backGR color TODO
+    <color name="pb_card_view_background">#CC2E3946</color>
+
 </resources>

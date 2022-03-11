@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ebony_clay"
     tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/pb_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="1dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <androidx.cardview.widget.CardView
+
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="@color/pb_card_view_background"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="0dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lot_animation"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/red_hand" />
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -69,7 +102,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/nav_menu_login_button"
-                style="?android:attr/buttonBarButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -91,6 +124,7 @@
                 android:paddingStart="4dp"
                 android:text="@string/profile"
                 android:textAlignment="textStart"
+                android:textAllCaps="false"
                 android:textColor="@color/foam"
                 app:icon="@drawable/ic_user_22"
                 app:iconTint="@color/white"
@@ -106,8 +140,10 @@
                 android:layout_marginStart="16dp"
                 android:padding="0dp"
                 android:paddingStart="4dp"
+
                 android:text="@string/liked_songs"
                 android:textAlignment="textStart"
+                android:textAllCaps="false"
                 android:textColor="@color/foam"
                 app:icon="@drawable/ic_like_22"
                 app:iconTint="@color/white"
@@ -125,7 +161,9 @@
                 android:padding="0dp"
                 android:paddingStart="4dp"
                 android:text="@string/contact_us"
+
                 android:textAlignment="textStart"
+                android:textAllCaps="false"
                 android:textColor="@color/foam"
                 app:icon="@drawable/ic_message_22"
                 app:iconTint="@color/white"
@@ -143,7 +181,9 @@
                 android:padding="0dp"
                 android:paddingStart="4dp"
                 android:text="@string/faqs"
+
                 android:textAlignment="textStart"
+                android:textAllCaps="false"
                 android:textColor="@color/foam"
                 app:icon="@drawable/ic_flashlight_22"
                 app:iconTint="@color/white"
@@ -162,6 +202,7 @@
                 android:paddingStart="4dp"
                 android:text="@string/settings"
                 android:textAlignment="textStart"
+                android:textAllCaps="false"
                 android:textColor="@color/foam"
                 app:icon="@drawable/ic_settings_22"
                 app:iconTint="@color/white"

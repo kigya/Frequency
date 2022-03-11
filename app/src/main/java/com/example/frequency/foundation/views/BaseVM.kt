@@ -9,7 +9,5 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 /**
  * This LD wrappers are provided to reduce code when wrapping actions that need to happen once
  */
-typealias LiveEvent<T> = LiveData<Event<T>>
-typealias MutableLiveEvent<T> = MutableLiveData<Event<T>>
 
 abstract class BaseVM : ViewModel()
