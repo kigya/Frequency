@@ -17,9 +17,9 @@ import com.google.android.material.snackbar.Snackbar
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-const val SUCCESS = "SUCCESS"
-const val FAILURE = "FAILURE"
-const val ERROR = "ERROR"
+const val SUCCESS = 0
+const val FAILURE = 1
+const val ERROR = 2
 
 object SettingTags {
     const val AUTOLOGIN = "AUTOLOGIN"
@@ -42,7 +42,7 @@ fun isValidEmail(email: String?): Boolean {
 fun showSnackbar(
     view: View,
     message: String,
-    iconPreset: String? = null,
+    iconPreset: Int? = null,
     elevation: Float? = null
 ) {
     val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
@@ -53,11 +53,13 @@ fun showSnackbar(
     snackView.setOnClickListener {
         snackbar.dismiss()
     }
-    if (elevation != null) { snackView.elevation = 1f }
+    if (elevation != null) {
+        snackView.elevation = 1f
+    }
     snackView.textAlignment = View.TEXT_ALIGNMENT_CENTER
     val textView = snackView.findViewById<View>(id.snackbar_text) as TextView
 
-    if (!iconPreset.isNullOrBlank()) {
+    if (iconPreset != null) {
         when (iconPreset) {
             SUCCESS -> {
                 textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_selected_24, 0, 0, 0)
