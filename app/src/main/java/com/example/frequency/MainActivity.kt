@@ -262,6 +262,10 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
+    override fun showProgress(state: Boolean) {
+        binding.pbMain.isVisible = state
+    }
+
     override fun clearBackStack() =
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
