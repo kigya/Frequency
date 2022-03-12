@@ -9,5 +9,5 @@ data class User(
     val name: String,
     val email: String,
     val icon: Uri,
-    val gToken: String
+    val secureKey: String
 ): Parcelable
