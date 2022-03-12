@@ -19,6 +19,8 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="Frequency"
+            android:screenOrientation="nosensor"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

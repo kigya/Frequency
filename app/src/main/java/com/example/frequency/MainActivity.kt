@@ -1,6 +1,7 @@
 package com.example.frequency
 
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
@@ -29,6 +30,7 @@ import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.model.User
 import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.model.actions.ProfileAction
+import com.example.frequency.screen.WaitFragment
 import com.example.frequency.screen.authorization.sign_in.SignInFragment
 import com.example.frequency.screen.authorization.sign_up.SignUpFragment
 import com.example.frequency.screen.authorization.welcome.WelcomeFragment
@@ -38,9 +40,10 @@ import com.example.frequency.screen.lyrics.LyricsFragment
 import com.example.frequency.screen.profile.ProfileFragment
 import com.example.frequency.screen.settings.SettingsFragment
 import com.example.frequency.screen.song.SongFragment
-import com.example.frequency.utils.isValidEmail
+import com.example.frequency.utils.observeEvent
 import com.example.frequency.utils.setToolbarUserIcon
 import com.example.frequency.utils.setUserImageByGlide
+import com.example.frequency.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -56,6 +59,8 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private val currentUser get() = viewModel.userLD.value!!
 
+    private var userIconUri = Uri.EMPTY
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply { setKeepOnScreenCondition { viewModel.isLoading.value } }
@@ -68,6 +73,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
         appStatusCheckAndStart(savedInstanceState)
 
+        observeState()
         setListeners()
         setObservers()
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
@@ -75,19 +81,8 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private fun appStatusCheckAndStart(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            val userEmail = viewModel.userLD.value?.email
-            val autologin = viewModel.autologinLD.value
-            /*val firebaseStatus = viewModel.firebaseStatus.value
-            if (autologin == true && firebaseStatus == true) {
-                firebaseStatusCheck()
-            }*/
-            if (isValidEmail(userEmail) && autologin == true) {
-                openFragment(HomeFragment(), firstTime = true)
-
-            } else {
-                openFragment(WelcomeFragment(), firstTime = true)
-            }
-
+            openFragment(WaitFragment())
+            viewModel.signInWithFireBase()
         }
     }
 
@@ -123,13 +118,32 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     private fun setObservers() {
-        viewModel.userLD.observe(this) {
-            setUserImageByGlide(this@MainActivity, binding.navMenuUserIb, it.icon, 20)
-            setImageAndVisibility(currentFragment)
-            binding.navMenuLoginButton.text = it.name
+        with(viewModel) {
+            userLD.observe(this@MainActivity) {
+                if (userIconUri != it.icon) {
+                    userIconUri = it.icon
+                    setUserImageByGlide(this@MainActivity, binding.navMenuUserIb, it.icon, 20)
+                    setImageAndVisibility(currentFragment)
+                }
+                if (binding.navMenuLoginButton.text != it.name) {
+                    binding.navMenuLoginButton.text = it.name
+                }
+            }
+            showSnackBar.observeEvent(this@MainActivity) {
+                showSnackbar(binding.root, getString(it.message), it.iconTag)
+            }
+            navigateToHome.observeEvent(this@MainActivity) {
+                openFragment(HomeFragment(), clearBackstack = true)
+            }
+            navigateToWelcome.observeEvent(this@MainActivity) {
+                openFragment(WelcomeFragment(), clearBackstack = true)
+            }
         }
 
+    }
 
+    private fun observeState() = viewModel.state.observe(this) {
+        showProgress(it.showProgress)
     }
 
     private val fragmentListener = object : FragmentManager.FragmentLifecycleCallbacks() {
@@ -150,7 +164,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         menuInflater.inflate(R.menu.menu, menu)
         val fragment = currentFragment
         titleFormatting(fragment)
-
         // проверка фрагмента (установлен ли Profile)
         setImageAndVisibility(fragment)
 

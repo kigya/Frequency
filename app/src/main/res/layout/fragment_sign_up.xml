@@ -7,19 +7,19 @@
 
 
     <LinearLayout
+        android:id="@+id/top_panel_create_account"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"
-        android:id="@+id/top_panel_create_account">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/back_ib"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
             android:layout_gravity="center"
+            android:layout_marginStart="20dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_back_icon" />
 
@@ -93,17 +93,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subtitle_create"
         app:startIconDrawable="@drawable/ic_user"
-        app:startIconTint="@color/ebony_clay"
-        >
+        app:startIconTint="@color/ebony_clay">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:inputType="textPersonName"
+            android:padding="0dp"
             android:textColor="@color/ebony_clay"
             android:textColorHint="@color/ebony_clay"
-            android:textSize="12sp"/>
+            android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -111,6 +111,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="50dp"
+        android:layout_marginTop="5dp"
         android:alpha="1.0"
         android:hint="@string/email_address"
         android:textColorHint="@color/ebony_clay"
@@ -132,17 +133,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_username_create"
         app:startIconDrawable="@drawable/ic_mail"
-        app:startIconTint="@color/ebony_clay"
-        android:layout_marginTop="5dp">
+        app:startIconTint="@color/ebony_clay">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:inputType="textEmailAddress"
+
+            android:padding="0dp"
             android:textColor="@color/ebony_clay"
             android:textColorHint="@color/ebony_clay"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -150,6 +152,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="50dp"
+        android:layout_marginTop="5dp"
         android:alpha="1.0"
         android:hint="@string/password"
         android:textColorHint="@color/ebony_clay"
@@ -171,17 +174,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_email_address_create_account"
         app:startIconDrawable="@drawable/ic_lock"
-        app:startIconTint="@color/ebony_clay"
-        android:layout_marginTop="5dp">
+        app:startIconTint="@color/ebony_clay">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:inputType="textPassword"
+            android:padding="0dp"
             android:textColor="@color/ebony_clay"
             android:textColorHint="@color/ebony_clay"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -189,6 +192,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="50dp"
+        android:layout_marginTop="5dp"
         android:alpha="1.0"
         android:hint="@string/confirm_password"
         android:textColorHint="@color/ebony_clay"
@@ -210,17 +214,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_password_address_create_account"
         app:startIconDrawable="@drawable/ic_lock"
-        app:startIconTint="@color/ebony_clay"
-        android:layout_marginTop="5dp">
+        app:startIconTint="@color/ebony_clay">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:inputType="textPassword"
+            android:padding="0dp"
             android:textColor="@color/ebony_clay"
             android:textColorHint="@color/ebony_clay"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -233,8 +237,8 @@
         android:fitsSystemWindows="true"
         android:text="@string/register"
         android:textAllCaps="false"
-        android:textSize="13sp"
         android:textColor="@color/ebony_clay"
+        android:textSize="13sp"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

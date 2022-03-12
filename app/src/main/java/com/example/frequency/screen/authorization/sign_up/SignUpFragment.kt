@@ -93,8 +93,7 @@ class SignUpFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
             email = binding.inputEmailAddressCreateAccount.editText?.text.toString().trim(),
             username = binding.inputUsernameCreate.editText?.text.toString().trim(),
             password = binding.inputPasswordAddressCreateAccount.editText?.text.toString().trim(),
-            repeatPassword = binding.inputConfirmPasswordAddressCreateAccount.editText?.text.toString()
-                .trim(),
+            repeatPassword = binding.inputConfirmPasswordAddressCreateAccount.editText?.text.toString().trim(),
         )
         viewModel.createAccount(signUpData)
     }

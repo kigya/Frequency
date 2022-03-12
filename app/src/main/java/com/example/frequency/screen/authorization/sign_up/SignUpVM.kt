@@ -20,6 +20,7 @@ import com.example.frequency.services.sign_up.validation.SignUpData
 import com.example.frequency.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ import javax.inject.Inject
 class SignUpVM @Inject constructor(
     private val authFirebaseAuth: FirebaseAuth,
     private val sharedPreferences: AppDefaultPreferences,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
 ) : BaseVM() {
 
     private val _state = MutableLiveData(SignUpState())
@@ -45,21 +46,18 @@ class SignUpVM @Inject constructor(
     private val _regMethod = savedStateHandle.getLiveData<Int>(STATE_REG_METHOD)
     val regMethod = _regMethod.share()
 
-    fun createAccount(signUpData: SignUpData) {
-        viewModelScope.launch {
-            showProgress()
-            try {
-                signUpData.validate()
-                firebaseCreationAcc(signUpData.username, signUpData.email, signUpData.password)
-            } catch (e: EmptyFieldException) {
-                processEmptyFieldException(e)
-            } catch (e: PasswordMismatchException) {
-                processPasswordMismatchException()
-            } catch (e: AccountAlreadyExistsException) {
-                processAccountAlreadyExistsException()
-            } finally {
-                hideProgress()
-            }
+    fun createAccount(signUpData: SignUpData) = viewModelScope.launch {
+        showProgress()
+        try {
+            signUpData.validate()
+            firebaseCreationAcc(signUpData.username, signUpData.email, signUpData.password)
+            delay(300)
+        } catch (e: EmptyFieldException) {
+            processEmptyFieldException(e)
+        } catch (e: PasswordMismatchException) {
+            processPasswordMismatchException()
+        } catch (e: AccountAlreadyExistsException) {
+            processAccountAlreadyExistsException()
         }
     }
 
@@ -79,6 +77,7 @@ class SignUpVM @Inject constructor(
                     writeShearedPreferences()
                     _showSnackBar.value = Event(SnackBarEntity(R.string.sign_up_success, SUCCESS))
                     _navigateToHome.provideEvent(currentUserLD.value!!)
+                    hideProgress()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -118,11 +117,13 @@ class SignUpVM @Inject constructor(
     }
 
     private fun showProgress() {
-        _state.value = SignUpState(signUpInProgress = true)
+        _state.value = _state.requireValue().copy(signUpInProgress = true)
+        Log.d(TAG, "SHOW")
     }
 
     private fun hideProgress() {
-        _state.value = SignUpState(signUpInProgress = false)
+        _state.value = _state.requireValue().copy(signUpInProgress = false)
+        Log.d(TAG, "HIDE")
     }
 
     companion object {
@@ -130,7 +131,7 @@ class SignUpVM @Inject constructor(
         val NO_ERROR_MESSAGE = 0
 
         @JvmStatic
-        private val TAG = this::class.java.simpleName
+        private val TAG = SignUpVM::class.java.simpleName
 
         @JvmStatic
         private val STATE_KEY_USER = "STATE_KEY_USER"
