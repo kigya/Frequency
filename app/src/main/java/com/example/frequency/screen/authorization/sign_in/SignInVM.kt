@@ -87,7 +87,9 @@ class SignInVM @Inject constructor(
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    //task.addOnFailureListener()
                     _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, FAILURE))
+                    hideProgress()
                 }
             }
     }

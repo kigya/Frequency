@@ -83,6 +83,7 @@ class SignUpVM @Inject constructor(
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     _showSnackBar.value =
                         Event(SnackBarEntity(R.string.create_account_failure, FAILURE))
+                    hideProgress()
                 }
             }
     }
