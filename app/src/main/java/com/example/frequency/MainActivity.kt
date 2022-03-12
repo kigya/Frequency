@@ -54,6 +54,8 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private val currentFragment: Fragment get() = supportFragmentManager.findFragmentById(R.id.main_container)!!
 
+    private val currentUser get() = viewModel.userLD.value!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply { setKeepOnScreenCondition { viewModel.isLoading.value } }
@@ -62,6 +64,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
         // set default night mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
 
         appStatusCheckAndStart(savedInstanceState)
 
@@ -74,13 +77,17 @@ class MainActivity : AppCompatActivity(), Navigator {
         if (savedInstanceState == null) {
             val userEmail = viewModel.userLD.value?.email
             val autologin = viewModel.autologinLD.value
-
+            /*val firebaseStatus = viewModel.firebaseStatus.value
+            if (autologin == true && firebaseStatus == true) {
+                firebaseStatusCheck()
+            }*/
             if (isValidEmail(userEmail) && autologin == true) {
                 openFragment(HomeFragment(), firstTime = true)
+
             } else {
-                //openFragment(SettingsFragment(), firstTime = true)
                 openFragment(WelcomeFragment(), firstTime = true)
             }
+
         }
     }
 
@@ -397,7 +404,15 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
         when (currentFragment) {
             is AuthFragments -> {
-                super.onBackPressed()
+                if (currentFragment !is WelcomeFragment) {
+                    openFragment(
+                        WelcomeFragment.newInstance(),
+                        clearBackstack = true,
+                        addToBackStack = false
+                    )
+                } else {
+                    super.onBackPressed()
+                }
             }
             !is HomeFragment -> openFragment(
                 HomeFragment.newInstance(),
