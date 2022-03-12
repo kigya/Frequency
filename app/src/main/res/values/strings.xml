@@ -60,5 +60,6 @@
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="user_email_address">User email address</string>
     <string name="create_account_failure">Create account failure</string>
+    <string name="reg_needed">Registration needed</string>
 
 </resources>
