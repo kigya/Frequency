@@ -79,19 +79,26 @@ class MainVM @Inject constructor(
     }
 
     fun signInWithFireBase() {
+        val email = userLD.value?.email
+        val secureKey = userLD.value?.secureKey.toString().trim()
         showProgress()
-        if (autologinLD.value == true && regMethod.value != null) {
+
+        if (secureKey.isNotBlank() && autologinLD.value == true && regMethod.value != null) {
             when (regMethod.value) {
                 GAUTH -> {
-                    firebaseLogin(secure = userLD.value?.secureKey.toString())
+                    firebaseLogin(secure = secureKey)
                 }
                 EMAIL_PASS -> {
-                    firebaseLogin(email = userLD.value?.email, userLD.value?.secureKey.toString())
+                    firebaseLogin(email, secureKey)
                 }
                 FCBOOK -> {
-                    firebaseLogin(secure = userLD.value?.secureKey.toString())
+                    firebaseLogin(secure = secureKey)
                 }
             }
+        } else {
+            _showSnackBar.value = Event(SnackBarEntity(R.string.reg_needed))
+            _navigateToWelcome.provideEvent()
+            hideProgress()
         }
     }
 
@@ -118,7 +125,7 @@ class MainVM @Inject constructor(
                             hideProgress()
                         }
                     }
-            } else if (secure.isNotBlank()) {
+            } else {
                 val credential = GoogleAuthProvider.getCredential(secure, null)
                 authFirebaseAuth.signInWithCredential(credential)
                     .addOnCompleteListener { task ->
@@ -140,10 +147,6 @@ class MainVM @Inject constructor(
                             hideProgress()
                         }
                     }
-            }else{
-                _showSnackBar.value = Event(SnackBarEntity(R.string.reg_needed))
-                _navigateToWelcome.provideEvent()
-                hideProgress()
             }
             delay(300)
         }
