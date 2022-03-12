@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/ebony_clay">
 
     <LinearLayout
+        android:id="@+id/top_panel_welcome_back"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"
-        android:id="@+id/top_panel_welcome_back">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/back_ib"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/ic_back_icon"
+            android:layout_marginStart="20dp"
             android:background="@android:color/transparent"
-            android:layout_marginStart="20dp"/>
+            android:src="@drawable/ic_back_icon" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/to_sign_up_welcome_back"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="5dp"
-            android:fontFamily="@font/poppins"
-            android:text="@string/sign_up"
-            android:textColor="@color/foam"
-            android:textSize="18sp"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
-            android:layout_gravity="center"
-            android:layout_weight="1"
+            android:fontFamily="@font/poppins"
             android:gravity="end"
-            android:layout_marginEnd="40dp" />
+            android:text="@string/sign_up"
+            android:textColor="@color/foam"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -64,34 +64,34 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome"/>
+        app:layout_constraintTop_toBottomOf="@+id/welcome" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_email_address_welcome_back"
-        style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subtitle_welcome"
         android:layout_marginTop="50dp"
-        app:boxBackgroundColor="@color/foam"
+        android:alpha="1.0"
         android:hint="@string/email_address"
+        android:textColorHint="@color/ebony_clay"
+        app:boxBackgroundColor="@color/foam"
         app:boxCornerRadiusBottomEnd="10dp"
         app:boxCornerRadiusBottomStart="10dp"
         app:boxCornerRadiusTopEnd="10dp"
         app:boxCornerRadiusTopStart="10dp"
-        app:boxStrokeColor="@color/foam"
-        app:counterTextColor="@color/ebony_clay"
-        android:alpha="1.0"
-        app:hintAnimationEnabled="true"
-        app:endIconMode="clear_text"
-        app:hintTextColor="@color/ebony_clay"
-        app:counterOverflowTextColor="@color/ebony_clay"
-        android:textColorHint="@color/ebony_clay"
-        app:endIconTint="@color/ebony_clay"
-        app:boxStrokeWidthFocused="1.5dp"
+        app:boxStrokeColor="@color/ebony_clay"
         app:boxStrokeWidth="0.5dp"
+        app:boxStrokeWidthFocused="1.5dp"
+        app:counterOverflowTextColor="@color/ebony_clay"
+        app:counterTextColor="@color/ebony_clay"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/ebony_clay"
+        app:hintAnimationEnabled="true"
+        app:hintTextColor="@color/ebony_clay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitle_welcome"
         app:startIconDrawable="@drawable/ic_mail"
         app:startIconTint="@color/ebony_clay">
 
@@ -100,9 +100,10 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:inputType="textEmailAddress"
+            android:padding="0dp"
             android:textColor="@color/ebony_clay"
             android:textColorHint="@color/ebony_clay"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -111,26 +112,26 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_email_address_welcome_back"
-        app:boxBackgroundColor="@color/foam"
+        android:alpha="1.0"
         android:hint="@string/password"
+        android:textColorHint="@color/ebony_clay"
+        app:boxBackgroundColor="@color/foam"
         app:boxCornerRadiusBottomEnd="10dp"
         app:boxCornerRadiusBottomStart="10dp"
         app:boxCornerRadiusTopEnd="10dp"
         app:boxCornerRadiusTopStart="10dp"
         app:boxStrokeColor="@color/ebony_clay"
-        app:counterTextColor="@color/ebony_clay"
-        android:alpha="1.0"
-        app:hintAnimationEnabled="true"
-        app:endIconMode="password_toggle"
-        app:hintTextColor="@color/ebony_clay"
-        app:counterOverflowTextColor="@color/ebony_clay"
-        android:textColorHint="@color/ebony_clay"
-        app:endIconTint="@color/ebony_clay"
-        app:boxStrokeWidthFocused="1.5dp"
         app:boxStrokeWidth="0.5dp"
+        app:boxStrokeWidthFocused="1.5dp"
+        app:counterOverflowTextColor="@color/ebony_clay"
+        app:counterTextColor="@color/ebony_clay"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/ebony_clay"
+        app:hintAnimationEnabled="true"
+        app:hintTextColor="@color/ebony_clay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_email_address_welcome_back"
         app:startIconDrawable="@drawable/ic_lock"
         app:startIconTint="@color/ebony_clay">
 
@@ -139,9 +140,10 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:inputType="textPassword"
-            android:textColor="@color/foam"
-            android:textColorHint="@color/foam"
-            android:textSize="14sp"/>
+            android:padding="0dp"
+            android:textColor="@color/ebony_clay"
+            android:textColorHint="@color/ebony_clay"
+            android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -165,19 +167,19 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/log_in_welcome_back"
-        android:fitsSystemWindows="true"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_marginTop="40dp"
+        android:layout_marginBottom="50dp"
         android:backgroundTint="@color/foam"
+        android:fitsSystemWindows="true"
         android:text="@string/log_in"
-        android:textColor="@color/ebony_clay"
         android:textAllCaps="false"
+        android:textColor="@color/ebony_clay"
         android:textSize="13sp"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="50dp"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
