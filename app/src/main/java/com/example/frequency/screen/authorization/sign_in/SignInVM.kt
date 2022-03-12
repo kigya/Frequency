@@ -17,6 +17,7 @@ import com.example.frequency.services.sign_up.validation.SignInState
 import com.example.frequency.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,7 +43,7 @@ class SignInVM @Inject constructor(
     private val _clearPasswordEvent = MutableUnitLiveEvent()
     val clearPasswordEvent = _clearPasswordEvent.share()
 
-    fun updateUser(
+    private fun updateUser(
         name: String,
         email: String,
         icon: Uri,
@@ -56,12 +57,11 @@ class SignInVM @Inject constructor(
         try {
             dataValidation(email, password)
             loginWithFirebase(email, password)
+            delay(200)
         } catch (e: EmptyFieldException) {
             processEmptyFieldException(e)
         } catch (e: AuthException) {
             processAuthException()
-        } finally {
-            hideProgress()
         }
     }
 
@@ -82,6 +82,7 @@ class SignInVM @Inject constructor(
                         )
                         _showSnackBar.value = Event(SnackBarEntity(R.string.auth_success, SUCCESS))
                         _navigateToHome.provideEvent(currentUserLD.value!!)
+                        hideProgress()
                     }
                 } else {
                     // If sign in fails, display a message to the user.
