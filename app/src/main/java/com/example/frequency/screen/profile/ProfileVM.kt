@@ -1,5 +1,6 @@
 package com.example.frequency.screen.profile
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import com.example.frequency.foundation.views.BaseVM
@@ -23,11 +24,17 @@ class ProfileVM @Inject constructor(
         shearedPreferences.getUsername(),
         shearedPreferences.getEmail(),
         shearedPreferences.getIconUri(),
-        shearedPreferences.getToken(),
+        shearedPreferences.getGToken(),
         )
 
     private val _userLD = savedStateHandle.getLiveData(KEY_USER, userFormPref)
     val user: LiveData<User> = _userLD.share()
+
+    fun setUpdatedImage(uri: Uri){
+        shearedPreferences.setIconUri(uri)
+        val newUser = user.value?.copy(icon = uri)
+        _userLD.value = newUser
+    }
 
     fun clearUserRootPreferences() {
         authFirebaseAuth.signOut()

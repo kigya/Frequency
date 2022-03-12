@@ -7,18 +7,19 @@
 
 
     <LinearLayout
-        android:id="@+id/top_panel_create_account"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        android:id="@+id/top_panel_create_account">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/back_ib"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_back_icon" />
 
@@ -36,7 +37,7 @@
             android:gravity="end"
             android:text="@string/sign_in"
             android:textColor="@color/foam"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatTextView

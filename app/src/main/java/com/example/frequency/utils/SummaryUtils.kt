@@ -20,6 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 const val SUCCESS = 0
 const val FAILURE = 1
 const val ERROR = 2
+const val ALERT = 3
 
 object SettingTags {
     const val AUTOLOGIN = "AUTOLOGIN"
@@ -32,6 +33,8 @@ object SettingTags {
     const val EMAIL = "EMAIL"
     const val ICON_URI = "ICON_URI"
     const val TOKEN = "TOKEN"
+    const val PASS = "PASS"
+    const val REG_TYPE = "REG_TYPE"
 }
 
 fun isValidEmail(email: String?): Boolean {
@@ -68,6 +71,11 @@ fun showSnackbar(
             }
             FAILURE -> {
                 textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_failure, 0, 0, 0)
+                textView.compoundDrawablePadding =
+                    view.context.resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
+            }
+            ALERT -> {
+                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_crisis_alert, 0, 0, 0)
                 textView.compoundDrawablePadding =
                     view.context.resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
             }

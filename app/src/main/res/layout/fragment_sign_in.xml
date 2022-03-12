@@ -156,6 +156,7 @@
         android:focusable="true"
         android:fontFamily="@font/poppins"
         android:gravity="end"
+        android:padding="8dp"
         android:text="@string/forgot_password"
         android:textColor="@color/foam"
         android:textSize="12sp"

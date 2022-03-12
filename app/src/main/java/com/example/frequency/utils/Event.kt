@@ -47,3 +47,7 @@ fun UnitLiveEvent.observeEvent(lifecycleOwner: LifecycleOwner, listener: UnitEve
         listener()
     }
 }
+
+fun <T> LiveData<T>.requireValue(): T {
+    return this.value ?: throw IllegalStateException("Value is empty")
+}

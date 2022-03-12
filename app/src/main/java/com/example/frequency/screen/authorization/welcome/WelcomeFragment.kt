@@ -53,9 +53,14 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
         _binding = FragmnetWelcomeBinding.inflate(inflater, container, false)
         // initialise listeners
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         initiateListeners()
         initiateObservers()
-        return binding.root
     }
 
     private fun initiateListeners() {
@@ -98,16 +103,16 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
 
     }
 
-    private fun getClientOptions(dwcId: String) = GoogleSignInOptions
+    private fun getClientOptions() = GoogleSignInOptions
         .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(dwcId)
+        .requestIdToken(getString(R.string.default_web_client_id))
         .requestProfile()
         .requestEmail()
         .build()
 
     private fun getClient() = GoogleSignIn.getClient(
         requireActivity(),
-        getClientOptions(getString(R.string.default_web_client_id))
+        getClientOptions()
     )
 
     private fun onUserDataReceived(result: ActivityResult) {

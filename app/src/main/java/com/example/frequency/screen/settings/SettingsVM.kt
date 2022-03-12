@@ -30,7 +30,7 @@ class SettingsVM @Inject constructor(
                 shearedPreferences.getUsername(),
                 shearedPreferences.getEmail(),
                 shearedPreferences.getIconUri(),
-                shearedPreferences.getToken(),
+                shearedPreferences.getGToken(),
             )
             initializeUser(newUserValue)
         } else {

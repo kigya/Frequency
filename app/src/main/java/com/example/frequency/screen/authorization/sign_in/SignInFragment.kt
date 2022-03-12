@@ -44,31 +44,36 @@ class SignInFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
         // initialise listeners
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        observeState()
+        observeClearPasswordEvent()
         initiateListeners()
         initiateObservers()
-        return binding.root
     }
 
     private fun initiateListeners() {
         with(binding) {
+            logInWelcomeBack.setOnClickListener {
+                onSignInButtonPressed()
+            }
             backIb.setOnClickListener {
                 navigator().openWelcome()
             }
             toSignUpWelcomeBack.setOnClickListener {
                 navigator().openSignUp()
             }
-            logInWelcomeBack.setOnClickListener {
-                // viewModel.login() TODO
-            }
+
 
         }
     }
 
     private fun initiateObservers() {
         with(viewModel) {
-            showPbLd.observeEvent(viewLifecycleOwner) {
-                navigator().showProgress(it)
-            }
             showSnackBar.observeEvent(viewLifecycleOwner) {
                 showSnackbar(binding.root, getString(it.message), it.iconTag)
             }
@@ -86,30 +91,29 @@ class SignInFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
 
     }
 
+    private fun onSignInButtonPressed() {
+        viewModel.login(
+            email = binding.inputEmailAddressWelcomeBack.editText?.text.toString().trim(),
+            password = binding.inputPasswordAddressWelcomeBack.editText?.text.toString().trim()
+        )
+    }
+
     private fun observeState() = viewModel.state.observe(viewLifecycleOwner) {
         binding.inputEmailAddressWelcomeBack.error =
             if (it.emptyEmailError) getString(R.string.field_is_empty) else null
         binding.inputPasswordAddressWelcomeBack.error =
             if (it.emptyPasswordError) getString(R.string.field_is_empty) else null
 
-        navigator().showProgress(it.showProgress)
-    }
-
-
-    private fun provideDataFirebase(email: String, password: String) {
-
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-            if (it.isSuccessful) {
-                //showSnackbar(getString(R.string.auth_success))
-                navigator().openFragment(
-                    HomeFragment(),
-                    clearBackstack = true,
-                    addToBackStack = false
-                )
-            } else {
-                //showSnackbar(getString(R.string.auth_fail))
-            }
+        with(binding) {
+            inputEmailAddressWelcomeBack.isEnabled = it.enableViews
+            inputPasswordAddressWelcomeBack.isEnabled = it.enableViews
+            logInWelcomeBack.isEnabled = it.enableViews
+            forgotPasswordText.isEnabled = it.enableViews
+            backIb.isEnabled = it.enableViews
+            toSignUpWelcomeBack.isEnabled = it.enableViews
         }
+
+        navigator().showProgress(it.showProgress)
     }
 
     private fun observeClearPasswordEvent() =

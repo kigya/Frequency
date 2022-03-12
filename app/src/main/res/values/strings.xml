@@ -20,6 +20,9 @@
 
     <!-- Sync com.example.frequency.preferences.Preferences -->
     <string name="field_is_empty">Field is empty</string>
+    <string name="password_mismatch">Password mismatch</string>
+    <string name="account_already_exists">Account already exists</string>
+
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
@@ -27,6 +30,7 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="guest">Guest</string>
     <string name="menu">Menu</string>
+    <string name="sign_up_success">Registration success!</string>
     <string name="change_name">Change your name</string>
     <string name="language">Language</string>
     <string name="autologin_cb_text">Auto login</string>
@@ -55,5 +59,6 @@
     <string name="continue_with_google">Continue with google</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="user_email_address">User email address</string>
+    <string name="create_account_failure">Create account failure</string>
 
 </resources>

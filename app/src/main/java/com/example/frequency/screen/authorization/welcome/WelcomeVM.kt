@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.SavedStateHandle
+import com.example.frequency.MainVM.Companion.GAUTH
 import com.example.frequency.R
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.SnackBarEntity
@@ -36,7 +37,11 @@ class WelcomeVM @Inject constructor(
     private val _currentUserLD = savedStateHandle.getLiveData<User>(STATE_KEY_USER)
     val currentUserLD = _currentUserLD.share()
 
-    private fun showPb(state: Boolean){
+    private val _regMethod = savedStateHandle.getLiveData<Int>(STATE_REG_METHOD)
+    val regMethod = _regMethod.share()
+
+
+    private fun showPb(state: Boolean) {
         _showPbLd.value = Event(state)
     }
 
@@ -58,25 +63,8 @@ class WelcomeVM @Inject constructor(
         sharedPreferences.setUsername(name)
         sharedPreferences.setEmail(email)
         sharedPreferences.setIconUri(icon)
-        sharedPreferences.setToken(gToken)
-    }
-
-    private fun provideDataFirebase(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        authFireBase.signInWithCredential(credential).addOnCompleteListener {
-            val user = currentUserLD.value
-            if (it.isSuccessful) {
-                if (user != null) {
-                    addUserToShearedPrefs(user.name, user.email, user.icon, user.gToken)
-                    _navigateToHome.value = Event(user)
-                }
-                showPb(false)
-                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_success, SUCCESS))
-            } else {
-                showPb(false)
-                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, FAILURE))
-            }
-        }
+        sharedPreferences.setGToken(gToken)
+        sharedPreferences.setRegistrationType(GAUTH)
     }
 
     fun getAccount(result: ActivityResult) {
@@ -94,18 +82,45 @@ class WelcomeVM @Inject constructor(
                 provideDataFirebase(account.idToken.toString())
             } else {
                 Log.d("WelcomeVM", "account == null")
+                Log.d(TAG, "Error $account")
                 showPb(false)
                 _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, ERROR))
             }
         } catch (e: ApiException) {
             showPb(false)
+            Log.d(TAG, "Error ${e.message}")
             _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, ERROR))
+        }
+    }
+
+    private fun provideDataFirebase(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        authFireBase.signInWithCredential(credential).addOnCompleteListener {
+            val user = currentUserLD.value
+            if (it.isSuccessful) {
+                if (user != null) {
+                    _regMethod.value = GAUTH
+                    addUserToShearedPrefs(user.name, user.email, user.icon, idToken)
+                    _navigateToHome.value = Event(user)
+                }
+                showPb(false)
+                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_success, SUCCESS))
+            } else {
+                showPb(false)
+                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, FAILURE))
+            }
         }
     }
 
     companion object {
         @JvmStatic
         private val STATE_KEY_USER = "STATE_KEY_USER"
+
+        @JvmStatic
+        private val STATE_REG_METHOD = "STATE_REG_METHOD"
+
+        @JvmStatic
+        private val TAG = WelcomeVM::class.java.simpleName
     }
 
 }

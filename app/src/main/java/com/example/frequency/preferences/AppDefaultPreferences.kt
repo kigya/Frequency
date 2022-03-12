@@ -4,7 +4,9 @@ import android.net.Uri
 
 interface AppDefaultPreferences {
 
-    fun setAutoLoginStatus(status:Boolean)
+    fun setRegistrationType(type: Int)
+
+    fun setAutoLoginStatus(status: Boolean)
 
     fun setNotificationStatus(status: Boolean)
 
@@ -16,9 +18,13 @@ interface AppDefaultPreferences {
 
     fun setEmail(email: String)
 
+    fun setPassword(password: String)
+
     fun setIconUri(iconUri: Uri)
 
-    fun setToken(token: String)
+    fun setGToken(token: String)
+
+    fun getRegistrationType(): Int
 
     fun getAutologinStatus(): Boolean
 
@@ -34,7 +40,9 @@ interface AppDefaultPreferences {
 
     fun getIconUri(): Uri
 
-    fun getToken(): String
+    fun getPassword(): String
+
+    fun getGToken(): String
 
     fun clearAllPreferences()
 

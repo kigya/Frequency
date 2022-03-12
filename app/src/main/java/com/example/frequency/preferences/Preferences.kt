@@ -11,6 +11,8 @@ import com.example.frequency.utils.SettingTags.EMAIL
 import com.example.frequency.utils.SettingTags.ICON_URI
 import com.example.frequency.utils.SettingTags.LANGUAGE
 import com.example.frequency.utils.SettingTags.NOTIFICATION_VOLUME
+import com.example.frequency.utils.SettingTags.PASS
+import com.example.frequency.utils.SettingTags.REG_TYPE
 import com.example.frequency.utils.SettingTags.TOKEN
 import com.example.frequency.utils.SettingTags.USERNAME
 import javax.inject.Inject
@@ -44,6 +46,10 @@ class Preferences @Inject constructor() : AppDefaultPreferences {
         }
     }
 
+    override fun setRegistrationType(type: Int) {
+        rootPreferences?.edit()?.putInt(REG_TYPE, type)?.apply() ?: Unit
+    }
+
     override fun setAutoLoginStatus(status: Boolean) {
         rootPreferences?.edit()?.putBoolean(AUTOLOGIN, status)?.apply() ?: Unit
     }
@@ -68,13 +74,21 @@ class Preferences @Inject constructor() : AppDefaultPreferences {
         rootPreferences?.edit()?.putString(EMAIL, email)?.apply() ?: Unit
     }
 
+    override fun setPassword(password: String) {
+        rootPreferences?.edit()?.putString(PASS, password)?.apply() ?: Unit
+    }
+
     override fun setIconUri(iconUri: Uri) {
         rootPreferences?.edit()?.putString(ICON_URI, iconUri.toString())?.apply() ?: Unit
     }
 
-    override fun setToken(token: String) {
+    override fun setGToken(token: String) {
         rootPreferences?.edit()?.putString(TOKEN, token)?.apply() ?: Unit
+
     }
+
+    override fun getRegistrationType(): Int =
+        rootPreferences?.getInt(REG_TYPE, 1000) ?: 1000
 
     override fun getAutologinStatus(): Boolean =
         rootPreferences?.getBoolean(AUTOLOGIN, true) ?: true
@@ -92,11 +106,13 @@ class Preferences @Inject constructor() : AppDefaultPreferences {
 
     override fun getEmail(): String = rootPreferences?.getString(EMAIL, "") ?: ""
 
+    override fun getPassword(): String = rootPreferences?.getString(PASS, "") ?: ""
+
     override fun getIconUri(): Uri {
         return Uri.parse(rootPreferences?.getString(ICON_URI, "")) ?: Uri.EMPTY
     }
 
-    override fun getToken(): String = rootPreferences?.getString(TOKEN, "") ?: ""
+    override fun getGToken(): String = rootPreferences?.getString(TOKEN, "") ?: ""
 
     override fun clearAllPreferences() {
         rootPreferences?.edit { clear() }

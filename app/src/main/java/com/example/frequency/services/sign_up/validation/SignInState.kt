@@ -4,11 +4,11 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class LoginState(
+data class SignInState(
     val emptyEmailError: Boolean = false,
     val emptyPasswordError: Boolean = false,
     val signInInProgress: Boolean = false
-):Parcelable {
+): Parcelable {
     val showProgress: Boolean get() = signInInProgress
     val enableViews: Boolean get() = !signInInProgress
 }
