@@ -13,6 +13,7 @@ object UtilPermission {
         INTERNET,
         ACCESS_NETWORK_STATE,
         READ_EXTERNAL_STORAGE,
+        CAMERA,
     )
 
     fun hasPermissions(context: Context, vararg permissions: String): Boolean = permissions.all {
