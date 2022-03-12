@@ -57,20 +57,17 @@ class MainVM @Inject constructor(
         }
     }
 
-    private fun initializeUser(user: User) {
-        if (_userLD.value != user) {
-            _userLD.value = user
-            savedStateHandle.set(STATE_USER, user)
-        }
-    }
-
     fun updateUser(user: User? = null) {
         if (user == null) {
             val newUserValue = User(
                 shearedPreferences.getUsername(),
                 shearedPreferences.getEmail(),
                 shearedPreferences.getIconUri(),
-                shearedPreferences.getGToken(),
+                if (shearedPreferences.getGToken().isBlank()) {
+                    shearedPreferences.getPassword()
+                } else {
+                    ""
+                }
             )
             initializeUser(newUserValue)
         } else {
@@ -78,9 +75,18 @@ class MainVM @Inject constructor(
         }
     }
 
+    private fun initializeUser(user: User) {
+        if (_userLD.value != user) {
+            _userLD.value = user
+            savedStateHandle.set(STATE_USER, user)
+        }
+    }
+
+
     fun signInWithFireBase() {
         val email = userLD.value?.email
         val secureKey = userLD.value?.secureKey.toString().trim()
+        Log.w(TAG, "$email, $secureKey")
         showProgress()
 
         if (secureKey.isNotBlank() && autologinLD.value == true && regMethod.value != null) {

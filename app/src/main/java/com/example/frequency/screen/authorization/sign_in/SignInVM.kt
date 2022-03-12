@@ -75,7 +75,7 @@ class SignInVM @Inject constructor(
                     if (user != null) {
                         addToShearedPrefs(email, password)
                         updateUser(
-                            email.substringBefore("@"),
+                            user.displayName ?: email.substringBefore("@"),
                             email,
                             user.photoUrl ?: Uri.EMPTY,
                             password
