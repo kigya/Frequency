@@ -18,7 +18,7 @@ data class UserEntity(
         name = this.name,
         email = this.email,
         icon = Uri.parse(this.icon) ?: Uri.EMPTY,
-        gToken = this.gToken,
+        secureKey = this.gToken,
     )
 
 }
@@ -28,5 +28,5 @@ fun User.toUserEntity() = UserEntity(
     name = this.name,
     email = this.email,
     icon = this.icon.toString(),
-    gToken = this.gToken,
+    gToken = this.secureKey,
 )
