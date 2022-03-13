@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.example.frequency.MainVM.Companion.EMAIL_PASS
 import com.example.frequency.R
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.Field
@@ -15,6 +16,8 @@ import com.example.frequency.model.exception.EmptyFieldException
 import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.services.sign_up.validation.SignInState
 import com.example.frequency.utils.*
+import com.example.frequency.utils.SummaryUtils.FAILURE
+import com.example.frequency.utils.SummaryUtils.SUCCESS
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -73,7 +76,11 @@ class SignInVM @Inject constructor(
                     Log.d(TAG, "signInWithEmail:success")
                     val user = authFirebaseAuth.currentUser
                     if (user != null) {
-                        addToShearedPrefs(email, password)
+                        addToShearedPrefs(
+                            username = user.displayName,
+                            email = email,
+                            password = password
+                        )
                         updateUser(
                             user.displayName ?: email.substringBefore("@"),
                             email,
@@ -87,17 +94,17 @@ class SignInVM @Inject constructor(
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    //task.addOnFailureListener()
                     _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, FAILURE))
                     hideProgress()
                 }
             }
     }
 
-    private fun addToShearedPrefs(email: String, password: String) {
-        sharedPreferences.setUsername(email.substringBefore("@"))
+    private fun addToShearedPrefs(username: String? = null, email: String, password: String) {
+        sharedPreferences.setUsername(username ?: email.substringBefore("@"))
         sharedPreferences.setEmail(email)
         sharedPreferences.setPassword(password)
+        sharedPreferences.setRegistrationType(EMAIL_PASS)
     }
 
     private fun dataValidation(email: String, password: String) {

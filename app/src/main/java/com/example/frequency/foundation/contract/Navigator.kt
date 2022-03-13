@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.example.frequency.model.User
+import com.example.frequency.services.radio_browser.models.Station
 
 
 typealias ResultListener<T> = (T) -> Unit
@@ -36,6 +37,8 @@ interface Navigator {
 
     fun openSong() // TODO
 
+    fun openSong(station: Station) // TODO
+
     fun openLyrics() // TODO
 
     fun openProfile() //TODO
@@ -43,6 +46,8 @@ interface Navigator {
     fun openContactUs() //TODO
 
     fun openFaqs()
+
+    fun openPreview(uri: String)
 
     fun goBack()
 

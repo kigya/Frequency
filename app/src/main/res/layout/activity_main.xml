@@ -11,7 +11,9 @@
         android:id="@+id/pb_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
         android:elevation="1dp"
+        android:focusable="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,7 +22,6 @@
         tools:visibility="visible">
 
         <androidx.cardview.widget.CardView
-
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_gravity="center"
@@ -84,7 +85,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@color/dark_slay_gray"
+            android:clickable="true"
+            android:focusable="true"
             android:padding="16dp"
+            android:id="@+id/nav_menu_bar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/ll"
             app:layout_constraintStart_toStartOf="parent"
@@ -217,6 +221,8 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

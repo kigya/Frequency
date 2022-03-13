@@ -10,7 +10,12 @@ import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.SnackBarEntity
 import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.utils.*
+import com.example.frequency.utils.Event
+import com.example.frequency.utils.MutableLiveEvent
+import com.example.frequency.utils.SummaryUtils.ERROR
+import com.example.frequency.utils.SummaryUtils.FAILURE
+import com.example.frequency.utils.SummaryUtils.SUCCESS
+import com.example.frequency.utils.share
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth

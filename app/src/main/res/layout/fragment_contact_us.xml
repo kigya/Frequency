@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ebony_clay"
-    tools:context=".screen.contact_us.ContactUsFragment">
+    android:orientation="vertical">
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/about_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:elegantTextHeight="false"
+        android:text="@string/about_version"
+        android:textColor="@color/foam"
+        android:textIsSelectable="true"
+        android:textSize="15sp"
+        android:typeface="normal" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:autoLink="web|email"
+        android:elegantTextHeight="false"
+        android:linksClickable="true"
+        android:singleLine="false"
+
+        android:text="@string/about_text"
+        android:textColor="@color/foam"
+        android:textIsSelectable="false"
+        android:textSize="15sp"
+        android:typeface="normal" />
+
+</LinearLayout>

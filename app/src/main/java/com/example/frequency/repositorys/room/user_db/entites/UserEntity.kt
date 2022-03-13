@@ -1,4 +1,4 @@
-package com.example.frequency.repositorys.room.entites
+package com.example.frequency.repositorys.room.user_db.entites
 
 import android.net.Uri
 import androidx.room.Entity

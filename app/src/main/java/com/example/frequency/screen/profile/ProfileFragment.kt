@@ -6,16 +6,17 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.OpenDocument
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.frequency.MainActivity
 import com.example.frequency.R
 import com.example.frequency.databinding.FragmentProfileBinding
@@ -23,14 +24,14 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.utils.ALERT
 import com.example.frequency.utils.ActionStore.menuAction
-import com.example.frequency.utils.ERROR
+import com.example.frequency.utils.SummaryUtils.ALERT
+import com.example.frequency.utils.SummaryUtils.ERROR
+import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.UtilPermission.ALL_PERMISSIONS
 import com.example.frequency.utils.UtilPermission.hasPermissions
 import com.example.frequency.utils.dialog_fragment.SimpleDialogFragment
-import com.example.frequency.utils.setUserImageByGlide
-import com.example.frequency.utils.showSnackbar
+import com.example.frequency.utils.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -99,47 +100,70 @@ class ProfileFragment : BaseFragment(), ProvidesCustomActions, ProvidesCustomTit
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         // initialise listeners
 
-        binding.includedProfileInfo.userIcon.setOnClickListener {
-            val user = currentUser
-            user?.let {
-                if (it.icon != Uri.EMPTY) {
-                    navigator().openSettings()
-                } else {
-                    permissionLauncher.launch(ALL_PERMISSIONS)
-                }
-            }
-        }
-
-        viewModel.user.observe(viewLifecycleOwner) {
-            if (it == null) return@observe
-            binding.includedProfileInfo.userNameTv.text = it.name
-            binding.includedProfileInfo.userEmailTv.text = it.email
-            setUserImageByGlide(requireContext(), binding.includedProfileInfo.userIcon, it.icon)
-            binding.includedProfileInfo.central.isVisible = true
-            navigator().provideResult(it)
-        }
-
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setListeners()
+        initiateListener()
+        initiateObserver()
         setSimpleDialogFragmentListener()
     }
 
-    private fun setListeners() {
-        binding.logoutTb.setOnClickListener {
-            viewModel.clearUserRootPreferences()
-            Handler(Looper.getMainLooper()).postDelayed(
-                {
-                    triggerRebirth(requireContext())
-                }, 1000
-            )
+    private fun initiateListener() {
+        with(binding) {
+            logoutTb.setOnClickListener {
+                viewModel.clearUserRootPreferences()
+            }
+            includedProfileInfo.userIcon.setOnClickListener {
+                val user = currentUser
+                user?.let {
+                    if (it.icon != Uri.EMPTY) {
+                        navigator().openPreview(it.icon.toString())
+                        showSnackbar(binding.root, "Long Click to set image.")
+                    } else {
+                        permissionLauncher.launch(ALL_PERMISSIONS)
+                    }
+                }
+            }
+            includedProfileInfo.userIcon.setOnLongClickListener {
+                val user = currentUser
+                user?.let {
+                    permissionLauncher.launch(ALL_PERMISSIONS)
+                }
+                return@setOnLongClickListener true
+            }
+
         }
 
+    }
+
+    private fun initiateObserver() {
+        viewModel.user.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+            binding.includedProfileInfo.userNameTv.text = it.name
+            binding.includedProfileInfo.userEmailTv.text = it.email
+            setImageByGlide(requireContext(), binding.includedProfileInfo.userIcon, it.icon, 100)
+            binding.includedProfileInfo.central.isVisible = true
+            navigator().provideResult(it)
+        }
+        viewModel.launchReset.observeEvent(viewLifecycleOwner) {
+            triggerRebirth(requireContext())
+        }
+        viewModel.showPbLd.observeEvent(viewLifecycleOwner) {
+            navigator().showProgress(it)
+        }
+
+    }
+
+    private fun setImageByGlide(requireContext: Context, view: ImageView, uri: Uri?, timeout: Int = 0) {
+        Glide.with(requireContext)
+            .load(uri)
+            .timeout(timeout)
+            .error(R.drawable.ic_unknown_user_photo)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(view)
     }
 
     private fun setSimpleDialogFragmentListener() {
@@ -169,6 +193,10 @@ class ProfileFragment : BaseFragment(), ProvidesCustomActions, ProvidesCustomTit
 
 
     companion object {
+
+        @JvmStatic
+        private val TAG = ProfileFragment::class.java.simpleName
+
         @JvmStatic
         fun newInstance() = ProfileFragment().apply {
             arguments = Bundle().apply {

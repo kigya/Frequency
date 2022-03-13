@@ -13,8 +13,8 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.utils.ActionStore.menuAction
-import com.example.frequency.utils.SettingTags.EMAIL
-import com.example.frequency.utils.SettingTags.USERNAME
+import com.example.frequency.utils.PreferenceTags.EMAIL
+import com.example.frequency.utils.PreferenceTags.USERNAME
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

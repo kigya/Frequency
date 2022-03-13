@@ -62,4 +62,24 @@
     <string name="create_account_failure">Create account failure</string>
     <string name="reg_needed">Registration needed</string>
 
+    <!-- Player -->
+    <string name="detail_play">Play</string>
+    <string name="detail_pause">Pause</string>
+    <string name="detail_stop">Stop</string>
+    <string name="description_btn_skip_to_next">Skip to next</string>
+    <string name="description_btn_skip_to_previous">Skip to previous</string>
+    <string name="detail_previous_list">Previous list</string>
+    <string name="detail_next_list">Next list</string>
+
+
+    <!-- About -->
+    <string name="about_version">Version: %1$s</string>
+    <string name="about_text">This app uses the free radio station directory at\nhttps://www.radio-browser.info\nEveryone can add stations to it or edit existing stations. It works like a wiki for online (streaming) radio stations.\n\nContact:\n\n\nProject page:\nhttps://github.com/kigya/Frequency\n\n\nAlso ideas for new features are always appreciated!\n\n</string>
+    <string name="station">Station</string>
+    <string name="station_name">Station: %1$s</string>
+    <string name="now_playing">Now playing: 1%$s</string>
+    <string name="about_station">About 1%$s</string>
+    <string name="short_desc_templ">"1%$skb, 1%$s, 1%$s, 1%$s"</string>
+
+
 </resources>

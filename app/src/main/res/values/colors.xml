@@ -15,5 +15,6 @@
 
     // progress bar backGR color TODO
     <color name="pb_card_view_background">#CC2E3946</color>
+    <color name="yellow">#FFD917</color>
 
 </resources>

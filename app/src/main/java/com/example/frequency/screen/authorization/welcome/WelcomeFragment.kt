@@ -15,8 +15,8 @@ import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.screen.authorization.sign_in.SignInFragment
 import com.example.frequency.screen.home.HomeFragment
+import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
-import com.example.frequency.utils.showSnackbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.hilt.android.AndroidEntryPoint

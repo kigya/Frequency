@@ -13,7 +13,7 @@ import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.screen.home.HomeFragment
 import com.example.frequency.utils.observeEvent
-import com.example.frequency.utils.showSnackbar
+import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

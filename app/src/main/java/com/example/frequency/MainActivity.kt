@@ -1,5 +1,6 @@
 package com.example.frequency
 
+import android.content.Context
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -19,6 +21,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.frequency.databinding.ActivityMainBinding
 import com.example.frequency.databinding.ActivityMainBinding.inflate
 import com.example.frequency.foundation.contract.Navigator
@@ -30,6 +34,7 @@ import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.model.User
 import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.model.actions.ProfileAction
+import com.example.frequency.screen.PreviewFragment
 import com.example.frequency.screen.WaitFragment
 import com.example.frequency.screen.authorization.sign_in.SignInFragment
 import com.example.frequency.screen.authorization.sign_up.SignUpFragment
@@ -40,10 +45,9 @@ import com.example.frequency.screen.lyrics.LyricsFragment
 import com.example.frequency.screen.profile.ProfileFragment
 import com.example.frequency.screen.settings.SettingsFragment
 import com.example.frequency.screen.song.SongFragment
+import com.example.frequency.services.radio_browser.models.Station
+import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
-import com.example.frequency.utils.setToolbarUserIcon
-import com.example.frequency.utils.setUserImageByGlide
-import com.example.frequency.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -81,7 +85,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private fun appStatusCheckAndStart(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            openFragment(WaitFragment())
+            openFragment(WaitFragment(), firstTime = true, addToBackStack = false)
             viewModel.signInWithFireBase()
         }
     }
@@ -89,7 +93,6 @@ class MainActivity : AppCompatActivity(), Navigator {
     private fun setListeners() {
 
         with(binding) {
-
             navMenuUserIb.setOnClickListener {
                 openProfile()
             }
@@ -100,7 +103,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                 openProfile()
             }
             navLikedSongsMb.setOnClickListener {
-                openSong()
+
             }
             navContactUsMb.setOnClickListener {
                 openContactUs()
@@ -110,6 +113,12 @@ class MainActivity : AppCompatActivity(), Navigator {
             }
             listenResults(User::class.java, this@MainActivity) {
                 viewModel.updateUser(it)
+            }
+            ll.setOnClickListener {
+                changeNavigationStatusAndIcon()
+            }
+            navMenuBar.setOnClickListener {
+                changeNavigationStatusAndIcon()
             }
 
 
@@ -122,7 +131,7 @@ class MainActivity : AppCompatActivity(), Navigator {
             userLD.observe(this@MainActivity) {
                 if (userIconUri != it.icon) {
                     userIconUri = it.icon
-                    setUserImageByGlide(this@MainActivity, binding.navMenuUserIb, it.icon, 20)
+                    setImageByGlide(this@MainActivity, binding.navMenuUserIb, it.icon, 100)
                     setImageAndVisibility(currentFragment)
                 }
                 if (binding.navMenuLoginButton.text != it.name) {
@@ -133,10 +142,10 @@ class MainActivity : AppCompatActivity(), Navigator {
                 showSnackbar(binding.root, getString(it.message), it.iconTag)
             }
             navigateToHome.observeEvent(this@MainActivity) {
-                openFragment(HomeFragment(), clearBackstack = true)
+                openFragment(HomeFragment(), clearBackstack = true, addToBackStack = false)
             }
             navigateToWelcome.observeEvent(this@MainActivity) {
-                openFragment(WelcomeFragment(), clearBackstack = true)
+                openFragment(WelcomeFragment(), clearBackstack = true, addToBackStack = false)
             }
         }
 
@@ -181,11 +190,27 @@ class MainActivity : AppCompatActivity(), Navigator {
         binding.toolbar.menu.findItem(R.id.profile).isVisible = visibilityStatus
 
         if (visibilityStatus) {
-            setToolbarUserIcon(this, menuItem, viewModel.userLD.value?.icon, 20)
+            setToolbarUserIcon(this, menuItem, viewModel.userLD.value?.icon, 100)
             menuItem.actionView.setOnClickListener {
                 openProfile()
             }
         }
+    }
+
+    private fun setToolbarUserIcon(
+        requireContext: Context,
+        item: MenuItem,
+        uri: Uri?,
+        timeout: Int = 0
+    ) {
+        val profileImage: CircleImageView =
+            item.actionView.findViewById(R.id.toolbar_profile_image)
+        Glide.with(requireContext)
+            .load(uri)
+            .timeout(timeout)
+            .error(R.drawable.ic_unknown_user_photo)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(profileImage)
     }
 
     private fun updateUI() {
@@ -230,13 +255,27 @@ class MainActivity : AppCompatActivity(), Navigator {
                     menuItem.isVisible = true
                     val profileImage: CircleImageView =
                         menuItem.actionView.findViewById(R.id.toolbar_profile_image)
-                    setUserImageByGlide(this, profileImage, viewModel.userLD.value?.icon, 20)
+                    setImageByGlide(this, profileImage, viewModel.userLD.value?.icon, 100)
                     profileImage.setOnClickListener {
                         action.onCustomAction.run()
                     }
                 }
             }
         }
+    }
+
+    private fun setImageByGlide(
+        requireContext: Context,
+        view: ImageView,
+        uri: Uri?,
+        timeout: Int = 0
+    ) {
+        Glide.with(requireContext)
+            .load(uri)
+            .timeout(timeout)
+            .error(R.drawable.ic_unknown_user_photo)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(view)
     }
 
     override fun openFragment(
@@ -325,13 +364,13 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     override fun openSignIn() {
         if (currentFragment !is SignInFragment) {
-            openFragment(SignInFragment.newInstance())
+            openFragment(SignInFragment.newInstance(), addToBackStack = false)
         }
     }
 
     override fun openSignUp() {
         if (currentFragment !is SignUpFragment) {
-            openFragment(SignUpFragment.newInstance())
+            openFragment(SignUpFragment.newInstance(), addToBackStack = false)
         }
     }
 
@@ -346,36 +385,49 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     override fun openSettings() {
         if (currentFragment !is SettingsFragment) {
-            openFragment(SettingsFragment.newInstance())
+            openFragment(SettingsFragment.newInstance(), addToBackStack = false)
         }
     }
 
     override fun openSong() {
         if (currentFragment !is SongFragment) {
-            openFragment(SongFragment.newInstance())
+            openFragment(SongFragment(), addToBackStack = false)
+        }
+
+    }
+
+    override fun openSong(station: Station) {
+        if (currentFragment !is SongFragment) {
+            openFragment(SongFragment.newInstance(station), addToBackStack = false)
         }
     }
 
     override fun openLyrics() {
         if (currentFragment !is LyricsFragment) {
-            openFragment(LyricsFragment.newInstance())
+            openFragment(LyricsFragment.newInstance(), addToBackStack = false)
         }
     }
 
     override fun openProfile() {
         if (currentFragment !is ProfileFragment) {
-            openFragment(ProfileFragment())
+            openFragment(ProfileFragment.newInstance(), addToBackStack = false)
         }
     }
 
     override fun openContactUs() {
         if (currentFragment !is ContactUsFragment) {
-            openFragment(ContactUsFragment())
+            openFragment(ContactUsFragment.newInstance(), addToBackStack = false)
         }
     }
 
     override fun openFaqs() {
         // TODO openFragment()
+    }
+
+    override fun openPreview(uri: String) {
+        if (currentFragment !is PreviewFragment) {
+            openFragment(PreviewFragment.newInstance(uri))
+        }
     }
 
     override fun goBack() {
@@ -442,7 +494,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         private val KEY_RESULT = "KEY_RESULT"
 
         @JvmStatic
-        private val TAG = this::class.java.simpleName
+        private val TAG = MainActivity::class.java.simpleName
 
     }
 

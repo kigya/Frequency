@@ -5,16 +5,16 @@ import android.content.SharedPreferences
 import android.net.Uri
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.example.frequency.utils.SettingTags.AUTOLOGIN
-import com.example.frequency.utils.SettingTags.DISABLE_NOTIFICATIONS
-import com.example.frequency.utils.SettingTags.EMAIL
-import com.example.frequency.utils.SettingTags.ICON_URI
-import com.example.frequency.utils.SettingTags.LANGUAGE
-import com.example.frequency.utils.SettingTags.NOTIFICATION_VOLUME
-import com.example.frequency.utils.SettingTags.PASS
-import com.example.frequency.utils.SettingTags.REG_TYPE
-import com.example.frequency.utils.SettingTags.TOKEN
-import com.example.frequency.utils.SettingTags.USERNAME
+import com.example.frequency.utils.PreferenceTags.AUTOLOGIN
+import com.example.frequency.utils.PreferenceTags.DISABLE_NOTIFICATIONS
+import com.example.frequency.utils.PreferenceTags.EMAIL
+import com.example.frequency.utils.PreferenceTags.ICON_URI
+import com.example.frequency.utils.PreferenceTags.LANGUAGE
+import com.example.frequency.utils.PreferenceTags.NOTIFICATION_VOLUME
+import com.example.frequency.utils.PreferenceTags.PASS
+import com.example.frequency.utils.PreferenceTags.REG_TYPE
+import com.example.frequency.utils.PreferenceTags.TOKEN
+import com.example.frequency.utils.PreferenceTags.USERNAME
 import javax.inject.Inject
 
 class Preferences @Inject constructor() : AppDefaultPreferences {
