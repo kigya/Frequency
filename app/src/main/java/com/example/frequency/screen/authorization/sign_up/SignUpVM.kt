@@ -18,6 +18,8 @@ import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.services.sign_up.SignUpState
 import com.example.frequency.services.sign_up.validation.SignUpData
 import com.example.frequency.utils.*
+import com.example.frequency.utils.SummaryUtils.FAILURE
+import com.example.frequency.utils.SummaryUtils.SUCCESS
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay

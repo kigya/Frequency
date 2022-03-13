@@ -15,8 +15,8 @@ import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.screen.home.HomeFragment
 import com.example.frequency.services.sign_up.validation.SignUpData
+import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
-import com.example.frequency.utils.showSnackbar
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -93,7 +93,8 @@ class SignUpFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
             email = binding.inputEmailAddressCreateAccount.editText?.text.toString().trim(),
             username = binding.inputUsernameCreate.editText?.text.toString().trim(),
             password = binding.inputPasswordAddressCreateAccount.editText?.text.toString().trim(),
-            repeatPassword = binding.inputConfirmPasswordAddressCreateAccount.editText?.text.toString().trim(),
+            repeatPassword = binding.inputConfirmPasswordAddressCreateAccount.editText?.text.toString()
+                .trim(),
         )
         viewModel.createAccount(signUpData)
     }
