@@ -8,6 +8,7 @@ import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.services.sign_up.validation.SignInState
 import com.example.frequency.utils.*
+import com.example.frequency.utils.SummaryUtils.SUCCESS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,10 +64,10 @@ class MainVM @Inject constructor(
                 shearedPreferences.getUsername(),
                 shearedPreferences.getEmail(),
                 shearedPreferences.getIconUri(),
-                if (shearedPreferences.getGToken().isBlank()) {
-                    shearedPreferences.getPassword()
+                if (regMethod.value == GAUTH) {
+                    shearedPreferences.getGToken()
                 } else {
-                    ""
+                    shearedPreferences.getPassword()
                 }
             )
             initializeUser(newUserValue)
