@@ -16,96 +16,74 @@ import com.google.android.material.R.id
 import com.google.android.material.snackbar.Snackbar
 import de.hdodenhof.circleimageview.CircleImageView
 
+object SummaryUtils {
 
-const val SUCCESS = 0
-const val FAILURE = 1
-const val ERROR = 2
-const val ALERT = 3
+    const val SUCCESS = 0
+    const val FAILURE = 1
+    const val ERROR = 2
+    const val ALERT = 3
 
-object SettingTags {
-    const val AUTOLOGIN = "AUTOLOGIN"
-    const val LANGUAGE = "LANGUAGE"
-    const val NOTIFICATION_VOLUME = "NOTIFICATION_VOLUME"
-    const val DISABLE_NOTIFICATIONS = "DISABLE_NOTIFICATIONS"
-
-    // user
-    const val USERNAME = "USERNAME"
-    const val EMAIL = "EMAIL"
-    const val ICON_URI = "ICON_URI"
-    const val TOKEN = "TOKEN"
-    const val PASS = "PASS"
-    const val REG_TYPE = "REG_TYPE"
-}
-
-fun isValidEmail(email: String?): Boolean {
-    email?.trim()
-    return !email.isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-}
-
-fun showSnackbar(
-    view: View,
-    message: String,
-    iconPreset: Int? = null,
-    elevation: Float? = null
-) {
-    val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-    val snackView = snackbar.view
-    snackbar.setBackgroundTint(ContextCompat.getColor(view.context, R.color.dark_slay_gray))
-    snackbar.setTextColor(Color.WHITE)
-    //snackbar.
-    snackView.setOnClickListener {
-        snackbar.dismiss()
+    fun isValidEmail(email: String?): Boolean {
+        email?.trim()
+        return !email.isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
-    if (elevation != null) {
-        snackView.elevation = 1f
-    }
-    snackView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-    val textView = snackView.findViewById<View>(id.snackbar_text) as TextView
 
-    if (iconPreset != null) {
-        when (iconPreset) {
-            SUCCESS -> {
-                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_selected_24, 0, 0, 0)
-                textView.compoundDrawablePadding =
-                    view.context.resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
-            }
-            FAILURE -> {
-                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_failure, 0, 0, 0)
-                textView.compoundDrawablePadding =
-                    view.context.resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
-            }
-            ALERT -> {
-                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_crisis_alert, 0, 0, 0)
-                textView.compoundDrawablePadding =
-                    view.context.resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
-            }
-            ERROR -> {
-                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_warning, 0, 0, 0)
-                textView.compoundDrawablePadding =
-                    view.context.resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
+    fun showSnackbar(
+        view: View,
+        message: String,
+        iconPreset: Int? = null,
+        elevation: Float? = null
+    ) {
+        val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+        val snackView = snackbar.view
+        snackbar.setBackgroundTint(ContextCompat.getColor(view.context, R.color.dark_slay_gray))
+        snackbar.setTextColor(Color.WHITE)
+        //snackbar.
+        snackView.setOnClickListener {
+            snackbar.dismiss()
+        }
+        if (elevation != null) {
+            snackView.elevation = 1f
+        }
+        snackView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        val textView = snackView.findViewById<View>(id.snackbar_text) as TextView
+
+        if (iconPreset != null) {
+            when (iconPreset) {
+                SUCCESS -> {
+                    textView.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_selected_24,
+                        0,
+                        0,
+                        0
+                    )
+                    textView.compoundDrawablePadding =
+                        view.context.resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
+                }
+                FAILURE -> {
+                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_failure, 0, 0, 0)
+                    textView.compoundDrawablePadding =
+                        view.context.resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
+                }
+                ALERT -> {
+                    textView.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_crisis_alert,
+                        0,
+                        0,
+                        0
+                    )
+                    textView.compoundDrawablePadding =
+                        view.context.resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
+                }
+                ERROR -> {
+                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_warning, 0, 0, 0)
+                    textView.compoundDrawablePadding =
+                        view.context.resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
+                }
             }
         }
+
+        snackbar.show()
     }
-
-    snackbar.show()
 }
 
-fun setUserImageByGlide(requireContext: Context, view: ImageView, uri: Uri?, timeout: Int = 0) {
-    Glide.with(requireContext)
-        .load(uri)
-        .timeout(timeout)
-        .error(R.drawable.ic_unknown_user_photo)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .into(view)
-}
-
-fun setToolbarUserIcon(
-    requireContext: Context,
-    item: MenuItem,
-    uri: Uri?,
-    timeout: Int = 0
-) {
-    val profileImage: CircleImageView =
-        item.actionView.findViewById(R.id.toolbar_profile_image)
-    setUserImageByGlide(requireContext, profileImage, uri, timeout)
-}
