@@ -1,7 +1,7 @@
-package com.example.frequency.services.radio_browser
+package com.example.frequency.network.radio_browser
 
-import com.example.frequency.services.radio_browser.radostation_list.RadioBrowser
-import com.example.frequency.services.radio_browser.radostation_list.RadioBrowser.Companion.BASE_URL
+import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser
+import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

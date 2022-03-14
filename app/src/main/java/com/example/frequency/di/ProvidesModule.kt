@@ -6,8 +6,8 @@ import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.preferences.Preferences
 import com.example.frequency.repositorys.room.app_database.AppDB
 import com.example.frequency.repositorys.room.user_db.room.UserDao
-import com.example.frequency.services.radio_browser.radostation_list.RadioBrowser
-import com.example.frequency.services.radio_browser.radostation_list.RadioBrowser.Companion.BASE_URL
+import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser
+import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser.Companion.BASE_URL
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

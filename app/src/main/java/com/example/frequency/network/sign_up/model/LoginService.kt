@@ -1,6 +1,6 @@
-package com.example.frequency.services.sign_up.model
+package com.example.frequency.network.sign_up.model
 
-import com.example.frequency.services.sign_up.validation.LoginEntity
+import com.example.frequency.network.sign_up.validation.LoginEntity
 
 class LoginService : ILoginService {
 

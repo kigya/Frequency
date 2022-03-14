@@ -1,4 +1,4 @@
-package com.example.frequency.services.sign_up.validation
+package com.example.frequency.network.sign_up.validation
 
 import android.os.Parcelable
 import com.example.frequency.model.Field
