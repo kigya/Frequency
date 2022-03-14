@@ -81,6 +81,7 @@
     <string name="about_station">About 1%$s</string>
     <string name="short_desc_templ">"1%$skb, 1%$s, 1%$s, 1%$s"</string>
     <string name="user_preview">Image Preview</string>
+    <string name="projectPage">https://github.com/kigya/Frequency</string>
 
 
 </resources>
