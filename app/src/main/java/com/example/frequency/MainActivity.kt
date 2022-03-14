@@ -1,6 +1,7 @@
 package com.example.frequency
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -110,6 +111,10 @@ class MainActivity : AppCompatActivity(), Navigator {
             }
             navSettingsMb.setOnClickListener {
                 openSettings()
+            }
+            navFaqsMb.setOnClickListener {
+                val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.projectPage)))
+                startActivity(webIntent)
             }
             listenResults(User::class.java, this@MainActivity) {
                 viewModel.updateUser(it)
