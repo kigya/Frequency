@@ -12,8 +12,8 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.services.radio_browser.StationsRecyclerAdapter
-import com.example.frequency.services.radio_browser.radostation_list.toStation
+import com.example.frequency.network.radio_browser.StationsRecyclerAdapter
+import com.example.frequency.network.radio_browser.radostation_list.toStation
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
 import com.example.frequency.utils.observeEvent

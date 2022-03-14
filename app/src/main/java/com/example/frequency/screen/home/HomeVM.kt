@@ -5,8 +5,8 @@ import com.example.frequency.MainVM.Companion.GAUTH
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.services.radio_browser.radostation_list.NullableStations
-import com.example.frequency.services.radio_browser.radostation_list.RadioBrowser
+import com.example.frequency.network.radio_browser.radostation_list.NullableStations
+import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser
 import com.example.frequency.utils.Event
 import com.example.frequency.utils.MutableLiveEvent
 import com.example.frequency.utils.share
@@ -110,14 +110,11 @@ class HomeVM @Inject constructor(
             Lifecycle.Event.ON_CREATE -> {
                 getStationList()
             }
-            Lifecycle.Event.ON_START -> {}
-            Lifecycle.Event.ON_RESUME -> {}
-            Lifecycle.Event.ON_PAUSE -> {}
-            Lifecycle.Event.ON_STOP -> {}
+
             Lifecycle.Event.ON_DESTROY -> {
                 initSSH()
             }
-            Lifecycle.Event.ON_ANY -> {}
+            else -> {}
         }
     }
 
