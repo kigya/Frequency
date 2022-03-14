@@ -45,7 +45,7 @@ import com.example.frequency.screen.lyrics.LyricsFragment
 import com.example.frequency.screen.profile.ProfileFragment
 import com.example.frequency.screen.settings.SettingsFragment
 import com.example.frequency.screen.song.SongFragment
-import com.example.frequency.services.radio_browser.models.Station
+import com.example.frequency.network.radio_browser.models.Station
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
