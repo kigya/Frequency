@@ -53,6 +53,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu"
         app:title=""
+        android:elevation="0dp"
         app:titleCentered="true"
         app:titleTextColor="@color/white"
         tools:navigationIcon="@drawable/ic_navigation_menu"
