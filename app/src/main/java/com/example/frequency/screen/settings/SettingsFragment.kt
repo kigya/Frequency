@@ -13,6 +13,7 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.utils.ActionStore.menuAction
+import com.example.frequency.utils.ActionStore.provideProfileAction
 import com.example.frequency.utils.PreferenceTags.EMAIL
 import com.example.frequency.utils.PreferenceTags.USERNAME
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,7 +60,9 @@ class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle, Provid
 
     override fun getTitleRes() = R.string.settings
 
-    override fun getCustomActions() = listOf(menuAction)
+    override fun getCustomActions() = listOf(menuAction, provideProfileAction(){
+        navigator().openProfile()
+    })
 
     companion object {
         @JvmStatic
