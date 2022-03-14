@@ -37,10 +37,13 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
     private var station: Station? = null
 
+    private lateinit var player: MediaPlayer
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // initialise all data
         station = requireArguments().getParcelable(ARG_STATION)
+        player = MediaPlayer()
     }
 
     override fun onCreateView(
@@ -83,8 +86,6 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
     }
 
     private fun startPlaying() {
-
-        val player = MediaPlayer()
         try {
             player.setAudioAttributes(
                 AudioAttributes.Builder()
@@ -102,6 +103,17 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
             showSnackbar(binding.root, e.message.toString(), ERROR)
         }
 
+    }
+
+    private fun stopPlaying() {
+        try {
+            player.pause()
+            player.stop()
+
+        } catch (e: IOException) {
+            Log.d(TAG, e.message.toString())
+            showSnackbar(binding.root, e.message.toString(), ERROR)
+        }
 
     }
 
@@ -123,6 +135,11 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
         }
 
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopPlaying()
     }
 
     override fun onDestroyView() {
