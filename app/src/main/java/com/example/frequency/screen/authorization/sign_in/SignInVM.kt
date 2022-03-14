@@ -14,7 +14,7 @@ import com.example.frequency.model.User
 import com.example.frequency.model.exception.AuthException
 import com.example.frequency.model.exception.EmptyFieldException
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.services.sign_up.validation.SignInState
+import com.example.frequency.network.sign_up.validation.SignInState
 import com.example.frequency.utils.*
 import com.example.frequency.utils.SummaryUtils.FAILURE
 import com.example.frequency.utils.SummaryUtils.SUCCESS

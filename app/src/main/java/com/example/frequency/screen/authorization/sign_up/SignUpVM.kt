@@ -15,8 +15,8 @@ import com.example.frequency.model.exception.AccountAlreadyExistsException
 import com.example.frequency.model.exception.EmptyFieldException
 import com.example.frequency.model.exception.PasswordMismatchException
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.services.sign_up.SignUpState
-import com.example.frequency.services.sign_up.validation.SignUpData
+import com.example.frequency.network.sign_up.SignUpState
+import com.example.frequency.network.sign_up.validation.SignUpData
 import com.example.frequency.utils.*
 import com.example.frequency.utils.SummaryUtils.FAILURE
 import com.example.frequency.utils.SummaryUtils.SUCCESS

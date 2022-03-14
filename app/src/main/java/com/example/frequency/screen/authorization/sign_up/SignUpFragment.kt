@@ -14,7 +14,7 @@ import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.screen.home.HomeFragment
-import com.example.frequency.services.sign_up.validation.SignUpData
+import com.example.frequency.network.sign_up.validation.SignUpData
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
 import com.google.android.material.textfield.TextInputLayout
