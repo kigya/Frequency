@@ -8,7 +8,7 @@ import com.example.frequency.MainVM
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.services.radio_browser.models.Station
+import com.example.frequency.network.radio_browser.models.Station
 import com.example.frequency.utils.share
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

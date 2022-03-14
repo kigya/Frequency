@@ -18,15 +18,12 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.services.radio_browser.models.Station
+import com.example.frequency.network.radio_browser.models.Station
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
 import com.example.frequency.utils.SummaryUtils.ERROR
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.io.IOException
 
 
@@ -98,10 +95,7 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
                 player.setDataSource(requireContext(), Uri.parse(it))
             }
             player.prepare()
-
-            GlobalScope.launch(Dispatchers.IO) {
-                player.start()
-            }
+            player.start()
 
         } catch (e: IOException) {
             Log.d(TAG, e.message.toString())
