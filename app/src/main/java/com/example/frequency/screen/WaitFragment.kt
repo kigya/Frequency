@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.frequency.R
 import com.example.frequency.databinding.FragmentWaitBinding
+import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.views.AuthFragments
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WaitFragment : Fragment(), AuthFragments {
+class WaitFragment : Fragment(), AuthFragments, ProvidesCustomTitle {
 
     private var _binding: FragmentWaitBinding? = null
     private val binding get() = _binding!!
@@ -29,4 +31,6 @@ class WaitFragment : Fragment(), AuthFragments {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun getTitleRes() = R.string.tech_issue
 }
