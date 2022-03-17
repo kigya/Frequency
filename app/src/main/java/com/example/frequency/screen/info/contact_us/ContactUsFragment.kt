@@ -1,4 +1,4 @@
-package com.example.frequency.screen.contact_us
+package com.example.frequency.screen.info.contact_us
 
 import android.os.Bundle
 import android.view.LayoutInflater
