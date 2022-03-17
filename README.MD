@@ -1,4 +1,4 @@
-# Frequency 
+# Frequency ![](app/src/main/res/mipmap-hdpi/ic_launcher_round.png)
 ### Android web radio broadcasting application
 
 ### This application is developed as diploma project.
