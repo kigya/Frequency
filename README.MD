@@ -15,6 +15,22 @@
 
 #### Additionally: Implement the logic of adding/removing a list element to the "Favorites" or "Favorites" list using a local database (Room), as well as switching to a page where this list can be viewed.
 
+### Technology stack: 
+
+Kotlin. <br/>
+
+__1.__ MVVM <br/>
+__2.__ Coroutines <br/>
+__3.__ Room <br/>
+__4.__ OkHTTP <br/>
+__5.__ Retrofit <br/>
+__6.__ Hilt DI<br/>
+__7.__ Firebase API <br/>
+__8.__ Glide <br/>
+__9.__ Lottie animation <br/>
+
+
+
 
 ### Presentation Screens:
 
