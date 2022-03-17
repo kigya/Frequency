@@ -28,6 +28,10 @@ fun <T> MutableLiveEvent<T>.provideEvent(value: T) {
     this.value = Event(value)
 }
 
+fun <T> LiveData<Event<T>>.requireEvent(): T {
+    return this.value?.get() ?: throw IllegalStateException("Value is empty")
+}
+
 fun <T> LiveEvent<T>.observeEvent(lifecycleOwner: LifecycleOwner, listener: EventListener<T>) {
     this.observe(lifecycleOwner) {
         it?.get()?.let { value ->
