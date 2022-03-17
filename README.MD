@@ -5,15 +5,11 @@
 
 ### Specification & Requirements:
 
-#### 1. Implement login and registration pages, validation of email and password (based on Room). Logout functionality, also.(optionally)
-
-#### 2. Embed a page with a list of content, such as a list of albums (Retrofit). (optionally)
-
-#### 3. Create a page for a single list item, for example, going to the page of the selected album.
-
-#### 4. Use Technology stack: MVVM architecture for the presentation layer, Livedata or Flow (optional), Livedata or Flow (optional), Coroutines, Room database, follow the principles of Clean Architecture if possible.
-
-#### Additionally: Implement the logic of adding/removing a list element to the "Favorites" or "Favorites" list using a local database (Room), as well as switching to a page where this list can be viewed.
+__1.__ Implement login and registration pages, validation of email and password (based on Room). Logout functionality, also.(optionally) <br/>
+__2.__ Embed a page with a list of content, such as a list of albums (Retrofit). (optionally) <br/>
+__3.__ Create a page for a single list item, for example, going to the page of the selected album. <br/>
+__4.__ Use Technology stack: MVVM architecture for the presentation layer, Livedata or Flow (optional), Livedata or Flow (optional), Coroutines, Room database, follow the principles of Clean Architecture if possible. <br/>
+__Additionally:__ Implement the logic of adding/removing a list element to the "Favorites" or "Favorites" list using a local database (Room), as well as switching to a page where this list can be viewed. <br/>
 
 ### Technology stack: 
 
