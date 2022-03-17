@@ -9,6 +9,8 @@ import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.network.radio_browser.models.Station
+import com.example.frequency.utils.Event
+import com.example.frequency.utils.MutableLiveEvent
 import com.example.frequency.utils.share
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -29,6 +31,13 @@ class SongVM @Inject constructor(
 
     init {
         updateUser()
+    }
+
+    private val _isMusicServiceBound = MutableLiveEvent<Boolean>()
+    val isMusicServiceBound = _isMusicServiceBound.share()
+
+    fun setFrequencyServiceBound(state: Boolean) {
+        _isMusicServiceBound.value = Event(state)
     }
 
     fun updateStation(station: Station? = null) {

@@ -1,11 +1,12 @@
 package com.example.frequency.screen.song
 
 import android.annotation.SuppressLint
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.net.Uri
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
-import android.util.Log
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +20,12 @@ import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.network.radio_browser.models.Station
+import com.example.frequency.services.FrequencyRadioService
+import com.example.frequency.services.MusicState
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
-import com.example.frequency.utils.SummaryUtils.ERROR
-import com.example.frequency.utils.SummaryUtils.showSnackbar
+import com.example.frequency.utils.requireEvent
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.IOException
 
 
 @AndroidEntryPoint
@@ -37,13 +38,28 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
     private var station: Station? = null
 
-    private lateinit var player: MediaPlayer
+    private var frequencyRadioService: FrequencyRadioService? = null
+
+    private val boundServiceConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder: FrequencyRadioService.StationBinder =
+                service as FrequencyRadioService.StationBinder
+            frequencyRadioService = binder.getService()
+            viewModel.setFrequencyServiceBound(true)
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            frequencyRadioService?.runAction(MusicState.STOP)
+            frequencyRadioService = null
+            viewModel.setFrequencyServiceBound(false)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // initialise all data
         station = requireArguments().getParcelable(ARG_STATION)
-        player = MediaPlayer()
     }
 
     override fun onCreateView(
@@ -70,52 +86,55 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
     }
 
-    private fun initializeObservers() {
-        viewModel.stationLD.observe(viewLifecycleOwner) {
-            updateUI(station ?: throw IllegalStateException("Where is my station"))
-        }
-    }
-
     private fun initializeListeners() {
         with(binding) {
             buttonPlay.setOnClickListener {
+                sendCommandToBoundService(MusicState.PLAY)
                 startPlaying()
             }
         }
 
     }
 
+    private fun initializeObservers() {
+        viewModel.stationLD.observe(viewLifecycleOwner) {
+            updateUI(station ?: throw IllegalStateException("Where is my station"))
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!viewModel.isMusicServiceBound.requireEvent()) {
+            bindToFrequencyRadioService()
+        }
+
+
+    }
+
+    private fun sendCommandToBoundService(state: MusicState) {
+        frequencyRadioService?.runAction(state)
+    }
+
+    private fun bindToFrequencyRadioService() {
+        Intent(requireContext(), FrequencyRadioService::class.java).also {
+            requireActivity().bindService(it, boundServiceConnection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    private fun unbindFrequencyService() {
+        frequencyRadioService?.runAction(MusicState.STOP)
+        requireActivity().unbindService(boundServiceConnection)
+    }
+
     private fun startPlaying() {
-        try {
-            player.setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build()
-            )
-            viewModel.stationLD.value?.url?.let {
-                player.setDataSource(requireContext(), Uri.parse(it))
-            }
-            player.prepare()
-            player.start()
-
-        } catch (e: IOException) {
-            Log.d(TAG, e.message.toString())
-            showSnackbar(binding.root, e.message.toString(), ERROR)
-        }
 
     }
 
-    private fun stopPlaying() {
-        try {
-            player.pause()
-            player.stop()
-
-        } catch (e: IOException) {
-            Log.d(TAG, e.message.toString())
-            showSnackbar(binding.root, e.message.toString(), ERROR)
-        }
+    private fun stopPlaying(){
 
     }
+
+
 
     @SuppressLint("SetTextI18n")
     private fun updateUI(station: Station) {
@@ -139,12 +158,16 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
     override fun onStop() {
         super.onStop()
-        stopPlaying()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unbindFrequencyService()
     }
 
     override fun getTitleRes() = R.string.station
