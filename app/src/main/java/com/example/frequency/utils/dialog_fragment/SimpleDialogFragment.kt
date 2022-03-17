@@ -17,6 +17,9 @@ class SimpleDialogFragment : DialogFragment() {
 
     private val title get() = requireArguments().getString(ARG_TITLE)
     private val requestMessage get() = requireArguments().getString(ARG_MESSAGE)
+    private val positiveButtonTxt get() = requireArguments().getString(ARG_POS_BUT)
+    private val neutralButtonTxt get() = requireArguments().getString(ARG_NEU_BUT)
+    private val negativeButtonTxt get() = requireArguments().getString(ARG_NEG_BUT)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
@@ -24,10 +27,10 @@ class SimpleDialogFragment : DialogFragment() {
             .setIcon(R.drawable.ic_crisis_alert)
             .setTitle(title)
             .setMessage(requestMessage)
-            .setPositiveButton("Settings") { _, _ ->
+            .setPositiveButton(positiveButtonTxt) { _, _ ->
                 setFragmentResult("Confirmed")
             }
-            .setNeutralButton("Close") { _, _ ->
+            .setNeutralButton(neutralButtonTxt) { _, _ ->
 
             }
             .create()
@@ -64,11 +67,33 @@ class SimpleDialogFragment : DialogFragment() {
         private val ARG_TITLE = "ARG_TITLE"
 
         @JvmStatic
+        private val ARG_NEG_BUT = "ARG_NEG_BUT"
+
+        @JvmStatic
+        private val ARG_NEU_BUT = "ARG_NEU_BUT"
+
+        @JvmStatic
+        private val ARG_POS_BUT = "ARG_POS_BUT"
+
+        @JvmStatic
         val REQUEST_KEY = "$TAG:defaultRequestKey"
 
-        fun show(fragmentManager: FragmentManager, title: String, message: String) {
+        fun show(
+            fragmentManager: FragmentManager,
+            title: String,
+            message: String,
+            posBut: String,
+            neuBut: String,
+            negBut: String? = null
+        ) {
             val simpleDialog = SimpleDialogFragment()
-            simpleDialog.arguments = bundleOf(ARG_TITLE to title, ARG_MESSAGE to message)
+            simpleDialog.arguments = bundleOf(
+                ARG_TITLE to title,
+                ARG_MESSAGE to message,
+                ARG_POS_BUT to posBut,
+                ARG_NEG_BUT to negBut,
+                ARG_NEU_BUT to neuBut
+            )
             simpleDialog.show(fragmentManager, TAG)
         }
 
