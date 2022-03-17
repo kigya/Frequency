@@ -5,9 +5,9 @@
 
 ### Specification & Requirements:
 
-#### 1. Implement login and registration pages, validation of email and password (based on Room). Logout functionality, also.
+#### 1. Implement login and registration pages, validation of email and password (based on Room). Logout functionality, also.(optionally)
 
-#### 2. Embed a page with a list of content, such as a list of albums (Retrofit).
+#### 2. Embed a page with a list of content, such as a list of albums (Retrofit). (optionally)
 
 #### 3. Create a page for a single list item, for example, going to the page of the selected album.
 
@@ -17,7 +17,7 @@
 
 ### Technology stack: 
 
-Kotlin. <br/>
+__Kotlin__ . <br/>
 
 __1.__ MVVM <br/>
 __2.__ Coroutines <br/>
