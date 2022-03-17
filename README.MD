@@ -1,4 +1,4 @@
-# Frequency ![](app/src/main/res/mipmap-hdpi/ic_launcher_round.png)
+# Frequency <s align="center"> <img src="app/src/main/res/mipmap-hdpi/ic_launcher_round.png" alt="drawing" width="36"/> </s>
 ### Android web radio broadcasting application
 
 ### This application is developed as diploma project.
