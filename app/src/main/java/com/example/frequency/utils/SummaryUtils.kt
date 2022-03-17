@@ -34,7 +34,7 @@ object SummaryUtils {
         iconPreset: Int? = null,
         elevation: Float? = null
     ) {
-        val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+        val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
         val snackView = snackbar.view
         snackbar.setBackgroundTint(ContextCompat.getColor(view.context, R.color.dark_slay_gray))
         snackbar.setTextColor(Color.WHITE)
