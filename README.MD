@@ -1,9 +1,9 @@
 # Frequency 
-## Android web radio broadcasting application
+### Android web radio broadcasting application
 
 ### This application is developed as diploma project.
 
-## Specification & Requirements:
+### Specification & Requirements:
 
 #### 1. Implement login and registration pages, validation of email and password (based on Room). Logout functionality, also.
 
@@ -14,3 +14,7 @@
 #### 4. Use Technology stack: MVVM architecture for the presentation layer, Livedata or Flow (optional), Livedata or Flow (optional), Coroutines, Room database, follow the principles of Clean Architecture if possible.
 
 #### Additionally: Implement the logic of adding/removing a list element to the "Favorites" or "Favorites" list using a local database (Room), as well as switching to a page where this list can be viewed.
+
+
+### Presentation Screens:
+
