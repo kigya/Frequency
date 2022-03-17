@@ -26,16 +26,7 @@ interface Navigator {
 
     fun openSignUp() // TODO
 
-    fun openHome(
-        fragment: Fragment,
-        clear: Boolean,
-        add: Boolean,
-        user: User? = null
-    )
-
     fun openSettings() // TODO
-
-    fun openSong() // TODO
 
     fun openSong(station: Station) // TODO
 
