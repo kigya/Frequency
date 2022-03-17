@@ -14,9 +14,9 @@ import com.example.frequency.model.User
 import com.example.frequency.model.exception.AccountAlreadyExistsException
 import com.example.frequency.model.exception.EmptyFieldException
 import com.example.frequency.model.exception.PasswordMismatchException
-import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.network.sign_up.SignUpState
 import com.example.frequency.network.sign_up.validation.SignUpData
+import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.utils.*
 import com.example.frequency.utils.SummaryUtils.FAILURE
 import com.example.frequency.utils.SummaryUtils.SUCCESS
@@ -55,11 +55,23 @@ class SignUpVM @Inject constructor(
             firebaseCreationAcc(signUpData.username, signUpData.email, signUpData.password)
             delay(300)
         } catch (e: EmptyFieldException) {
-            processEmptyFieldException(e)
+            viewModelScope.launch {
+                delay(100)
+                processEmptyFieldException(e)
+            }
+            hideProgress()
         } catch (e: PasswordMismatchException) {
-            processPasswordMismatchException()
+            viewModelScope.launch {
+                delay(100)
+                processPasswordMismatchException()
+            }
+            hideProgress()
         } catch (e: AccountAlreadyExistsException) {
-            processAccountAlreadyExistsException()
+            viewModelScope.launch {
+                delay(100)
+                processAccountAlreadyExistsException()
+            }
+            hideProgress()
         }
     }
 
@@ -77,14 +89,14 @@ class SignUpVM @Inject constructor(
                         secureKey = password
                     )
                     writeShearedPreferences()
-                    _showSnackBar.value = Event(SnackBarEntity(R.string.sign_up_success, SUCCESS))
+                    _showSnackBar.value = Event(SnackBarEntity(R.string.sign_up_success, iconTag = SUCCESS))
                     _navigateToHome.provideEvent(currentUserLD.value!!)
                     hideProgress()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     _showSnackBar.value =
-                        Event(SnackBarEntity(R.string.create_account_failure, FAILURE))
+                        Event(SnackBarEntity(R.string.create_account_failure, iconTag = FAILURE))
                     hideProgress()
                 }
             }

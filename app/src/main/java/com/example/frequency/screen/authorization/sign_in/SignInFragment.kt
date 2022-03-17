@@ -62,7 +62,7 @@ class SignInFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
                 onSignInButtonPressed()
             }
             backIb.setOnClickListener {
-                navigator().openWelcome()
+                navigator().goBack()
             }
             toSignUpWelcomeBack.setOnClickListener {
                 navigator().openSignUp()
@@ -82,8 +82,7 @@ class SignInFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
                     provideResult(it)
                     openFragment(
                         HomeFragment(),
-                        clearBackstack = true,
-                        addToBackStack = false
+                        clearBackstack = true
                     )
                 }
             }
