@@ -33,7 +33,7 @@ class SongVM @Inject constructor(
         updateUser()
     }
 
-    private val _isMusicServiceBound = MutableLiveEvent<Boolean>()
+    private val _isMusicServiceBound = MutableLiveEvent(Event(false))
     val isMusicServiceBound = _isMusicServiceBound.share()
 
     fun setFrequencyServiceBound(state: Boolean) {
