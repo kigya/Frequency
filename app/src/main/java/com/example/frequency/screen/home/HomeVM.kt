@@ -4,9 +4,9 @@ import androidx.lifecycle.*
 import com.example.frequency.MainVM.Companion.GAUTH
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
-import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.network.radio_browser.radostation_list.NullableStations
 import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser
+import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.utils.Event
 import com.example.frequency.utils.MutableLiveEvent
 import com.example.frequency.utils.share
@@ -24,6 +24,7 @@ class HomeVM @Inject constructor(
 ) : BaseVM(), LifecycleEventObserver {
 
     private var currentOffset = 0
+    private var currentTag = ""
 
     private val _userLD = savedStateHandle.getLiveData<User>(STATE_USER)
     val userLD = _userLD.share()
@@ -31,11 +32,15 @@ class HomeVM @Inject constructor(
     private val _stationListLD = savedStateHandle.getLiveData<NullableStations>(STATIONS)
     val stationListLD = _stationListLD.share()
 
+    private val _tagListLD = savedStateHandle.getLiveData<List<String>>(TAGS)
+    val tagListLD = _tagListLD.share()
+
     private val _showPbLd = MutableLiveEvent<Boolean>()
     val showPbLd = _showPbLd.share()
 
     init {
         updateUser()
+        _tagListLD.value = tagsList
     }
 
     private fun initSSH() {
@@ -81,7 +86,7 @@ class HomeVM @Inject constructor(
 
     fun loadStation(offset: Int? = 0, reversed: Boolean = false, direction: Boolean = true) {
         when {
-            currentOffset - 25 < 0 -> currentOffset = 0
+            currentOffset - 25 <= 0 -> currentOffset = 0
             !direction -> currentOffset - 25
             direction -> currentOffset + 25
         }
@@ -90,8 +95,9 @@ class HomeVM @Inject constructor(
             _showPbLd.postValue(Event(true))
             val list =
                 radioBrowser.getWideSearchStation(
-                    searchRequest = "",
-                    offset = currentOffset
+                    searchRequest = currentTag,
+                    offset = currentOffset,
+                    tag = currentTag
                 ) ?: emptyList()
             _stationListLD.postValue(list)
             delay(400)
@@ -103,6 +109,11 @@ class HomeVM @Inject constructor(
             currentOffset += 25
         }
 
+    }
+
+    fun setCurrentTag(tag: String) {
+        currentTag = tag
+        currentOffset = 0
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
@@ -128,6 +139,20 @@ class HomeVM @Inject constructor(
         @JvmStatic
         private val STATE_USER = "STATE_USER"
 
+        @JvmStatic
+        private val TAGS = "TAGS"
 
+        @JvmStatic
+        private val tagsList = listOf(
+            "rock",
+            "pop",
+            "metal",
+            "jazz",
+            "country",
+            "classical",
+            "drum & bass",
+            "hip-hop",
+            "rnb",
+        )
     }
 }
