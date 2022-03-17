@@ -2,7 +2,7 @@
     <string name="app_name">Frequency</string>
     <string name="profile">Profile</string>
     <string name="user">User</string>
-    <string name="hello_username">Hello, %1$s</string>
+    <string name="hello_username">Hello %1$s</string>
     <string name="home">Home</string>
     <string name="settings">Settings</string>
     <string name="faqs">FAQs</string>
@@ -82,6 +82,13 @@
     <string name="short_desc_templ">"1%$skb, 1%$s, 1%$s, 1%$s"</string>
     <string name="user_preview">Image Preview</string>
     <string name="projectPage">https://github.com/kigya/Frequency</string>
+    <string name="content_in_progress_notification">Content in production process</string>
+    <string name="common_app_noti_channel">Common app notification channel</string>
+    <string name="logout_q">Logout</string>
+    <string name="incorrect_app_work">Application work incorrectly.</string>
+    <string name="works_without_perm">Our app will not works without this permission, you can add it in settings.</string>
+    <string name="sure_q">Are you sure?</string>
+    <string name="tech_issue">Technical issue</string>
 
 
 </resources>
