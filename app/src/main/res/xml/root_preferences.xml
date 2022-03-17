@@ -5,15 +5,21 @@
         app:icon="@drawable/ic_unknown_user_24"
         app:title="User info">
 
-        <Preference android:title="@string/user_email_address"
+        <Preference
             android:summary="@string/user_email"
-            app:key="EMAIL"/>
+            android:title="@string/user_email_address"
+            app:key="EMAIL" />
 
         <EditTextPreference
+            app:defaultValue=""
             app:key="USERNAME"
             app:title="@string/change_name"
-            app:useSimpleSummaryProvider="true"
-            app:defaultValue=""/>
+            app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            app:key="LOGOUT"
+            app:icon="@drawable/ic_baseline_logout_24"
+            app:title="Logout" />
 
     </PreferenceCategory>
 
