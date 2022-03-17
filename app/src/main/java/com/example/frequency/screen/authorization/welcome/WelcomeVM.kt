@@ -89,12 +89,12 @@ class WelcomeVM @Inject constructor(
                 Log.d("WelcomeVM", "account == null")
                 Log.d(TAG, "Error $account")
                 showPb(false)
-                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, ERROR))
+                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, iconTag = ERROR))
             }
         } catch (e: ApiException) {
             showPb(false)
             Log.d(TAG, "Error ${e.message}")
-            _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, ERROR))
+            _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, iconTag =  ERROR))
         }
     }
 
@@ -109,10 +109,10 @@ class WelcomeVM @Inject constructor(
                     _navigateToHome.value = Event(user)
                 }
                 showPb(false)
-                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_success, SUCCESS))
+                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_success, iconTag = SUCCESS))
             } else {
                 showPb(false)
-                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, FAILURE))
+                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, iconTag =  FAILURE))
             }
         }
     }

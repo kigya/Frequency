@@ -10,9 +10,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.frequency.R
 import com.example.frequency.databinding.FragmentPreviewBinding
+import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 
-class PreviewFragment : Fragment() {
+class PreviewFragment : Fragment(), ProvidesCustomTitle {
 
     private var _binding: FragmentPreviewBinding? = null
 
@@ -38,7 +39,7 @@ class PreviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.previewIv.setOnClickListener {
-            navigator().goBack()
+            navigator().openProfile()
         }
 
         Log.d(TAG, "uri value $imageUri")
@@ -73,5 +74,7 @@ class PreviewFragment : Fragment() {
         @JvmStatic
         private val TAG = PreviewFragment::class.java.simpleName
     }
+
+    override fun getTitleRes() = R.string.user_preview
 
 }

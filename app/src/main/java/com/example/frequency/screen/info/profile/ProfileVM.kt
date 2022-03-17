@@ -1,4 +1,4 @@
-package com.example.frequency.screen.profile
+package com.example.frequency.screen.info.profile
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
@@ -27,8 +27,6 @@ class ProfileVM @Inject constructor(
     private val _showPbLd = MutableLiveEvent<Boolean>()
     val showPbLd = _showPbLd.share()
 
-    val launchReset = MutableUnitLiveEvent()
-
     private val userFormPref = User(
         shearedPreferences.getUsername(),
         shearedPreferences.getEmail(),
@@ -47,17 +45,6 @@ class ProfileVM @Inject constructor(
         shearedPreferences.setIconUri(uri)
         val newUser = user.value?.copy(icon = uri)
         _userLD.value = newUser
-    }
-
-    fun clearUserRootPreferences() {
-        _showPbLd.value = Event(true)
-        authFirebaseAuth.signOut()
-        shearedPreferences.clearAllPreferences()
-        viewModelScope.launch {
-            delay(800)
-            _showPbLd.postValue(Event(true))
-            launchReset.provideEvent()
-        }
     }
 
 }

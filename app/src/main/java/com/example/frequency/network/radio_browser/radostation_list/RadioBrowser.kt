@@ -1,8 +1,8 @@
-package com.example.frequency.services.radio_browser.radostation_list
+package com.example.frequency.network.radio_browser.radostation_list
 
-import com.example.frequency.services.radio_browser.models.Station
-import com.example.frequency.services.radio_browser.radostation_list.OrderValue.FAVICON
-import com.example.frequency.services.radio_browser.radostation_list.OrderValue.orderList
+import com.example.frequency.network.radio_browser.models.Station
+import com.example.frequency.network.radio_browser.radostation_list.OrderValue.FAVICON
+import com.example.frequency.network.radio_browser.radostation_list.OrderValue.orderList
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path

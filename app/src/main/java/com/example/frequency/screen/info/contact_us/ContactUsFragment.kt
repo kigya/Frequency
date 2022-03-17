@@ -1,10 +1,11 @@
-package com.example.frequency.screen.contact_us
+package com.example.frequency.screen.info.contact_us
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.example.frequency.BuildConfig
 import com.example.frequency.R
 import com.example.frequency.databinding.FragmentContactUsBinding
 import com.example.frequency.foundation.contract.ProvidesCustomActions
@@ -13,7 +14,6 @@ import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
-import com.google.firebase.BuildConfig
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,7 +43,6 @@ class ContactUsFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomAct
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.aboutVersion.text = getString(R.string.about_version, BuildConfig.VERSION_NAME)
-
     }
 
     override fun onDestroy() {

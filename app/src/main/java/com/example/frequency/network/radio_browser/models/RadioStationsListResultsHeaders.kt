@@ -1,4 +1,4 @@
-package com.example.frequency.services.radio_browser.models
+package com.example.frequency.network.radio_browser.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

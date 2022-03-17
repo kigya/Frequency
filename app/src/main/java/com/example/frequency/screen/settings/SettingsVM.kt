@@ -1,24 +1,35 @@
 package com.example.frequency.screen.settings
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.utils.share
+import com.example.frequency.utils.*
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsVM @Inject constructor(
     private val shearedPreferences: AppDefaultPreferences,
+    private val authFirebaseAuth: FirebaseAuth,
     private val savedStateHandle: SavedStateHandle
 ) : BaseVM() {
+
+    private val _showPbLd = MutableLiveEvent<Boolean>()
+    val showPbLd = _showPbLd.share()
 
     private val _userLD = savedStateHandle.getLiveData<User>(STATE_USER)
     val userLD = _userLD.share()
 
-    private val _usersEmailLD = savedStateHandle.getLiveData(STATE_KEY_EMAIL, shearedPreferences.getEmail())
+    private val _usersEmailLD =
+        savedStateHandle.getLiveData(STATE_KEY_EMAIL, shearedPreferences.getEmail())
     val usersEmailLD = _usersEmailLD.share()
+
+    val launchReset = MutableUnitLiveEvent()
 
     init {
         updateUser()
@@ -43,6 +54,19 @@ class SettingsVM @Inject constructor(
             _userLD.value = user
             savedStateHandle.set(STATE_USER, user)
         }
+    }
+
+    fun clearUserRootPreferences() {
+        authFirebaseAuth.signOut()
+        shearedPreferences.clearAllPreferences()
+        viewModelScope.launch {
+            delay(800)
+            launchReset.provideEvent()
+        }
+    }
+
+    fun showPB(state: Boolean) {
+        _showPbLd.postValue(Event(state))
     }
 
     companion object {

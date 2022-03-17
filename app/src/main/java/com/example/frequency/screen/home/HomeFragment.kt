@@ -12,8 +12,9 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.services.radio_browser.StationsRecyclerAdapter
-import com.example.frequency.services.radio_browser.radostation_list.toStation
+import com.example.frequency.network.radio_browser.StationsRecyclerAdapter
+import com.example.frequency.network.radio_browser.TagsRecyclerAdapter
+import com.example.frequency.network.radio_browser.radostation_list.toStation
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
 import com.example.frequency.utils.observeEvent
@@ -28,6 +29,7 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
     private val binding get() = _binding!!
 
     private lateinit var stationsAdapter: StationsRecyclerAdapter
+    private lateinit var tagsAdapter: TagsRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +61,7 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
     }
 
     private fun initiateListeners() {
-        with(binding){
+        with(binding) {
             nextOffsetBt.setOnClickListener {
                 viewModel.loadStation()
             }
@@ -72,9 +74,6 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
     private fun initiateObservers() {
         with(viewModel) {
-            viewModel.userLD.observe(viewLifecycleOwner) {
-                binding.helloTextview.text = getString(R.string.hello_username, it.name)
-            }
             showPbLd.observeEvent(viewLifecycleOwner) {
                 navigator().showProgress(it)
             }
@@ -85,12 +84,18 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
                 binding.radioStationListRw.adapter = stationsAdapter
             }
 
+            tagListLD.observe(viewLifecycleOwner) { tags ->
+                tagsAdapter = TagsRecyclerAdapter(tags) {
+                    it.let { viewModel.setCurrentTag(it) }
+                    viewModel.loadStation()
+                }
+                binding.tagsAdapter.adapter = tagsAdapter
+            }
+
 
         }
 
-
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

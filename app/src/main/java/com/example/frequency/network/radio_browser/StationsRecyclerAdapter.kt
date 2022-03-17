@@ -1,4 +1,4 @@
-package com.example.frequency.services.radio_browser
+package com.example.frequency.network.radio_browser
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.frequency.R
 import com.example.frequency.databinding.RvItemStationBinding
-import com.example.frequency.services.radio_browser.models.Station
-import com.example.frequency.services.radio_browser.radostation_list.Stations
+import com.example.frequency.network.radio_browser.models.Station
+import com.example.frequency.network.radio_browser.radostation_list.Stations
 
 class StationsRecyclerAdapter(
     private val stations: Stations,

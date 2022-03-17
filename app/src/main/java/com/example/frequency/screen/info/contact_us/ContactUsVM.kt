@@ -1,4 +1,4 @@
-package com.example.frequency.screen.contact_us
+package com.example.frequency.screen.info.contact_us
 
 import com.example.frequency.foundation.views.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel

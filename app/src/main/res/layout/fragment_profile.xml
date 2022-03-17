@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ebony_clay"
-    tools:context=".screen.profile.ProfileFragment">
+    tools:context=".screen.info.profile.ProfileFragment">
 
     <FrameLayout
         android:id="@+id/frame_include"
@@ -22,19 +22,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </FrameLayout>
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/logout_tb"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:padding="8dp"
-        android:text="@string/logout"
-        android:textAlignment="center"
-        android:textColor="@color/foam"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frame_include" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

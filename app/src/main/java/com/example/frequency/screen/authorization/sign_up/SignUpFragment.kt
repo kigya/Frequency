@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import com.example.frequency.R
 import com.example.frequency.databinding.FragmentSignUpBinding
@@ -13,8 +14,8 @@ import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
+import com.example.frequency.network.sign_up.validation.SignUpData
 import com.example.frequency.screen.home.HomeFragment
-import com.example.frequency.services.sign_up.validation.SignUpData
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
 import com.google.android.material.textfield.TextInputLayout
@@ -56,6 +57,7 @@ class SignUpFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
         with(binding) {
             logInCreate.setOnClickListener {
                 onCreateAccountButtonPressed()
+                clearAllFieldError()
             }
             clickSignInCreateAccount.setOnClickListener {
                 navigator().openSignIn()
@@ -66,7 +68,7 @@ class SignUpFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
 
         }
 
-
+        doOnUseInput()
     }
 
     private fun initiateObservers() {
@@ -79,8 +81,7 @@ class SignUpFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
                     provideResult(it)
                     openFragment(
                         HomeFragment(),
-                        clearBackstack = true,
-                        addToBackStack = false
+                        clearBackstack = true
                     )
                 }
             }
@@ -90,8 +91,8 @@ class SignUpFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
 
     private fun onCreateAccountButtonPressed() {
         val signUpData = SignUpData(
-            email = binding.inputEmailAddressCreateAccount.editText?.text.toString().trim(),
             username = binding.inputUsernameCreate.editText?.text.toString().trim(),
+            email = binding.inputEmailAddressCreateAccount.editText?.text.toString().trim(),
             password = binding.inputPasswordAddressCreateAccount.editText?.text.toString().trim(),
             repeatPassword = binding.inputConfirmPasswordAddressCreateAccount.editText?.text.toString()
                 .trim(),
@@ -127,6 +128,32 @@ class SignUpFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
         } else {
             input.error = getString(stringRes)
             input.isErrorEnabled = true
+        }
+    }
+
+    private fun doOnUseInput() {
+        with(binding) {
+            inputUsernameCreate.editText?.doOnTextChanged { _, _, _, _ ->
+                inputUsernameCreate.error = null
+            }
+            inputEmailAddressCreateAccount.editText?.doOnTextChanged { _, _, _, _ ->
+                inputEmailAddressCreateAccount.error = null
+            }
+            inputPasswordAddressCreateAccount.editText?.doOnTextChanged { _, _, _, _ ->
+                inputPasswordAddressCreateAccount.error = null
+            }
+            inputConfirmPasswordAddressCreateAccount.editText?.doOnTextChanged { _, _, _, _ ->
+                inputConfirmPasswordAddressCreateAccount.error = null
+            }
+        }
+    }
+
+    private fun clearAllFieldError() {
+        with(binding) {
+            inputUsernameCreate.error = null
+            inputEmailAddressCreateAccount.error = null
+            inputPasswordAddressCreateAccount.error = null
+            inputConfirmPasswordAddressCreateAccount.error = null
         }
     }
 

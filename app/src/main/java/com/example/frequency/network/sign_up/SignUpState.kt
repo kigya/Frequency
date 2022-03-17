@@ -1,4 +1,4 @@
-package com.example.frequency.services.sign_up
+package com.example.frequency.network.sign_up
 
 import android.os.Parcelable
 import androidx.annotation.StringRes

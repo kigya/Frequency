@@ -93,8 +93,7 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
                     provideResult(it)
                     openFragment(
                         HomeFragment(),
-                        clearBackstack = true,
-                        addToBackStack = false
+                        clearBackstack = true
                     )
                 }
             }

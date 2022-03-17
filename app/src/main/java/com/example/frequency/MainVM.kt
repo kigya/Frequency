@@ -5,8 +5,8 @@ import androidx.lifecycle.*
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.SnackBarEntity
 import com.example.frequency.model.User
+import com.example.frequency.network.sign_up.validation.SignInState
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.services.sign_up.validation.SignInState
 import com.example.frequency.utils.*
 import com.example.frequency.utils.SummaryUtils.SUCCESS
 import com.google.firebase.auth.FirebaseAuth
@@ -120,7 +120,7 @@ class MainVM @Inject constructor(
                             val user = authFirebaseAuth.currentUser
                             if (user != null) {
                                 _showSnackBar.value =
-                                    Event(SnackBarEntity(R.string.auth_success, SUCCESS))
+                                    Event(SnackBarEntity(R.string.hello_username, user.displayName, SUCCESS))
                                 _navigateToHome.provideEvent()
                                 hideProgress()
                             }
@@ -142,7 +142,7 @@ class MainVM @Inject constructor(
                             val user = authFirebaseAuth.currentUser
                             if (user != null) {
                                 _showSnackBar.value =
-                                    Event(SnackBarEntity(R.string.auth_success, SUCCESS))
+                                    Event(SnackBarEntity(R.string.hello_username, user.displayName, SUCCESS))
                                 _navigateToHome.provideEvent()
                                 hideProgress()
                             }

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:elevation="1dp"
+        android:elevation="2dp"
         android:focusable="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,8 +31,8 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lot_animation"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
                 android:layout_gravity="center"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
@@ -53,6 +53,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu"
         app:title=""
+        android:elevation="0dp"
         app:titleCentered="true"
         app:titleTextColor="@color/white"
         tools:navigationIcon="@drawable/ic_navigation_menu"
@@ -82,13 +83,13 @@
         tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/nav_menu_bar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@color/dark_slay_gray"
             android:clickable="true"
             android:focusable="true"
             android:padding="16dp"
-            android:id="@+id/nav_menu_bar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/ll"
             app:layout_constraintStart_toStartOf="parent"

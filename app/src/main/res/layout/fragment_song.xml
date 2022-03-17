@@ -69,13 +69,15 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/additional_tv"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:textAlignment="textStart"
         android:textColor="@color/foam"
         android:textSize="18sp"
+        tools:text="additional"
+        app:layout_constraintBottom_toTopOf="@+id/layoutPlaybackControls"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -124,13 +126,13 @@
             android:layout_height="64dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/detail_play"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/buttonNext"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/buttonPrev"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_play" />
+            app:srcCompat="@drawable/ic_play_gray" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/buttonNext"
