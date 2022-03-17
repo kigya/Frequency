@@ -1,9 +1,12 @@
 package com.example.frequency
 
+import android.annotation.TargetApi
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
@@ -14,6 +17,8 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
@@ -31,22 +36,21 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.ResultListener
 import com.example.frequency.foundation.model.Action
-import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.model.User
 import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.model.actions.ProfileAction
+import com.example.frequency.network.radio_browser.models.Station
 import com.example.frequency.screen.PreviewFragment
 import com.example.frequency.screen.WaitFragment
 import com.example.frequency.screen.authorization.sign_in.SignInFragment
 import com.example.frequency.screen.authorization.sign_up.SignUpFragment
 import com.example.frequency.screen.authorization.welcome.WelcomeFragment
-import com.example.frequency.screen.contact_us.ContactUsFragment
 import com.example.frequency.screen.home.HomeFragment
+import com.example.frequency.screen.info.contact_us.ContactUsFragment
+import com.example.frequency.screen.info.profile.ProfileFragment
 import com.example.frequency.screen.lyrics.LyricsFragment
-import com.example.frequency.screen.profile.ProfileFragment
 import com.example.frequency.screen.settings.SettingsFragment
 import com.example.frequency.screen.song.SongFragment
-import com.example.frequency.network.radio_browser.models.Station
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,7 +75,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         installSplashScreen().apply { setKeepOnScreenCondition { viewModel.isLoading.value } }
         binding = inflate(layoutInflater).also { setContentView(it.root) }
         setSupportActionBar(binding.toolbar)
-
         // set default night mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
@@ -86,7 +89,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private fun appStatusCheckAndStart(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            openFragment(WaitFragment(), firstTime = true, addToBackStack = false)
+            openFragment(WaitFragment(), clearBackstack = true, addToBackStack = false)
             viewModel.signInWithFireBase()
         }
     }
@@ -104,7 +107,7 @@ class MainActivity : AppCompatActivity(), Navigator {
                 openProfile()
             }
             navLikedSongsMb.setOnClickListener {
-
+                sendNotification()
             }
             navContactUsMb.setOnClickListener {
                 openContactUs()
@@ -113,7 +116,8 @@ class MainActivity : AppCompatActivity(), Navigator {
                 openSettings()
             }
             navFaqsMb.setOnClickListener {
-                val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.projectPage)))
+                val webIntent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.projectPage)))
                 startActivity(webIntent)
             }
             listenResults(User::class.java, this@MainActivity) {
@@ -144,13 +148,15 @@ class MainActivity : AppCompatActivity(), Navigator {
                 }
             }
             showSnackBar.observeEvent(this@MainActivity) {
-                showSnackbar(binding.root, getString(it.message), it.iconTag)
+                showSnackbar(binding.root, getString(it.message, it.additional ?: ""), it.iconTag)
             }
             navigateToHome.observeEvent(this@MainActivity) {
-                openFragment(HomeFragment(), clearBackstack = true, addToBackStack = false)
+                Log.d(TAG, "OPEN HOME ${supportFragmentManager.backStackEntryCount}")
+                openFragment(HomeFragment(), addToBackStack = true)
             }
             navigateToWelcome.observeEvent(this@MainActivity) {
-                openFragment(WelcomeFragment(), clearBackstack = true, addToBackStack = false)
+                Log.d(TAG, "OPEN WELCOME ${supportFragmentManager.backStackEntryCount}")
+                openFragment(WelcomeFragment(), addToBackStack = true)
             }
         }
 
@@ -325,6 +331,10 @@ class MainActivity : AppCompatActivity(), Navigator {
                     .commit()
             }
         }
+        Log.d(
+            TAG,
+            "OPEN ${fragment::class.java.signers} ${supportFragmentManager.backStackEntryCount}"
+        )
     }
 
     override fun showProgress(state: Boolean) {
@@ -361,6 +371,22 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     }
 
+    private fun homeCheck(fragment: Fragment) {
+        if (currentFragment is HomeFragment) {
+            openFragment(fragment)
+        } else {
+            openFragment(fragment, addToBackStack = false)
+        }
+    }
+
+    private fun welcomeCheck(fragment: Fragment){
+        if (currentFragment is WelcomeFragment) {
+            openFragment(fragment)
+        }else{
+            openFragment(fragment, addToBackStack = false)
+        }
+    }
+
     override fun openWelcome() {
         if (currentFragment !is WelcomeFragment) {
             openFragment(WelcomeFragment.newInstance())
@@ -368,60 +394,36 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun openSignIn() {
-        if (currentFragment !is SignInFragment) {
-            openFragment(SignInFragment.newInstance(), addToBackStack = false)
-        }
+        welcomeCheck(SignInFragment.newInstance())
     }
 
     override fun openSignUp() {
-        if (currentFragment !is SignUpFragment) {
-            openFragment(SignUpFragment.newInstance(), addToBackStack = false)
-        }
-    }
-
-    override fun openHome(
-        fragment: Fragment,
-        clear: Boolean,
-        add: Boolean,
-        user: User?
-    ) {
-        openFragment(HomeFragment.newInstance(), clearBackstack = clear, addToBackStack = add)
+        welcomeCheck(SignUpFragment.newInstance())
     }
 
     override fun openSettings() {
         if (currentFragment !is SettingsFragment) {
-            openFragment(SettingsFragment.newInstance(), addToBackStack = false)
+            homeCheck(SettingsFragment.newInstance())
         }
-    }
-
-    override fun openSong() {
-        if (currentFragment !is SongFragment) {
-            openFragment(SongFragment(), addToBackStack = false)
-        }
-
     }
 
     override fun openSong(station: Station) {
-        if (currentFragment !is SongFragment) {
-            openFragment(SongFragment.newInstance(station), addToBackStack = false)
-        }
+        homeCheck(SongFragment.newInstance(station))
     }
 
     override fun openLyrics() {
-        if (currentFragment !is LyricsFragment) {
-            openFragment(LyricsFragment.newInstance(), addToBackStack = false)
-        }
+        homeCheck(LyricsFragment.newInstance())
     }
 
     override fun openProfile() {
-        if (currentFragment !is ProfileFragment) {
-            openFragment(ProfileFragment.newInstance(), addToBackStack = false)
+        if (currentFragment !is SettingsFragment) {
+            homeCheck(ProfileFragment.newInstance())
         }
     }
 
     override fun openContactUs() {
-        if (currentFragment !is ContactUsFragment) {
-            openFragment(ContactUsFragment.newInstance(), addToBackStack = false)
+        if (currentFragment !is SettingsFragment) {
+            homeCheck(ContactUsFragment.newInstance())
         }
     }
 
@@ -431,7 +433,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     override fun openPreview(uri: String) {
         if (currentFragment !is PreviewFragment) {
-            openFragment(PreviewFragment.newInstance(uri))
+            openFragment(PreviewFragment.newInstance(uri), addToBackStack = false)
         }
     }
 
@@ -472,31 +474,48 @@ class MainActivity : AppCompatActivity(), Navigator {
             changeNavigationStatusAndIcon()
             return
         }
-        when (currentFragment) {
-            is AuthFragments -> {
-                if (currentFragment !is WelcomeFragment) {
-                    openFragment(
-                        WelcomeFragment.newInstance(),
-                        clearBackstack = true,
-                        addToBackStack = false
-                    )
-                } else {
-                    super.onBackPressed()
-                }
-            }
-            !is HomeFragment -> openFragment(
-                HomeFragment.newInstance(),
-                clearBackstack = true,
-                addToBackStack = false
-            )
-            else -> super.onBackPressed()
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            super.onBackPressed()
+        } else {
+            finish()
         }
+    }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    private fun sendNotification() {
+        val notyIntent = Intent()
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            this@MainActivity,
+            0,
+            notyIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val builder =
+            NotificationCompat.Builder(this@MainActivity, FREQUENCY_CHANNEL)
+                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(getString(R.string.content_in_progress_notification))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setSound(null)
+
+        with(NotificationManagerCompat.from(this)) {
+            // notificationId is a unique int for each notification that you must define
+            notify(NOTIFICATION_ID, builder.build())
+        }
     }
 
     companion object {
         @JvmStatic
         private val KEY_RESULT = "KEY_RESULT"
+
+        @JvmStatic
+        val FREQUENCY_CHANNEL = "FREQUENCY_CHANNEL"
+
+        @JvmStatic
+        val NOTIFICATION_ID = 235934624
 
         @JvmStatic
         private val TAG = MainActivity::class.java.simpleName
