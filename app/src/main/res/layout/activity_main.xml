@@ -103,7 +103,7 @@
                 app:civ_circle_background_color="@color/ebony_clay"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_unknown_user_photo_90" />
+                android:src="@drawable/ic_unknown_user_photo_90" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/nav_menu_login_button"
