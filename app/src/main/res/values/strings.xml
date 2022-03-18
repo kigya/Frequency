@@ -79,7 +79,6 @@
     <string name="station_name">Station: %1$s</string>
     <string name="now_playing">Now playing: 1%$s</string>
     <string name="about_station">About 1%$s</string>
-    <string name="short_desc_templ">"1%$skb, 1%$s, 1%$s, 1%$s"</string>
     <string name="user_preview">Image Preview</string>
     <string name="projectPage">https://github.com/kigya/Frequency</string>
     <string name="content_in_progress_notification">Content in production process</string>
