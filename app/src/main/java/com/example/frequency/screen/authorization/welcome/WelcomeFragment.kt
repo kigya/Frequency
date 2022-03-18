@@ -1,9 +1,12 @@
 package com.example.frequency.screen.authorization.welcome
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.viewModels
@@ -74,6 +77,9 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
             clickSignUpWelcome.setOnClickListener {
                 navigator().openSignUp()
             }
+            logo.setOnClickListener {
+                viewModel.increaseTapsCount()
+            }
 
         }
 
@@ -86,7 +92,7 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
                 navigator().showProgress(it)
             }
             showSnackBar.observeEvent(viewLifecycleOwner) {
-                showSnackbar(binding.root, getString(it.message), it.iconTag)
+                showSnackbar(binding.root, getString(it.message, it.additional), it.iconTag)
             }
             navigateToHome.observeEvent(viewLifecycleOwner) {
                 with(navigator()) {
@@ -95,6 +101,14 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
                         HomeFragment(),
                         clearBackstack = true
                     )
+                }
+            }
+            secretCurrentTaps.observe(viewLifecycleOwner) {
+                if (it > 4) {
+                    val webIntent =
+                        Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.projectPage)))
+                    startActivity(webIntent)
+                    Toast.makeText(requireContext(), "You got it.", Toast.LENGTH_SHORT).show()
                 }
             }
         }

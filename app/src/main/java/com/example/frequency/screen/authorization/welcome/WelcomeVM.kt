@@ -3,6 +3,7 @@ package com.example.frequency.screen.authorization.welcome
 import android.net.Uri
 import android.util.Log
 import androidx.activity.result.ActivityResult
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.example.frequency.MainVM.Companion.GAUTH
 import com.example.frequency.R
@@ -10,12 +11,10 @@ import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.SnackBarEntity
 import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.utils.Event
-import com.example.frequency.utils.MutableLiveEvent
+import com.example.frequency.utils.*
 import com.example.frequency.utils.SummaryUtils.ERROR
 import com.example.frequency.utils.SummaryUtils.FAILURE
 import com.example.frequency.utils.SummaryUtils.SUCCESS
-import com.example.frequency.utils.share
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
@@ -45,6 +44,8 @@ class WelcomeVM @Inject constructor(
     private val _regMethod = savedStateHandle.getLiveData<Int>(STATE_REG_METHOD)
     val regMethod = _regMethod.share()
 
+    private val _secretCurrentTaps = MutableLiveData(0)
+    val secretCurrentTaps = _secretCurrentTaps.share()
 
     private fun showPb(state: Boolean) {
         _showPbLd.value = Event(state)
@@ -94,7 +95,7 @@ class WelcomeVM @Inject constructor(
         } catch (e: ApiException) {
             showPb(false)
             Log.d(TAG, "Error ${e.message}")
-            _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, iconTag =  ERROR))
+            _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, iconTag = ERROR))
         }
     }
 
@@ -109,11 +110,22 @@ class WelcomeVM @Inject constructor(
                     _navigateToHome.value = Event(user)
                 }
                 showPb(false)
-                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_success, iconTag = SUCCESS))
+                _showSnackBar.value =
+                    Event(SnackBarEntity(R.string.auth_success, iconTag = SUCCESS))
             } else {
                 showPb(false)
-                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, iconTag =  FAILURE))
+                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, iconTag = FAILURE))
             }
+        }
+    }
+
+    fun increaseTapsCount() {
+        val currentValue = secretCurrentTaps.requireValue()
+        if (currentValue > 4) {
+            _showSnackBar.provideEvent(SnackBarEntity(R.string.already_got))
+        } else {
+            _secretCurrentTaps.postValue(currentValue + 1)
+            _showSnackBar.provideEvent(SnackBarEntity(R.string.another_step, (4-currentValue).toString()))
         }
     }
 
