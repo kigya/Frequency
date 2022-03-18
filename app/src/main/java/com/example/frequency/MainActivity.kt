@@ -17,6 +17,7 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -78,10 +79,9 @@ class MainActivity : AppCompatActivity(), Navigator {
         // set default night mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-
         appStatusCheckAndStart(savedInstanceState)
 
-        observeState()
+
         setListeners()
         setObservers()
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentListener, false)
@@ -130,7 +130,6 @@ class MainActivity : AppCompatActivity(), Navigator {
                 changeNavigationStatusAndIcon()
             }
 
-
         }
 
     }
@@ -151,19 +150,16 @@ class MainActivity : AppCompatActivity(), Navigator {
                 showSnackbar(binding.root, getString(it.message, it.additional ?: ""), it.iconTag)
             }
             navigateToHome.observeEvent(this@MainActivity) {
-                Log.d(TAG, "OPEN HOME ${supportFragmentManager.backStackEntryCount}")
                 openFragment(HomeFragment(), addToBackStack = true)
             }
             navigateToWelcome.observeEvent(this@MainActivity) {
-                Log.d(TAG, "OPEN WELCOME ${supportFragmentManager.backStackEntryCount}")
                 openFragment(WelcomeFragment(), addToBackStack = true)
+            }
+            viewModel.state.observe(this@MainActivity) {
+                showProgress(it.showProgress)
             }
         }
 
-    }
-
-    private fun observeState() = viewModel.state.observe(this) {
-        showProgress(it.showProgress)
     }
 
     private val fragmentListener = object : FragmentManager.FragmentLifecycleCallbacks() {
@@ -175,8 +171,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         ) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
             updateUI()
-            changeNavigationStatusAndIcon(hideNavigationOnly = true)
-            viewModel.updateUser()
+
         }
     }
 
@@ -201,7 +196,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         binding.toolbar.menu.findItem(R.id.profile).isVisible = visibilityStatus
 
         if (visibilityStatus) {
-            setToolbarUserIcon(this, menuItem, viewModel.userLD.value?.icon, 100)
+            setToolbarUserIcon(this, menuItem, viewModel.userLD.value?.icon, 10)
             menuItem.actionView.setOnClickListener {
                 openProfile()
             }
@@ -232,6 +227,9 @@ class MainActivity : AppCompatActivity(), Navigator {
         } else {
             binding.toolbar.menu.clear()
         }
+
+        changeNavigationStatusAndIcon(hideNavigationOnly = true)
+        viewModel.updateUser()
     }
 
     private fun titleFormatting(fragment: Fragment) {
@@ -348,7 +346,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         hideNavigationOnly: Boolean = false,
         hideNavAndSetMenuIcon: Boolean = false
     ) {
-        val navigationStatus = !binding.navigationMenu.isVisible
+        val navigationStatus = binding.navigationMenu.isVisible
 
         when {
             hideNavigationOnly && !hideNavAndSetMenuIcon -> {
@@ -359,13 +357,14 @@ class MainActivity : AppCompatActivity(), Navigator {
                 binding.toolbar.setNavigationIcon(R.drawable.ic_navigation_menu)
             }
             else -> {
-                if (navigationStatus) {
+                if (!navigationStatus) {
                     binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_close_24)
                     binding.toolbar.setNavigationIconTint(Color.WHITE)
                 } else {
                     binding.toolbar.setNavigationIcon(R.drawable.ic_navigation_menu)
+                    disableSearchFocus(currentFragment)
                 }
-                binding.navigationMenu.isVisible = navigationStatus
+                binding.navigationMenu.isVisible = !navigationStatus
             }
         }
 
@@ -379,10 +378,10 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    private fun welcomeCheck(fragment: Fragment){
+    private fun welcomeCheck(fragment: Fragment) {
         if (currentFragment is WelcomeFragment) {
             openFragment(fragment)
-        }else{
+        } else {
             openFragment(fragment, addToBackStack = false)
         }
     }
@@ -416,19 +415,20 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun openProfile() {
-        if (currentFragment !is SettingsFragment) {
+        if (currentFragment !is ProfileFragment) {
             homeCheck(ProfileFragment.newInstance())
         }
     }
 
     override fun openContactUs() {
-        if (currentFragment !is SettingsFragment) {
+        if (currentFragment !is ContactUsFragment) {
             homeCheck(ContactUsFragment.newInstance())
         }
     }
 
     override fun openFaqs() {
-        // TODO openFragment()
+        val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.projectPage)))
+        startActivity(webIntent)
     }
 
     override fun openPreview(uri: String) {
@@ -474,10 +474,23 @@ class MainActivity : AppCompatActivity(), Navigator {
             changeNavigationStatusAndIcon()
             return
         }
+        disableSearchFocus(currentFragment)
+
         if (supportFragmentManager.backStackEntryCount > 1) {
             super.onBackPressed()
         } else {
             finish()
+        }
+    }
+
+    private fun disableSearchFocus(fragment: Fragment){
+        if (fragment is HomeFragment) {
+            val musicSearch = fragment.view?.findViewById<SearchView>(R.id.musicSearch)
+            musicSearch?.let {
+                if (musicSearch.isFocused) {
+                    binding.root.requestFocus()
+                }
+            }
         }
     }
 
