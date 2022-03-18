@@ -7,9 +7,10 @@ import com.example.frequency.repositorys.room.user_db.room.UserDao
 
 @Database(
     version = 1,
-    entities = [UserEntity::class]
+    entities = [UserEntity::class],
+    exportSchema = false // TODO need to set schema
 )
-abstract class AppDB: RoomDatabase() {
+abstract class AppDB : RoomDatabase() {
 
     abstract fun getUserDao(): UserDao
 
