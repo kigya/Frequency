@@ -10,6 +10,7 @@ import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -24,7 +25,6 @@ import com.example.frequency.services.FrequencyRadioService
 import com.example.frequency.services.MusicState
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
-import com.example.frequency.utils.requireEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -83,7 +83,6 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
         initializeListeners()
         initializeObservers()
-
     }
 
     private fun initializeListeners() {
@@ -91,7 +90,17 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
             buttonPlay.setOnClickListener {
                 sendCommandToBoundService(MusicState.PLAY)
                 startPlaying()
+                buttonPause.isVisible = true
+                buttonPlay.isVisible = false
             }
+            buttonPause.setOnClickListener {
+                sendCommandToBoundService(MusicState.PAUSE)
+                pausePlaying()
+                buttonPlay.isVisible = true
+                buttonPause.isVisible = false
+            }
+
+
         }
 
     }
@@ -104,36 +113,45 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
     override fun onStart() {
         super.onStart()
-        if (!viewModel.isMusicServiceBound.requireEvent()) {
+        val isServiceBound = viewModel.isFrequencyRadioServiceBound.value ?: false
+        if (!isServiceBound) {
             bindToFrequencyRadioService()
+
         }
 
 
     }
 
+
     private fun sendCommandToBoundService(state: MusicState) {
-        frequencyRadioService?.runAction(state)
+        if (viewModel.isFrequencyRadioServiceBound.value != true) {
+            frequencyRadioService?.runAction(state)
+        }
     }
 
     private fun bindToFrequencyRadioService() {
-        Intent(requireContext(), FrequencyRadioService::class.java).also {
-            requireActivity().bindService(it, boundServiceConnection, Context.BIND_AUTO_CREATE)
-        }
+        val servIntent = Intent(requireContext(), FrequencyRadioService::class.java)
+        servIntent.putExtra(KEY_SER_STATION, station)
+
+        requireActivity().bindService(servIntent, boundServiceConnection, Context.BIND_AUTO_CREATE)
     }
 
     private fun unbindFrequencyService() {
-        frequencyRadioService?.runAction(MusicState.STOP)
+        stopPlaying()
         requireActivity().unbindService(boundServiceConnection)
     }
 
     private fun startPlaying() {
-
+        frequencyRadioService?.runAction(MusicState.PLAY)
     }
 
-    private fun stopPlaying(){
-
+    private fun pausePlaying() {
+        frequencyRadioService?.runAction(MusicState.PAUSE)
     }
 
+    private fun stopPlaying() {
+        frequencyRadioService?.runAction(MusicState.STOP)
+    }
 
 
     @SuppressLint("SetTextI18n")
@@ -183,6 +201,12 @@ class SongFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
                 putParcelable(ARG_STATION, station)
             }
         }
+
+        @JvmStatic
+        val KEY_SER_URI = "KEY_SER_URI"
+
+        @JvmStatic
+        val KEY_SER_STATION = "KEY_SER_STATION"
 
         @JvmStatic
         private val TAG = SongFragment::class.java.simpleName
