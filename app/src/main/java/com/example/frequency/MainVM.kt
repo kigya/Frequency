@@ -119,8 +119,9 @@ class MainVM @Inject constructor(
                             Log.d(TAG, "signInWithEmail:success")
                             val user = authFirebaseAuth.currentUser
                             if (user != null) {
+                                val name = user.displayName ?: shearedPreferences.getUsername()
                                 _showSnackBar.value =
-                                    Event(SnackBarEntity(R.string.hello_username, user.displayName, SUCCESS))
+                                    Event(SnackBarEntity(R.string.hello_username, name, SUCCESS))
                                 _navigateToHome.provideEvent()
                                 hideProgress()
                             }
@@ -202,7 +203,7 @@ class MainVM @Inject constructor(
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        TODO("Not yet implemented")
+
     }
 
 }
