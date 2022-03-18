@@ -13,8 +13,8 @@ import com.example.frequency.model.SnackBarEntity
 import com.example.frequency.model.User
 import com.example.frequency.model.exception.AuthException
 import com.example.frequency.model.exception.EmptyFieldException
-import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.network.sign_up.validation.SignInState
+import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.utils.*
 import com.example.frequency.utils.SummaryUtils.FAILURE
 import com.example.frequency.utils.SummaryUtils.SUCCESS
@@ -79,7 +79,7 @@ class SignInVM @Inject constructor(
                     val user = authFirebaseAuth.currentUser
                     if (user != null) {
                         addToShearedPrefs(
-                            username = user.displayName,
+                            username = user.displayName ?: email.substringBefore("@"),
                             email = email,
                             password = password
                         )
@@ -89,14 +89,16 @@ class SignInVM @Inject constructor(
                             user.photoUrl ?: Uri.EMPTY,
                             password
                         )
-                        _showSnackBar.value = Event(SnackBarEntity(R.string.auth_success, iconTag =  SUCCESS))
+                        _showSnackBar.value =
+                            Event(SnackBarEntity(R.string.auth_success, iconTag = SUCCESS))
                         _navigateToHome.provideEvent(currentUserLD.value!!)
                         hideProgress()
                     }
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, iconTag =  FAILURE))
+                    _showSnackBar.value =
+                        Event(SnackBarEntity(R.string.auth_fail, iconTag = FAILURE))
                     hideProgress()
                 }
             }
