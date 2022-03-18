@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -136,6 +137,7 @@ class ProfileFragment : BaseFragment(), ProvidesCustomActions, ProvidesCustomTit
     }
 
     private fun onSettingsResult(result: ActivityResult) {
+        Log.d(TAG, result.toString())
         permissionLauncher.launch(ALL_PERMISSIONS)
     }
 
