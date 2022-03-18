@@ -89,6 +89,9 @@
     <string name="works_without_perm">Our app will not works without this permission, you can add it in settings.</string>
     <string name="sure_q">Are you sure?</string>
     <string name="tech_issue">Technical issue</string>
+    <string name="already_got">You already got it</string>
+    <string name="another_step">You are now %1$s step away from secret</string>
+    <string name="lo_for_music">Looking for music</string>
 
 
 </resources>
