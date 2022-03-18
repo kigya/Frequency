@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.frequency.R
@@ -55,7 +56,6 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
         lifecycle.addObserver(viewModel)
 
-
         initiateListeners()
         initiateObservers()
     }
@@ -63,11 +63,29 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
     private fun initiateListeners() {
         with(binding) {
             nextOffsetBt.setOnClickListener {
+                viewModel.riseOffset()
                 viewModel.loadStation()
             }
             previousOffsetBt.setOnClickListener {
-                viewModel.loadStation(direction = false)
+                viewModel.decreaseOffset()
+                viewModel.loadStation()
             }
+            musicSearch.setOnQueryTextListener(object : OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (!query.isNullOrBlank()) {
+                        viewModel.dropOffset()
+                        viewModel.setUpdatedQuery(query.trim())
+                        viewModel.loadStation()
+                    }
+                    return false
+                }
+
+                override fun onQueryTextChange(query: String?): Boolean {
+                    viewModel.setUpdatedQuery(query?.trim())
+                    return true
+                }
+            })
+
 
         }
     }
@@ -77,6 +95,7 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
             showPbLd.observeEvent(viewLifecycleOwner) {
                 navigator().showProgress(it)
             }
+
             stationListLD.observe(viewLifecycleOwner) { stationList ->
                 stationsAdapter = StationsRecyclerAdapter(stationList.toStation()) { station ->
                     navigator().openSong(station)
@@ -86,8 +105,12 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
             tagListLD.observe(viewLifecycleOwner) { tags ->
                 tagsAdapter = TagsRecyclerAdapter(tags) {
-                    it.let { viewModel.setCurrentTag(it) }
-                    viewModel.loadStation()
+                    it.let {
+                        setUpdatedQuery(it)
+                        changeTag(it)
+                        dropOffset()
+                        loadStation()
+                    }
                 }
                 binding.tagsAdapter.adapter = tagsAdapter
             }
