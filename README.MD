@@ -31,7 +31,6 @@ __10.__ ExoPlayer with Cronet DataSourceFactory <br/>
 
 ### Presentation Screens & Gifs:
 
-https://user-images.githubusercontent.com/71845637/159132959-b20cb6d8-1d6c-44a0-ba8e-4be18ad32e42.mp4
 ![Screenshot_1](https://user-images.githubusercontent.com/71845637/158758951-4360f3b2-1f5b-41b9-bb7e-4297de3bf2c5.jpg)
 ![Screenshot_2](https://user-images.githubusercontent.com/71845637/158758957-232573db-6363-487c-8cbd-937516129201.jpg)
 ![Screenshot_3](https://user-images.githubusercontent.com/71845637/158758958-3c9ee218-19e0-4c76-a29e-8ab1a5272725.jpg)
