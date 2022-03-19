@@ -1,5 +1,6 @@
 package com.example.frequency.screen.home
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.frequency.MainVM.Companion.GAUTH
 import com.example.frequency.foundation.views.BaseVM
@@ -29,6 +30,9 @@ class HomeVM @Inject constructor(
     private val _userLD = savedStateHandle.getLiveData<User>(STATE_USER)
     val userLD = _userLD.share()
 
+    private val _queryLD = savedStateHandle.getLiveData<String>(STATE_QUERY)
+    val queryLD = _queryLD.share()
+
     private val _stationListLD = savedStateHandle.getLiveData<NullableStations>(STATIONS)
     val stationListLD = _stationListLD.share()
 
@@ -43,14 +47,7 @@ class HomeVM @Inject constructor(
         _tagListLD.value = tagsList
     }
 
-    private fun initSSH() {
-        if (!savedStateHandle.contains(STATIONS)) {
-            savedStateHandle.set(STATIONS, stationListLD.value)
-        }
-        if (!savedStateHandle.contains(STATE_USER)) {
-            savedStateHandle.set(STATE_USER, userLD.value)
-        }
-    }
+
 
     private fun updateUser(user: User? = null) {
         if (user == null) {
@@ -80,40 +77,61 @@ class HomeVM @Inject constructor(
 
     private fun getStationList() {
         if (stationListLD.value == null) {
-            loadStation(reversed = false)//reversed = true
+            loadStation()
         }
     }
 
-    fun loadStation(offset: Int? = 0, reversed: Boolean = false, direction: Boolean = true) {
-        when {
-            currentOffset - 25 <= 0 -> currentOffset = 0
-            !direction -> currentOffset - 25
-            direction -> currentOffset + 25
-        }
-
+    fun loadStation() {
+        Log.d(TAG, "offset $currentOffset")
         viewModelScope.launch(Dispatchers.IO) {
             _showPbLd.postValue(Event(true))
-            val list =
-                radioBrowser.getWideSearchStation(
-                    searchRequest = currentTag,
+            val list = radioBrowser.getWideSearchStation(
+                    searchRequest = queryLD.value ?: "",
                     offset = currentOffset,
-                    tag = currentTag
+                    tag = currentTag,
                 ) ?: emptyList()
             _stationListLD.postValue(list)
             delay(400)
             _showPbLd.postValue(Event(false))
         }
-        if (!direction && currentOffset - 25 >= 0) {
-            currentOffset -= 25
-        } else {
-            currentOffset += 25
-        }
-
     }
 
-    fun setCurrentTag(tag: String) {
-        currentTag = tag
+    fun riseOffset() {
+        currentOffset += 25
+    }
+
+    fun decreaseOffset() {
+        if (currentOffset - 25 <= 0) {
+            dropOffset()
+        } else {
+            currentOffset -= 25
+        }
+    }
+
+    fun dropOffset() {
         currentOffset = 0
+    }
+
+    fun changeTag(tag: String) {
+        currentTag = tag
+    }
+
+    fun setUpdatedQuery(query: String?) {
+        if (queryLD.value != query) {
+            _queryLD.value = query
+        }
+    }
+
+    private fun initSSH() {
+        if (!savedStateHandle.contains(STATIONS)) {
+            savedStateHandle.set(STATIONS, stationListLD.value)
+        }
+        if (!savedStateHandle.contains(STATE_USER)) {
+            savedStateHandle.set(STATE_USER, userLD.value)
+        }
+        if (!savedStateHandle.contains(STATE_QUERY)) {
+            savedStateHandle.set(STATE_QUERY, queryLD.value)
+        }
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
@@ -129,6 +147,7 @@ class HomeVM @Inject constructor(
         }
     }
 
+
     companion object {
         @JvmStatic
         private val TAG = HomeVM::class.java.simpleName
@@ -138,6 +157,9 @@ class HomeVM @Inject constructor(
 
         @JvmStatic
         private val STATE_USER = "STATE_USER"
+
+        @JvmStatic
+        private val STATE_QUERY = "STATE_QUERY"
 
         @JvmStatic
         private val TAGS = "TAGS"

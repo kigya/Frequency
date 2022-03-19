@@ -15,7 +15,7 @@ android {
         minSdk 21
         targetSdk 32
         versionCode 1
-        versionName "0.1"
+        versionName "0.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -105,6 +105,7 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottieVersion"
     // hilt di
     implementation "com.google.dagger:hilt-android:2.41"
+    implementation "androidx.hilt:hilt-navigation-fragment:1.0.0"
     kapt 'com.google.dagger:hilt-compiler:2.41'
     // Shapable Image View
     implementation 'com.google.android.material:material:1.5.0'
@@ -114,6 +115,11 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.0'
     // google services
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
+    // using ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
+    // Coronet for QUIC streaming
+    implementation 'com.google.android.exoplayer:extension-cronet:2.17.1'
+    implementation 'com.google.android.gms:play-services-cronet:18.0.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

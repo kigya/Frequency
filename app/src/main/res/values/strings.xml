@@ -79,7 +79,6 @@
     <string name="station_name">Station: %1$s</string>
     <string name="now_playing">Now playing: 1%$s</string>
     <string name="about_station">About 1%$s</string>
-    <string name="short_desc_templ">"1%$skb, 1%$s, 1%$s, 1%$s"</string>
     <string name="user_preview">Image Preview</string>
     <string name="projectPage">https://github.com/kigya/Frequency</string>
     <string name="content_in_progress_notification">Content in production process</string>
@@ -89,6 +88,9 @@
     <string name="works_without_perm">Our app will not works without this permission, you can add it in settings.</string>
     <string name="sure_q">Are you sure?</string>
     <string name="tech_issue">Technical issue</string>
+    <string name="already_got">You already got it</string>
+    <string name="another_step">You are now %1$s step away from secret</string>
+    <string name="lo_for_music">Looking for music</string>
 
 
 </resources>

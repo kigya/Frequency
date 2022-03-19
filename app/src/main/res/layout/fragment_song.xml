@@ -39,8 +39,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/now_playing"
         android:textAlignment="textStart"
         android:textColor="@color/foam"
@@ -55,8 +55,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/about_station"
         android:textAlignment="textStart"
         android:textColor="@color/foam"
@@ -76,12 +76,12 @@
         android:textAlignment="textStart"
         android:textColor="@color/foam"
         android:textSize="18sp"
-        tools:text="additional"
         app:layout_constraintBottom_toTopOf="@+id/layoutPlaybackControls"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/short_description_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/short_description_tv"
+        tools:text="additional" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutPlaybackControls"
@@ -96,12 +96,11 @@
             android:id="@+id/buttonRecord"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginStart="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/detail_previous_list"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/buttonPrev"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_left_arrow_previous" />
@@ -110,12 +109,11 @@
             android:id="@+id/buttonPrev"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginStart="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/description_btn_skip_to_previous"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/buttonPlay"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/buttonRecord"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_left_arrow" />
@@ -135,16 +133,30 @@
             app:srcCompat="@drawable/ic_play_gray" />
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/buttonPause"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/detail_play"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buttonNext"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/buttonPrev"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_pause_gray" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/buttonNext"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginEnd="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/description_btn_skip_to_next"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/next_offset_bt"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/buttonPlay"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_right_arrow" />
 
@@ -152,18 +164,31 @@
             android:id="@+id/next_offset_bt"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginEnd="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/detail_next_list"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/buttonNext"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_right_arrow_next" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ProgressBar
+        android:id="@+id/loadUriProgress"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutPlaybackControls"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.99"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

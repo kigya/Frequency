@@ -57,7 +57,7 @@ interface RadioBrowser {
         private const val KEY_NAME_EXACT = false
         private const val KEY_COUNTRY_EXACT = false
         private const val KEY_STATE_EXACT = false
-        private const val KEY_COUNTRY_CODE = ""
+        private const val KEY_COUNTRY_CODE = "ru"
         private const val KEY_COUNTRY = ""
         private const val KEY_TAG = ""
         private const val KEY_LANGUAGE = ""

@@ -53,7 +53,9 @@ class ProvidesModule {
 
     @Provides
     fun provideUserDao(@ApplicationContext context: Context): UserDao {
-        val appRoom = Room.databaseBuilder(context, AppDB::class.java, "AppRoomDB").build()
+        val appRoom = Room
+            .databaseBuilder(context, AppDB::class.java, "AppRoomDB")
+            .build()
         return appRoom.getUserDao()
     }
 
