@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.signature.ObjectKey
 import com.example.frequency.R
 import com.example.frequency.databinding.RvItemStationBinding
 import com.example.frequency.network.radio_browser.models.Station
@@ -65,7 +65,7 @@ class StationsRecyclerAdapter(
 
                 Glide.with(binding.root.context)
                     .load(station.favicon)
-                    .error(R.drawable.ic_audiotrack_24)
+                    .placeholder(R.drawable.ic_audiotrack_24)
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .timeout(0)
