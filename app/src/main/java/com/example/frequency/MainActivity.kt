@@ -215,7 +215,8 @@ class MainActivity : AppCompatActivity(), Navigator {
             .load(uri)
             .timeout(timeout)
             .error(R.drawable.ic_unknown_user_photo)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .into(profileImage)
     }
 
@@ -283,7 +284,8 @@ class MainActivity : AppCompatActivity(), Navigator {
             .load(uri)
             .timeout(timeout)
             .error(R.drawable.ic_unknown_user_photo)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .into(view)
     }
 
@@ -506,7 +508,7 @@ class MainActivity : AppCompatActivity(), Navigator {
 
         val builder =
             NotificationCompat.Builder(this@MainActivity, FREQUENCY_CHANNEL)
-                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+                .setSmallIcon(R.drawable.ic_like_22)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.content_in_progress_notification))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

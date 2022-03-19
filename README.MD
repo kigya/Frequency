@@ -1,7 +1,7 @@
 # Frequency <img src="app/src/main/res/mipmap-hdpi/ic_launcher_round.png" alt="drawing" width="25"/>
-### Android web radio broadcasting application
+### Android web radio broadcasting application. <br/> It is developed as diploma project.
 
-### This application is developed as diploma project.
+Frequency uses the free radio station directory at https://www.radio-browser.info.
 
 ### Specification & Requirements:
 
@@ -24,6 +24,7 @@ __6.__ Hilt DI<br/>
 __7.__ Firebase API <br/>
 __8.__ Glide <br/>
 __9.__ Lottie animation <br/>
+__10.__ ExoPlayer with Cronet DataSourceFactory <br/>
 
 
 
