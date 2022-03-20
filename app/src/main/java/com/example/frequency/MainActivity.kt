@@ -14,6 +14,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -71,6 +73,12 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private var userIconUri = Uri.EMPTY
 
+    private val googleRegisterLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+            ::onUserDataReceived
+        )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply { setKeepOnScreenCondition { viewModel.isLoading.value } }
@@ -91,6 +99,15 @@ class MainActivity : AppCompatActivity(), Navigator {
         if (savedInstanceState == null) {
             openFragment(WaitFragment(), clearBackstack = true, addToBackStack = false)
             viewModel.signInWithFireBase()
+        }
+    }
+
+    private fun onUserDataReceived(result: ActivityResult) {
+        if (result.resultCode == RESULT_OK) {
+            viewModel.getAccount(result)
+        } else {
+            openFragment(WelcomeFragment(), addToBackStack = true)
+            showProgress(false)
         }
     }
 
@@ -158,6 +175,10 @@ class MainActivity : AppCompatActivity(), Navigator {
             viewModel.state.observe(this@MainActivity) {
                 showProgress(it.showProgress)
             }
+            viewModel.takeNewGToken.observeEvent(this@MainActivity) {
+                googleRegisterLauncher.launch(it.signInIntent)
+            }
+
         }
 
     }
@@ -485,7 +506,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    private fun disableSearchFocus(fragment: Fragment){
+    private fun disableSearchFocus(fragment: Fragment) {
         if (fragment is HomeFragment) {
             val musicSearch = fragment.view?.findViewById<SearchView>(R.id.musicSearch)
             musicSearch?.let {
