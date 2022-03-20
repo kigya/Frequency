@@ -22,8 +22,8 @@
         tools:visibility="visible">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:layout_gravity="center"
             app:cardBackgroundColor="@color/pb_card_view_background"
             app:cardCornerRadius="15dp"
@@ -145,7 +145,6 @@
                 android:layout_marginStart="16dp"
                 android:padding="0dp"
                 android:paddingStart="4dp"
-
                 android:text="@string/liked_songs"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"
