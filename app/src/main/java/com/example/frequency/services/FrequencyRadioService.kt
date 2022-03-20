@@ -8,7 +8,7 @@ import android.util.Log
 import com.example.frequency.foundation.services.BaseService
 import com.example.frequency.network.coronet.ICronetEngineProvider
 import com.example.frequency.network.radio_browser.models.Station
-import com.example.frequency.screen.song.SongFragment.Companion.KEY_SER_STATION
+import com.example.frequency.screen.views.song.SongFragment.Companion.KEY_SER_STATION
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ext.cronet.CronetDataSource
