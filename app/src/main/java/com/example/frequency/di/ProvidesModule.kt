@@ -2,12 +2,16 @@ package com.example.frequency.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.frequency.BuildConfig
+import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser
+import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser.Companion.BASE_URL
 import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.preferences.Preferences
 import com.example.frequency.repositorys.room.app_database.AppDB
 import com.example.frequency.repositorys.room.user_db.room.UserDao
-import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser
-import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser.Companion.BASE_URL
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -44,6 +48,21 @@ class ProvidesModule {
             .build()
 
         return retrofit.create(RadioBrowser::class.java)
+    }
+
+    @Provides
+    fun provideGoogleClient(@ApplicationContext context: Context): GoogleSignInClient {
+        val gOptions = GoogleSignInOptions
+            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(BuildConfig.firebase_api_key)
+            .requestProfile()
+            .requestEmail()
+            .build()
+
+        return GoogleSignIn.getClient(
+            context,
+            gOptions
+        )
     }
 
     @Provides

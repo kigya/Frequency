@@ -31,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
 
-    private val launchGoogleRegister =
+    private val googleRegisterLauncher =
         registerForActivityResult(
             StartActivityForResult(),
             ::onUserDataReceived
@@ -69,7 +69,7 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
     private fun initiateListeners() {
         with(binding) {
             continueGoogle.setOnClickListener {
-                launchGoogleRegister.launch(getClient().signInIntent)
+                viewModel.setGoogleSignInClient()
             }
             continueEmailButton.setOnClickListener {
                 navigator().openSignIn()
@@ -103,6 +103,10 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
                     )
                 }
             }
+            launchGoogleRegister.observeEvent(viewLifecycleOwner){
+                googleRegisterLauncher.launch(it.signInIntent)
+            }
+
             secretCurrentTaps.observe(viewLifecycleOwner) {
                 if (it > 4) {
                     val webIntent =
@@ -116,7 +120,7 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
 
     }
 
-    private fun getClientOptions() = GoogleSignInOptions
+    /*private fun getClientOptions() = GoogleSignInOptions
         .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(getString(R.string.default_web_client_id))
         .requestProfile()
@@ -127,7 +131,7 @@ class WelcomeFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
         requireActivity(),
         getClientOptions()
     )
-
+*/
     private fun onUserDataReceived(result: ActivityResult) {
         viewModel.getAccount(result)
     }

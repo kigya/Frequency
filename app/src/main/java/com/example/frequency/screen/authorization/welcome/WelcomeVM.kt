@@ -16,6 +16,7 @@ import com.example.frequency.utils.SummaryUtils.ERROR
 import com.example.frequency.utils.SummaryUtils.FAILURE
 import com.example.frequency.utils.SummaryUtils.SUCCESS
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class WelcomeVM @Inject constructor(
     private val authFireBase: FirebaseAuth,
     private val sharedPreferences: AppDefaultPreferences,
+    private val googleSignInClient: GoogleSignInClient,
     savedStateHandle: SavedStateHandle
 ) : BaseVM() {
 
@@ -34,6 +36,9 @@ class WelcomeVM @Inject constructor(
 
     private val _navigateToHome = MutableLiveEvent<User>()
     val navigateToHome = _navigateToHome.share()
+
+    private val _launchGoogleRegister = MutableLiveEvent<GoogleSignInClient>()
+    val launchGoogleRegister = _launchGoogleRegister.share()
 
     private val _showSnackBar = MutableLiveEvent<SnackBarEntity>()
     val showSnackBar = _showSnackBar.share()
@@ -127,6 +132,10 @@ class WelcomeVM @Inject constructor(
             _secretCurrentTaps.postValue(currentValue + 1)
             _showSnackBar.provideEvent(SnackBarEntity(R.string.another_step, (4-currentValue).toString()))
         }
+    }
+
+    fun setGoogleSignInClient(){
+        _launchGoogleRegister.provideEvent(googleSignInClient)
     }
 
     companion object {
