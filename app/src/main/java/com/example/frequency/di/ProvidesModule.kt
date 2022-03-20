@@ -3,12 +3,12 @@ package com.example.frequency.di
 import android.content.Context
 import androidx.room.Room
 import com.example.frequency.BuildConfig
-import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser
-import com.example.frequency.network.radio_browser.radostation_list.RadioBrowser.Companion.BASE_URL
+import com.example.frequency.repositories.remote.radio_browser.radostation_list.RadioBrowser
+import com.example.frequency.repositories.remote.radio_browser.radostation_list.RadioBrowser.Companion.BASE_URL
 import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.preferences.Preferences
-import com.example.frequency.repositorys.room.app_database.AppDB
-import com.example.frequency.repositorys.room.user_db.room.UserDao
+import com.example.frequency.repositories.local.room.app_database.AppDB
+import com.example.frequency.repositories.local.room.user_db.room.UserDao
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

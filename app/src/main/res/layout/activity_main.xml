@@ -138,7 +138,7 @@
                 tools:ignore="RtlSymmetry" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/nav_liked_songs_mb"
+                android:id="@+id/nav_liked_station_mb"
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
