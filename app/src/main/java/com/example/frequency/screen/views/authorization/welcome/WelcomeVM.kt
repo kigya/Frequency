@@ -1,4 +1,4 @@
-package com.example.frequency.screen.authorization.welcome
+package com.example.frequency.screen.views.authorization.welcome
 
 import android.net.Uri
 import android.util.Log

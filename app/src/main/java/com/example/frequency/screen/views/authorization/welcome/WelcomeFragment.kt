@@ -1,4 +1,4 @@
-package com.example.frequency.screen.authorization.welcome
+package com.example.frequency.screen.views.authorization.welcome
 
 import android.content.Intent
 import android.net.Uri
@@ -16,12 +16,10 @@ import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.screen.authorization.sign_in.SignInFragment
-import com.example.frequency.screen.home.HomeFragment
+import com.example.frequency.screen.views.authorization.sign_in.SignInFragment
+import com.example.frequency.screen.views.home.HomeFragment
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.hilt.android.AndroidEntryPoint
 
 

@@ -1,4 +1,4 @@
-package com.example.frequency.screen.info.profile
+package com.example.frequency.screen.views.info.profile
 
 import android.content.Context
 import android.content.Intent

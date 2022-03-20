@@ -1,4 +1,4 @@
-package com.example.frequency.screen
+package com.example.frequency.screen.views
 
 import android.os.Bundle
 import android.util.Log

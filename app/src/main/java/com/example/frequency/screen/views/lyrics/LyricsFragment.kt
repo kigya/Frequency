@@ -1,13 +1,12 @@
-package com.example.frequency.screen.info.contact_us
+package com.example.frequency.screen.views.lyrics
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.example.frequency.BuildConfig
 import com.example.frequency.R
-import com.example.frequency.databinding.FragmentContactUsBinding
+import com.example.frequency.databinding.FragmentLyricsBinding
 import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
@@ -17,11 +16,11 @@ import com.example.frequency.utils.ActionStore.provideProfileAction
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ContactUsFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions {
+class LyricsFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions {
 
-    override val viewModel by viewModels<ContactUsVM>()
+    override val viewModel by viewModels<LyricsVM>()
 
-    private var _binding: FragmentContactUsBinding? = null
+    private var _binding: FragmentLyricsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,23 +33,18 @@ class ContactUsFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomAct
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentContactUsBinding.inflate(inflater, container, false)
+        _binding = FragmentLyricsBinding.inflate(inflater, container, false)
         // initialise listeners
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.aboutVersion.text = getString(R.string.about_version, BuildConfig.VERSION_NAME)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 
-    override fun getTitleRes() = R.string.contact_us
+    override fun getTitleRes() = R.string.lyrics
 
     override fun getCustomActions() = listOf(
         menuAction,
@@ -59,7 +53,7 @@ class ContactUsFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomAct
 
     companion object {
         @JvmStatic
-        fun newInstance() = ContactUsFragment().apply {
+        fun newInstance() = LyricsFragment().apply {
             arguments = Bundle().apply {
 
             }

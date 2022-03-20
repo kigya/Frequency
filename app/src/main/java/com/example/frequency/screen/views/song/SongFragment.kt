@@ -1,4 +1,4 @@
-package com.example.frequency.screen.song
+package com.example.frequency.screen.views.song
 
 import android.annotation.SuppressLint
 import android.content.ComponentName

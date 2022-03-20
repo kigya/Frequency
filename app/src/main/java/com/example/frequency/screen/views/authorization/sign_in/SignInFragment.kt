@@ -1,4 +1,4 @@
-package com.example.frequency.screen.authorization.sign_in
+package com.example.frequency.screen.views.authorization.sign_in
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.screen.home.HomeFragment
+import com.example.frequency.screen.views.home.HomeFragment
 import com.example.frequency.utils.observeEvent
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.google.firebase.auth.FirebaseAuth

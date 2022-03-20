@@ -1,9 +1,8 @@
-package com.example.frequency.screen.info.profile
+package com.example.frequency.screen.views.info.profile
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import com.example.frequency.MainVM.Companion.GAUTH
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
@@ -11,8 +10,6 @@ import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val KEY_USER = "KEY_USER"

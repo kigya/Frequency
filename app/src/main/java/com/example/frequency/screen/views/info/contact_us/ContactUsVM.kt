@@ -1,11 +1,10 @@
-package com.example.frequency.screen.lyrics
+package com.example.frequency.screen.views.info.contact_us
 
 import com.example.frequency.foundation.views.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class LyricsVM @Inject constructor() : BaseVM() {
-
+class ContactUsVM @Inject constructor(): BaseVM() {
 
 }

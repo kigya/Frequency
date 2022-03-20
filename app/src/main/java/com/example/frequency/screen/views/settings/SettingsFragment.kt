@@ -1,4 +1,4 @@
-package com.example.frequency.screen.settings
+package com.example.frequency.screen.views.settings
 
 import android.app.Activity
 import android.content.Context
@@ -111,7 +111,7 @@ class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle, Provid
 
     override fun getTitleRes() = R.string.settings
 
-    override fun getCustomActions() = listOf(menuAction, provideProfileAction() {
+    override fun getCustomActions() = listOf(menuAction, provideProfileAction {
         navigator().openProfile()
     })
 

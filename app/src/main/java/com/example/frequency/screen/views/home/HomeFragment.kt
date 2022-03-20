@@ -1,4 +1,4 @@
-package com.example.frequency.screen.home
+package com.example.frequency.screen.views.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

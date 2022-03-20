@@ -1,4 +1,4 @@
-package com.example.frequency.screen.song
+package com.example.frequency.screen.views.song
 
 import androidx.lifecycle.*
 import com.example.frequency.MainVM

@@ -1,4 +1,4 @@
-package com.example.frequency.screen.settings
+package com.example.frequency.screen.views.settings
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope

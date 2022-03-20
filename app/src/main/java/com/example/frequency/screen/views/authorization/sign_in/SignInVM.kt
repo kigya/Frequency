@@ -1,4 +1,4 @@
-package com.example.frequency.screen.authorization.sign_in
+package com.example.frequency.screen.views.authorization.sign_in
 
 import android.net.Uri
 import android.util.Log
