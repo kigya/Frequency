@@ -93,6 +93,8 @@
     <string name="lo_for_music">Looking for music</string>
     <string name="error_try_again_later">Error, try again later</string>
     <string name="try_again">Reload</string>
+    <string name="label">label</string>
+    <string name="action_play">action play</string>
 
 
 </resources>

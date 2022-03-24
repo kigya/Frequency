@@ -6,15 +6,21 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.example.frequency.FrequencyApplication.Companion.FREQUENCY_MUSIC_CHANNEL
 import com.example.frequency.MainActivity
-import com.example.frequency.MainActivity.Companion.FREQUENCY_CHANNEL
 import com.example.frequency.R
 
 class NotificationHelper(
-    context: Context,
-
+    private val context: Context,
 ) {
+
+    private lateinit var remoteView: RemoteViews
+
+    init {
+        createNotification()
+    }
 
     private val contentIntent by lazy {
         PendingIntent.getActivity(
@@ -29,15 +35,25 @@ class NotificationHelper(
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
+    private fun createNotification(){
+        remoteView = RemoteViews(context.packageName, R.layout.station_info_notification)
+        remoteView.setImageViewResource(R.id.not_station_icon_iv, R.drawable.ic_audiotrack_24)
+        remoteView.setTextViewText(R.id.station_title, "Title of the notification")
+        remoteView.setTextViewText(R.id.station_info, "Description of the notification")
+    }
+
     private val notificationBuilder: NotificationCompat.Builder by lazy {
-        NotificationCompat.Builder(context, FREQUENCY_CHANNEL)
+        NotificationCompat.Builder(context, FREQUENCY_MUSIC_CHANNEL)
+            .setCustomContentView(remoteView)
             .setContentTitle(context.getString(R.string.app_name))
             .setSound(null)
             .setContentIntent(contentIntent)
-            .setSmallIcon(R.drawable.ic_audiotrack_24)
+            .setSmallIcon(R.drawable.ic_auth_logo)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
     }
+
+
 
     fun getNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -27,8 +27,6 @@ __9.__ Lottie animation <br/>
 __10.__ ExoPlayer with Cronet DataSourceFactory <br/>
 
 
-
-
 ### Presentation Screens:
 
 ![Screenshot_1](https://user-images.githubusercontent.com/71845637/158758951-4360f3b2-1f5b-41b9-bb7e-4297de3bf2c5.jpg)
