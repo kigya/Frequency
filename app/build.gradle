@@ -108,7 +108,6 @@ dependencies {
         transitive = false
     }
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
-
     // lottie
     implementation "com.airbnb.android:lottie:$lottieVersion"
     // hilt di
