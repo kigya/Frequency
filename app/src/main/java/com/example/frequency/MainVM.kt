@@ -1,6 +1,7 @@
 package com.example.frequency
 
 import android.util.Log
+import androidx.activity.result.ActivityResult
 import androidx.lifecycle.*
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.SnackBarEntity
@@ -9,7 +10,11 @@ import com.example.frequency.network.sign_up.validation.SignInState
 import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.utils.*
 import com.example.frequency.utils.SummaryUtils.SUCCESS
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -22,6 +27,7 @@ import javax.inject.Inject
 class MainVM @Inject constructor(
     private val authFirebaseAuth: FirebaseAuth,
     private val shearedPreferences: AppDefaultPreferences,
+    private val googleSignInClient: GoogleSignInClient,
     private val savedStateHandle: SavedStateHandle
 ) : BaseVM(), LifecycleEventObserver {
 
@@ -33,6 +39,9 @@ class MainVM @Inject constructor(
 
     private val _navigateToHome = MutableUnitLiveEvent()
     val navigateToHome = _navigateToHome.share()
+
+    private val _takeNewGToken = MutableLiveEvent<GoogleSignInClient>()
+    val takeNewGToken = _takeNewGToken.share()
 
     private val _regMethod = savedStateHandle.getLiveData<Int>(STATE_REG_METHOD)
     val regMethod = _regMethod.share()
@@ -135,6 +144,7 @@ class MainVM @Inject constructor(
                     }
             } else {
                 val credential = GoogleAuthProvider.getCredential(secure, null)
+                Log.d(TAG, secure + credential.toString())
                 authFirebaseAuth.signInWithCredential(credential)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -147,7 +157,10 @@ class MainVM @Inject constructor(
                                 _navigateToHome.provideEvent()
                                 hideProgress()
                             }
-                        } else {
+                        } else if(task.exception is FirebaseAuthInvalidCredentialsException) {
+                            _takeNewGToken.provideEvent(googleSignInClient)
+                        }
+                        else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithGoogle:failure", task.exception)
                             _showSnackBar.value = Event(SnackBarEntity(R.string.reg_needed))
@@ -160,6 +173,27 @@ class MainVM @Inject constructor(
         }
     }
 
+    fun getAccount(result: ActivityResult) {
+        showProgress()
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            if (account != null) {
+                firebaseLogin(secure = account.idToken.toString())
+                shearedPreferences.setGToken(account.idToken.toString())
+            } else {
+                Log.d("WelcomeVM", "account == null")
+                Log.d(TAG, "Error $account")
+                hideProgress()
+                _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, iconTag = SummaryUtils.ERROR))
+            }
+        } catch (e: ApiException) {
+            hideProgress()
+            Log.d(TAG, "Error ${e.message}")
+            _showSnackBar.value = Event(SnackBarEntity(R.string.auth_fail, iconTag = SummaryUtils.ERROR))
+        }
+    }
+
     private fun showProgress() {
         _state.value = SignInState(signInInProgress = true)
     }
@@ -167,7 +201,6 @@ class MainVM @Inject constructor(
     private fun hideProgress() {
         _state.value = _state.requireValue().copy(signInInProgress = false)
     }
-
 
     companion object {
         //user
@@ -184,7 +217,7 @@ class MainVM @Inject constructor(
         private val STATE_KEY_ICON = "STATE_KEY_ICON"
 
         @JvmStatic
-        private val TAG = this::class.java.simpleName
+        private val TAG = MainVM::class.java.simpleName
 
         @JvmStatic
         val EMAIL_PASS = 1000

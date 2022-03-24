@@ -2,7 +2,7 @@ package com.example.frequency.network.sign_up
 
 import android.os.Parcelable
 import androidx.annotation.StringRes
-import com.example.frequency.screen.authorization.sign_up.SignUpVM.Companion.NO_ERROR_MESSAGE
+import com.example.frequency.ui.screens.authorization.sign_up.SignUpVM.Companion.NO_ERROR_MESSAGE
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

@@ -3,8 +3,7 @@ package com.example.frequency.foundation.contract
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import com.example.frequency.model.User
-import com.example.frequency.network.radio_browser.models.Station
+import com.example.frequency.repositories.remote.radio_browser.models.Station
 
 
 typealias ResultListener<T> = (T) -> Unit

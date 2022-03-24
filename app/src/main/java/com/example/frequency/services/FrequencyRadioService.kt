@@ -7,10 +7,11 @@ import android.os.IBinder
 import android.util.Log
 import com.example.frequency.foundation.services.BaseService
 import com.example.frequency.network.coronet.ICronetEngineProvider
-import com.example.frequency.network.radio_browser.models.Station
-import com.example.frequency.screen.song.SongFragment.Companion.KEY_SER_STATION
+import com.example.frequency.repositories.remote.radio_browser.models.Station
+import com.example.frequency.ui.screens.song.SongFragment.Companion.KEY_SER_STATION
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.cronet.CronetDataSource
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultDataSource
@@ -76,6 +77,7 @@ class FrequencyRadioService : BaseService() {
     private fun startMusic() {
         if (!exoPlayer.isPlaying) {
             exoPlayer.play()
+
         }
     }
 
@@ -101,11 +103,12 @@ class FrequencyRadioService : BaseService() {
             .Builder(this)
             .setMediaSourceFactory(
                 DefaultMediaSourceFactory(dataSourceFactory)
-                    .setLiveTargetOffsetMs(5000)
+                    .setLiveTargetOffsetMs(6000)
             )
             .build()
 
         setMediaItem()
+        setStateListener()
         exoPlayer.prepare()
     }
 
@@ -122,6 +125,17 @@ class FrequencyRadioService : BaseService() {
         } catch (e: IOException) {
             Log.d(TAG, e.message.toString())
         }
+
+    }
+
+    private fun setStateListener(){
+        exoPlayer.addListener(object: Player.Listener{
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                super.onPlaybackStateChanged(playbackState)
+
+
+            }
+        })
 
     }
 

@@ -14,6 +14,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -30,6 +32,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.frequency.FrequencyApplication.Companion.FREQUENCY_CHANNEL
 import com.example.frequency.databinding.ActivityMainBinding
 import com.example.frequency.databinding.ActivityMainBinding.inflate
 import com.example.frequency.foundation.contract.Navigator
@@ -40,18 +43,18 @@ import com.example.frequency.foundation.model.Action
 import com.example.frequency.model.User
 import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.model.actions.ProfileAction
-import com.example.frequency.network.radio_browser.models.Station
-import com.example.frequency.screen.PreviewFragment
-import com.example.frequency.screen.WaitFragment
-import com.example.frequency.screen.authorization.sign_in.SignInFragment
-import com.example.frequency.screen.authorization.sign_up.SignUpFragment
-import com.example.frequency.screen.authorization.welcome.WelcomeFragment
-import com.example.frequency.screen.home.HomeFragment
-import com.example.frequency.screen.info.contact_us.ContactUsFragment
-import com.example.frequency.screen.info.profile.ProfileFragment
-import com.example.frequency.screen.lyrics.LyricsFragment
-import com.example.frequency.screen.settings.SettingsFragment
-import com.example.frequency.screen.song.SongFragment
+import com.example.frequency.repositories.remote.radio_browser.models.Station
+import com.example.frequency.ui.screens.PreviewFragment
+import com.example.frequency.ui.screens.WaitFragment
+import com.example.frequency.ui.screens.authorization.sign_in.SignInFragment
+import com.example.frequency.ui.screens.authorization.sign_up.SignUpFragment
+import com.example.frequency.ui.screens.authorization.welcome.WelcomeFragment
+import com.example.frequency.ui.screens.home.HomeFragment
+import com.example.frequency.ui.screens.info.contact_us.ContactUsFragment
+import com.example.frequency.ui.screens.info.profile.ProfileFragment
+import com.example.frequency.ui.screens.lyrics.LyricsFragment
+import com.example.frequency.ui.screens.settings.SettingsFragment
+import com.example.frequency.ui.screens.song.SongFragment
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,6 +73,12 @@ class MainActivity : AppCompatActivity(), Navigator {
     private val currentUser get() = viewModel.userLD.value!!
 
     private var userIconUri = Uri.EMPTY
+
+    private val googleRegisterLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+            ::onUserDataReceived
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +103,15 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
+    private fun onUserDataReceived(result: ActivityResult) {
+        if (result.resultCode == RESULT_OK) {
+            viewModel.getAccount(result)
+        } else {
+            openFragment(WelcomeFragment(), addToBackStack = true)
+            showProgress(false)
+        }
+    }
+
     private fun setListeners() {
 
         with(binding) {
@@ -106,7 +124,7 @@ class MainActivity : AppCompatActivity(), Navigator {
             navProfileMb.setOnClickListener {
                 openProfile()
             }
-            navLikedSongsMb.setOnClickListener {
+            navLikedStationMb.setOnClickListener {
                 sendNotification()
             }
             navContactUsMb.setOnClickListener {
@@ -136,15 +154,8 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private fun setObservers() {
         with(viewModel) {
-            userLD.observe(this@MainActivity) {
-                if (userIconUri != it.icon) {
-                    userIconUri = it.icon
-                    setImageByGlide(this@MainActivity, binding.navMenuUserIb, it.icon, 100)
-                    setImageAndVisibility(currentFragment)
-                }
-                if (binding.navMenuLoginButton.text != it.name) {
-                    binding.navMenuLoginButton.text = it.name
-                }
+            userLD.observe(this@MainActivity) { user ->
+                setUserInfo(user)
             }
             showSnackBar.observeEvent(this@MainActivity) {
                 showSnackbar(binding.root, getString(it.message, it.additional ?: ""), it.iconTag)
@@ -158,6 +169,10 @@ class MainActivity : AppCompatActivity(), Navigator {
             viewModel.state.observe(this@MainActivity) {
                 showProgress(it.showProgress)
             }
+            viewModel.takeNewGToken.observeEvent(this@MainActivity) {
+                googleRegisterLauncher.launch(it.signInIntent)
+            }
+
         }
 
     }
@@ -220,6 +235,21 @@ class MainActivity : AppCompatActivity(), Navigator {
             .into(profileImage)
     }
 
+    private fun setImageByGlide(
+        requireContext: Context,
+        view: ImageView,
+        uri: Uri?,
+        timeout: Int = 0
+    ) {
+        Glide.with(requireContext)
+            .load(uri)
+            .timeout(timeout)
+            .error(R.drawable.ic_unknown_user_photo)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .into(view)
+    }
+
     private fun updateUI() {
         val fragment = currentFragment
         titleFormatting(fragment)
@@ -274,19 +304,15 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    private fun setImageByGlide(
-        requireContext: Context,
-        view: ImageView,
-        uri: Uri?,
-        timeout: Int = 0
-    ) {
-        Glide.with(requireContext)
-            .load(uri)
-            .timeout(timeout)
-            .error(R.drawable.ic_unknown_user_photo)
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-            .into(view)
+    private fun setUserInfo(user: User) {
+        if (userIconUri != user.icon) {
+            userIconUri = user.icon
+            setImageByGlide(this@MainActivity, binding.navMenuUserIb, user.icon, 100)
+            setImageAndVisibility(currentFragment)
+        }
+        if (binding.navMenuLoginButton.text != user.name) {
+            binding.navMenuLoginButton.text = user.name
+        }
     }
 
     override fun openFragment(
@@ -485,7 +511,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    private fun disableSearchFocus(fragment: Fragment){
+    private fun disableSearchFocus(fragment: Fragment) {
         if (fragment is HomeFragment) {
             val musicSearch = fragment.view?.findViewById<SearchView>(R.id.musicSearch)
             musicSearch?.let {
@@ -525,9 +551,6 @@ class MainActivity : AppCompatActivity(), Navigator {
     companion object {
         @JvmStatic
         private val KEY_RESULT = "KEY_RESULT"
-
-        @JvmStatic
-        val FREQUENCY_CHANNEL = "FREQUENCY_CHANNEL"
 
         @JvmStatic
         val NOTIFICATION_ID = 235934624

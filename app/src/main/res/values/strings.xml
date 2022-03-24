@@ -7,7 +7,7 @@
     <string name="settings">Settings</string>
     <string name="faqs">FAQs</string>
     <string name="contact_us">Contact us</string>
-    <string name="liked_songs">Liked songs</string>
+    <string name="liked_songs">Liked stations</string>
     <string name="song">Song</string>
     <string name="lyrics">Lyrics</string>
     <!-- Preference Titles -->
@@ -91,6 +91,10 @@
     <string name="already_got">You already got it</string>
     <string name="another_step">You are now %1$s step away from secret</string>
     <string name="lo_for_music">Looking for music</string>
+    <string name="error_try_again_later">Error, try again later</string>
+    <string name="try_again">Reload</string>
+    <string name="label">label</string>
+    <string name="action_play">action play</string>
 
 
 </resources>

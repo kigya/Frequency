@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/station_not_bg"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/not_station_icon_iv"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:src="@drawable/cyberpunk2077"
+        android:contentDescription="@string/label" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/station_title"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="center"
+        android:textColor="@color/foam"
+        tools:text="Station title" />
+
+    <TextView
+        android:id="@+id/station_info"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/foam"
+        tools:text="Info" />
+
+    <ImageButton
+        android:id="@+id/action_ib"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_play"
+        android:contentDescription="@string/action_play" />
+    </LinearLayout>
+
+
+</LinearLayout>

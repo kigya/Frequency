@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import com.example.frequency.MainActivity.Companion.FREQUENCY_CHANNEL
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -14,10 +13,10 @@ class FrequencyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        createNotificationChannel()
+        createNotificationChannels()
     }
 
-    private fun createNotificationChannel() {
+    private fun createNotificationChannels() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -35,5 +34,21 @@ class FrequencyApplication : Application() {
         }
     }
 
+    companion object {
+        @JvmStatic
+        val FREQUENCY_CHANNEL = "FREQUENCY_CHANNEL"
+
+        @JvmStatic
+        val FREQUENCY_MUSIC_CHANNEL = "FREQUENCY_MUSIC_CHANNEL"
+
+        @JvmStatic
+        val ACTION_PLAY = "A_PLAY"
+
+        @JvmStatic
+        val ACTION_STOP = "A_STOP"
+
+        @JvmStatic
+        val ACTION_PAUSE = "A_PAUSE"
+    }
 
 }

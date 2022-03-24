@@ -22,8 +22,8 @@
         tools:visibility="visible">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:layout_gravity="center"
             app:cardBackgroundColor="@color/pb_card_view_background"
             app:cardCornerRadius="15dp"
@@ -138,14 +138,13 @@
                 tools:ignore="RtlSymmetry" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/nav_liked_songs_mb"
+                android:id="@+id/nav_liked_station_mb"
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:padding="0dp"
                 android:paddingStart="4dp"
-
                 android:text="@string/liked_songs"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"
