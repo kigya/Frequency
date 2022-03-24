@@ -18,22 +18,21 @@ fun Fragment.navigator(): Navigator {
  * */
 interface Navigator {
 
-    // TODO необходимо определить сущьности перемещающиеся между фрагментами у всех функций перемещения и поместить в аргументы.
-    fun openWelcome() // TODO
+    fun openWelcome()
 
-    fun openSignIn() // TODO
+    fun openSignIn()
 
-    fun openSignUp() // TODO
+    fun openSignUp()
 
-    fun openSettings() // TODO
+    fun openSettings()
 
-    fun openSong(station: Station) // TODO
+    fun openSong(station: Station)
 
-    fun openLyrics() // TODO
+    fun openLyrics()
 
-    fun openProfile() //TODO
+    fun openProfile()
 
-    fun openContactUs() //TODO
+    fun openContactUs()
 
     fun openFaqs()
 
