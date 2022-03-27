@@ -3,12 +3,13 @@ package com.example.frequency.di
 import android.content.Context
 import androidx.room.Room
 import com.example.frequency.BuildConfig
-import com.example.frequency.repositories.remote.radio_browser.radostation_list.RadioBrowser
-import com.example.frequency.repositories.remote.radio_browser.radostation_list.RadioBrowser.Companion.BASE_URL
+import com.example.frequency.datasource.network.radio_browser.radostation_list.RadioBrowser
+import com.example.frequency.datasource.network.radio_browser.radostation_list.RadioBrowser.Companion.BASE_URL
 import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.preferences.Preferences
-import com.example.frequency.repositories.local.room.app_database.AppDB
-import com.example.frequency.repositories.local.room.user_db.room.UserDao
+import com.example.frequency.datasource.local.repositories.AppDB
+import com.example.frequency.datasource.local.repositories.room.user_db.room.UserDao
+import com.example.frequency.datasource.network.CoroutineDispatcherProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -18,13 +19,14 @@ import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -33,10 +35,12 @@ class ProvidesModule {
     @Provides
     fun provideRadioBrowserService(): RadioBrowser {
         val bodyInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-        val headersInterceptor =
-            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS)
+        val headersInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS)
 
         val client = OkHttpClient.Builder()
+            .connectTimeout(NETWORK_REQUEST_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(NETWORK_REQUEST_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .writeTimeout(NETWORK_REQUEST_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .addInterceptor(bodyInterceptor)
             .addInterceptor(headersInterceptor)
             .build()
@@ -82,6 +86,13 @@ class ProvidesModule {
     @Provides
     fun provideFireBaseInterface(): FirebaseAuth {
         return Firebase.auth
+    }
+
+    @Provides
+    fun provideCoroutineDispatcher() = CoroutineDispatcherProvider()
+
+    companion object{
+        val NETWORK_REQUEST_TIMEOUT_SECONDS = 15L
     }
 
 }

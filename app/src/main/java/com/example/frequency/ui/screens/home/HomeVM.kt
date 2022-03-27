@@ -3,25 +3,27 @@ package com.example.frequency.ui.screens.home
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.frequency.MainVM.Companion.GAUTH
+import com.example.frequency.datasource.network.CoroutineDispatcherProvider
+import com.example.frequency.datasource.network.radio_browser.radostation_list.NullableStations
+import com.example.frequency.datasource.network.radio_browser.radostation_list.RadioBrowser
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
-import com.example.frequency.repositories.remote.radio_browser.radostation_list.NullableStations
-import com.example.frequency.repositories.remote.radio_browser.radostation_list.RadioBrowser
 import com.example.frequency.preferences.AppDefaultPreferences
 import com.example.frequency.utils.Event
 import com.example.frequency.utils.MutableLiveEvent
 import com.example.frequency.utils.share
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeVM @Inject constructor(
     private val radioBrowser: RadioBrowser,
     private val shearedPreferences: AppDefaultPreferences,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val coroutineDispatcher: CoroutineDispatcherProvider
 ) : BaseVM(), LifecycleEventObserver {
 
     private var currentOffset = 0
@@ -83,16 +85,25 @@ class HomeVM @Inject constructor(
 
     fun loadStation() {
         Log.d(TAG, "offset $currentOffset")
-        viewModelScope.launch(Dispatchers.IO) {
-            _showPbLd.postValue(Event(true))
-            val list = radioBrowser.getWideSearchStation(
+        viewModelScope.launch(coroutineDispatcher.IO()) {
+            try {
+                _showPbLd.postValue(Event(true))
+                val list = radioBrowser.getWideSearchStation(
                     searchRequest = queryLD.value ?: "",
                     offset = currentOffset,
                     tag = currentTag,
                 ) ?: emptyList()
-            _stationListLD.postValue(list)
-            delay(400)
-            _showPbLd.postValue(Event(false))
+                _stationListLD.postValue(list)
+                delay(400)
+            }catch (ex: Exception){
+                if (ex is IOException){
+
+                }else{
+
+                }
+            }finally {
+                _showPbLd.postValue(Event(false))
+            }
         }
     }
 

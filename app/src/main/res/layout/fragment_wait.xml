@@ -7,36 +7,6 @@
     android:background="@color/ebony_clay"
     tools:context=".MainActivity">
 
-    <FrameLayout
-        android:id="@+id/pb_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.cardview.widget.CardView
-
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_gravity="center"
-            app:cardBackgroundColor="@color/pb_card_view_background"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="0dp">
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lot_animation"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_gravity="center"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/red_hand" />
-
-        </androidx.cardview.widget.CardView>
-
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

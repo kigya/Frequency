@@ -43,7 +43,7 @@ import com.example.frequency.foundation.model.Action
 import com.example.frequency.model.User
 import com.example.frequency.model.actions.MenuAction
 import com.example.frequency.model.actions.ProfileAction
-import com.example.frequency.repositories.remote.radio_browser.models.Station
+import com.example.frequency.datasource.network.radio_browser.models.Station
 import com.example.frequency.ui.screens.PreviewFragment
 import com.example.frequency.ui.screens.WaitFragment
 import com.example.frequency.ui.screens.authorization.sign_in.SignInFragment
@@ -54,7 +54,7 @@ import com.example.frequency.ui.screens.info.contact_us.ContactUsFragment
 import com.example.frequency.ui.screens.info.profile.ProfileFragment
 import com.example.frequency.ui.screens.lyrics.LyricsFragment
 import com.example.frequency.ui.screens.settings.SettingsFragment
-import com.example.frequency.ui.screens.song.SongFragment
+import com.example.frequency.ui.screens.song.StationFragment
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -435,7 +435,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun openSong(station: Station) {
-        homeCheck(SongFragment.newInstance(station))
+        homeCheck(StationFragment.newInstance(station))
     }
 
     override fun openLyrics() {

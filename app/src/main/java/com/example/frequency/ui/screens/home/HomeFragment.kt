@@ -13,9 +13,9 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.repositories.remote.radio_browser.StationsRecyclerAdapter
-import com.example.frequency.repositories.remote.radio_browser.TagsRecyclerAdapter
-import com.example.frequency.repositories.remote.radio_browser.radostation_list.toStation
+import com.example.frequency.datasource.network.radio_browser.StationsRecyclerAdapter
+import com.example.frequency.datasource.network.radio_browser.TagsRecyclerAdapter
+import com.example.frequency.datasource.network.radio_browser.radostation_list.toStationsList
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
 import com.example.frequency.utils.observeEvent
@@ -97,7 +97,7 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
             }
 
             stationListLD.observe(viewLifecycleOwner) { stationList ->
-                stationsAdapter = StationsRecyclerAdapter(stationList.toStation()) { station ->
+                stationsAdapter = StationsRecyclerAdapter(stationList.toStationsList()) { station ->
                     navigator().openSong(station)
                 }
                 binding.radioStationListRw.adapter = stationsAdapter
@@ -114,9 +114,8 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
                 }
                 binding.tagsAdapter.adapter = tagsAdapter
             }
-
-
         }
+
 
     }
 

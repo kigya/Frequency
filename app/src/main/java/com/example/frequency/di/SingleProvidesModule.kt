@@ -1,7 +1,7 @@
 package com.example.frequency.di
 
-import com.example.frequency.network.coronet.FrequencyDataFactoryProvider
-import com.example.frequency.network.coronet.ICronetEngineProvider
+import com.example.frequency.datasource.network.coronet.FrequencyDataFactoryProvider
+import com.example.frequency.datasource.network.coronet.ICronetEngineProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

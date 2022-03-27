@@ -10,7 +10,7 @@ interface AppDefaultPreferences {
 
     fun setNotificationStatus(status: Boolean)
 
-    fun setNotificationVolume(volume: String)
+    fun setNotificationVolume(volume: Int)
 
     fun setLanguage(language: String)
 

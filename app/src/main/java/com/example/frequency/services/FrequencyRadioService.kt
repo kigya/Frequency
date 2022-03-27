@@ -6,9 +6,9 @@ import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 import com.example.frequency.foundation.services.BaseService
-import com.example.frequency.network.coronet.ICronetEngineProvider
-import com.example.frequency.repositories.remote.radio_browser.models.Station
-import com.example.frequency.ui.screens.song.SongFragment.Companion.KEY_SER_STATION
+import com.example.frequency.datasource.network.coronet.ICronetEngineProvider
+import com.example.frequency.datasource.network.radio_browser.models.Station
+import com.example.frequency.ui.screens.song.StationFragment.Companion.KEY_SER_STATION
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
