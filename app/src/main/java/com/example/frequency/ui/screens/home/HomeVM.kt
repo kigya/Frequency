@@ -15,7 +15,9 @@ import com.example.frequency.utils.share
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.io.IOException
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -95,13 +97,13 @@ class HomeVM @Inject constructor(
                 ) ?: emptyList()
                 _stationListLD.postValue(list)
                 delay(400)
+            }catch (ex: HttpException){
+                Log.e(TAG, ex.message.toString())
+                loadStation()
             }catch (ex: Exception){
-                if (ex is IOException){
-
-                }else{
-
-                }
-            }finally {
+                Log.e(TAG, ex.message.toString())
+            }
+            finally {
                 _showPbLd.postValue(Event(false))
             }
         }

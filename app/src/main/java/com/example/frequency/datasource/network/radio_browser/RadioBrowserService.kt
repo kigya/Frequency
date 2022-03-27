@@ -17,6 +17,11 @@ class RadioBrowserService @Inject constructor() : RadioBrowserWrapper {
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS)
 
         val client = OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                chain.proceed(
+                    chain.request().newBuilder().header("User-Agent", "Frequency v0.1").build()
+                )
+            }
             .addInterceptor(bodyInterceptor)
             .addInterceptor(headersInterceptor)
             .build()
@@ -31,4 +36,7 @@ class RadioBrowserService @Inject constructor() : RadioBrowserWrapper {
         return retrofit.create(RadioBrowser::class.java)
     }
 
+    companion object {
+        const val NETWORK_REQUEST_TIMEOUT_SECONDS = 15L
+    }
 }
