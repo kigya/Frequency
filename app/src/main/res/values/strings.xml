@@ -89,12 +89,21 @@
     <string name="sure_q">Are you sure?</string>
     <string name="tech_issue">Technical issue</string>
     <string name="already_got">You already got it</string>
+    <string name="bad_gate_way">Http bed gate way.</string>
+    <string name="bgw_msg">Network problems - too high latency. Check your connection and try again.</string>
     <string name="another_step">You are now %1$s step away from secret</string>
     <string name="lo_for_music">Looking for music</string>
     <string name="error_try_again_later">Error, try again later</string>
     <string name="try_again">Reload</string>
+    <string name="pos_try_again">Try again</string>
     <string name="label">label</string>
     <string name="action_play">action play</string>
+    <string name="nw_time_limit">Network problem.</string>
+    <string name="query_limit_reached">Time limit reached.</string>
+    <string name="something_went_wrong">Something go wrong.</string>
+    <string name="settings_tb">Settings</string>
+    <string name="logout_tb">Logout</string>
+    <string name="close_tb">Close</string>
 
 
 </resources>

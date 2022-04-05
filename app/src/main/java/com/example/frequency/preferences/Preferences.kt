@@ -15,6 +15,7 @@ import com.example.frequency.utils.PreferenceTags.PASS
 import com.example.frequency.utils.PreferenceTags.REG_TYPE
 import com.example.frequency.utils.PreferenceTags.TOKEN
 import com.example.frequency.utils.PreferenceTags.USERNAME
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class Preferences @Inject constructor() : AppDefaultPreferences {
@@ -26,8 +27,7 @@ class Preferences @Inject constructor() : AppDefaultPreferences {
 
         private val preferencesListeners = mutableSetOf<PreferencesListener>()
 
-        private val prefListener =
-            SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+        private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
                 if (preferencesListeners.isNotEmpty()) {
                     preferencesListeners.forEach { listener ->
                         listener.onPreferencesUpdated(prefs, key)
@@ -46,6 +46,35 @@ class Preferences @Inject constructor() : AppDefaultPreferences {
         }
     }
 
+    /*
+    private val rootPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+    private val preferencesListeners = mutableSetOf<PreferencesListener>()
+
+    private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+        if (preferencesListeners.isNotEmpty()) {
+            preferencesListeners.forEach { listener ->
+                listener.onPreferencesUpdated(prefs, key)
+            }
+        }
+    }
+
+    init {
+        rootPreferences.registerOnSharedPreferenceChangeListener(prefListener)
+    }
+
+    val regType by rootPreferences!!.int(key = { REG_TYPE }, defValue = 1000)
+    val autologin by rootPreferences!!.boolean(key = { AUTOLOGIN }, defValue = true)
+    val notStatus by rootPreferences!!.boolean(key = { DISABLE_NOTIFICATIONS }, defValue = false)
+    val notVolume by rootPreferences!!.int(key = { NOTIFICATION_VOLUME }, defValue = 50)
+    val lang by rootPreferences!!.string(key = { LANGUAGE }, defValue = "en")
+    val name by rootPreferences!!.string(key = { USERNAME }, defValue = "")
+    val mail by rootPreferences!!.string(key = { EMAIL }, defValue = "")
+    val pass by rootPreferences!!.string(key = { PASS }, defValue = "")
+    val iconUri by rootPreferences!!.string(key = { ICON_URI }, defValue = "")
+    val token by rootPreferences!!.string(key = { TOKEN }, defValue = "")*/
+
+
     override fun setRegistrationType(type: Int) {
         rootPreferences?.edit()?.putInt(REG_TYPE, type)?.apply() ?: Unit
     }
@@ -58,8 +87,8 @@ class Preferences @Inject constructor() : AppDefaultPreferences {
         rootPreferences?.edit()?.putBoolean(DISABLE_NOTIFICATIONS, status)?.apply() ?: Unit
     }
 
-    override fun setNotificationVolume(volume: String) {
-        rootPreferences?.edit()?.putString(NOTIFICATION_VOLUME, volume)?.apply() ?: Unit
+    override fun setNotificationVolume(volume: Int) {
+        rootPreferences?.edit()?.putInt(NOTIFICATION_VOLUME, volume)?.apply() ?: Unit
     }
 
     override fun setLanguage(language: String) {

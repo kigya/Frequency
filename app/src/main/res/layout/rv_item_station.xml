@@ -23,7 +23,7 @@
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/rv_station_image"
                 android:layout_width="70dp"
                 android:layout_height="70dp"

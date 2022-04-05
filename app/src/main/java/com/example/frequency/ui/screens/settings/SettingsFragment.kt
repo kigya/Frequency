@@ -73,9 +73,11 @@ class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle, Provid
         logout?.setOnPreferenceClickListener {
             SimpleDialogFragment.show(
                 parentFragmentManager,
-                getString(R.string.logout_q),
-                getString(R.string.sure_q),
-                "Logout", "Close"
+                icon = R.drawable.ic_baseline_logout_24,
+                title = R.string.logout_q,
+                message = R.string.sure_q,
+                posBut = R.string.logout_tb,
+                neuBut = R.string.close_tb
             )
             return@setOnPreferenceClickListener true
         }
@@ -85,15 +87,21 @@ class SettingsFragment : PreferenceFragmentCompat(), ProvidesCustomTitle, Provid
         viewModel.launchReset.observeEvent(viewLifecycleOwner) {
             triggerRebirth(requireContext())
         }
-        viewModel.showPbLd.observeEvent(viewLifecycleOwner){
+        viewModel.showPbLd.observeEvent(viewLifecycleOwner) {
             navigator().showProgress(it)
         }
     }
 
     private fun setSimpleDialogFragmentListener() {
-        SimpleDialogFragment.setUpListener(parentFragmentManager, viewLifecycleOwner) {
-            viewModel.showPB(true)
-            viewModel.clearUserRootPreferences()
+        SimpleDialogFragment.setUpListener(parentFragmentManager, viewLifecycleOwner) { response ->
+            when (response) {
+                SimpleDialogFragment.POSITIVE_FRAG_RESPONSE -> {
+                    viewModel.showPB(true)
+                    viewModel.clearUserRootPreferences()
+                }
+                SimpleDialogFragment.NEGATIVE_FRAG_RESPONSE -> {}
+                SimpleDialogFragment.NEUTRAL_FRAG_RESPONSE -> {}
+            }
         }
     }
 

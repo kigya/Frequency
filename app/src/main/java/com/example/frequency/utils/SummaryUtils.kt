@@ -1,20 +1,13 @@
 package com.example.frequency.utils
 
-import android.content.Context
 import android.graphics.Color
-import android.net.Uri
 import android.util.Patterns
-import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.frequency.R
 import com.google.android.material.R.id
 import com.google.android.material.snackbar.Snackbar
-import de.hdodenhof.circleimageview.CircleImageView
 
 object SummaryUtils {
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ebony_clay">
@@ -60,12 +61,25 @@
             android:contentDescription="@string/detail_previous_list"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/next_offset_bt"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toStartOf="@+id/currentOffset"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_left_arrow_previous" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/currentOffset"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/foam"
+            android:textSize="18sp"
+            android:padding="4dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/next_offset_bt"
+            app:layout_constraintStart_toEndOf="@+id/previous_offset_bt"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/next_offset_bt"
@@ -76,8 +90,7 @@
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/previous_offset_bt"
+            app:layout_constraintStart_toEndOf="@+id/currentOffset"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_right_arrow_next" />
 
@@ -88,10 +101,10 @@
         android:id="@+id/musicSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:queryHint="@string/lo_for_music"
         android:autofillHints="Looking for music"
         app:layout_constraintEnd_toStartOf="@+id/end_guideline"
         app:layout_constraintStart_toStartOf="@+id/start_guideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="@string/lo_for_music" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
