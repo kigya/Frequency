@@ -1,9 +1,11 @@
 package com.example.frequency.ui.screens.authorization.sign_in
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import com.example.frequency.R
 import com.example.frequency.databinding.FragmentSignInBinding
@@ -12,8 +14,8 @@ import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.ui.screens.home.HomeFragment
-import com.example.frequency.utils.observeEvent
 import com.example.frequency.utils.SummaryUtils.showSnackbar
+import com.example.frequency.utils.observeEvent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -67,7 +69,17 @@ class SignInFragment : BaseFragment(), AuthFragments, ProvidesCustomTitle {
             toSignUpWelcomeBack.setOnClickListener {
                 navigator().openSignUp()
             }
+            forgotPasswordText.setOnClickListener {
 
+            }
+            inputPasswordAddressWelcomeBack.editText?.setOnEditorActionListener { _, i, _ ->
+                when(i){
+                    EditorInfo.IME_ACTION_DONE ->{
+                        onSignInButtonPressed()
+                    }
+                }
+                true
+            }
 
         }
     }

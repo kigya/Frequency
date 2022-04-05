@@ -68,7 +68,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/currentOffset"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textColor="@color/foam"
@@ -79,7 +79,6 @@
             app:layout_constraintEnd_toStartOf="@+id/next_offset_bt"
             app:layout_constraintStart_toEndOf="@+id/previous_offset_bt"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.448"
             tools:text="1" />
 
         <androidx.appcompat.widget.AppCompatImageButton

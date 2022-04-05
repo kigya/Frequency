@@ -30,6 +30,9 @@ import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.UtilPermission.ALL_PERMISSIONS
 import com.example.frequency.utils.UtilPermission.hasPermissions
 import com.example.frequency.utils.dialog_fragment.SimpleDialogFragment
+import com.example.frequency.utils.dialog_fragment.SimpleDialogFragment.Companion.NEGATIVE_FRAG_RESPONSE
+import com.example.frequency.utils.dialog_fragment.SimpleDialogFragment.Companion.NEUTRAL_FRAG_RESPONSE
+import com.example.frequency.utils.dialog_fragment.SimpleDialogFragment.Companion.POSITIVE_FRAG_RESPONSE
 import com.example.frequency.utils.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -142,8 +145,12 @@ class ProfileFragment : BaseFragment(), ProvidesCustomActions, ProvidesCustomTit
     }
 
     private fun setSimpleDialogFragmentListener() {
-        SimpleDialogFragment.setUpListener(parentFragmentManager, viewLifecycleOwner) {
-            settingsLauncher.launch(startSettingActivityIntent)
+        SimpleDialogFragment.setUpListener(parentFragmentManager, viewLifecycleOwner) { response ->
+            when (response) {
+                POSITIVE_FRAG_RESPONSE -> settingsLauncher.launch(startSettingActivityIntent)
+                NEGATIVE_FRAG_RESPONSE -> {}
+                NEUTRAL_FRAG_RESPONSE -> {}
+            }
         }
     }
 
@@ -160,10 +167,12 @@ class ProfileFragment : BaseFragment(), ProvidesCustomActions, ProvidesCustomTit
             showSnackbar(binding.root, "Permission denied forever!", iconPreset = ERROR)
         } else {
             SimpleDialogFragment.show(
-                parentFragmentManager,
-                getString(R.string.incorrect_app_work),
-                getString(R.string.works_without_perm),
-                "Settings", "Close"
+                fragmentManager = parentFragmentManager,
+                icon = R.drawable.ic_crisis_alert,
+                title = R.string.incorrect_app_work,
+                message = R.string.works_without_perm,
+                posBut = R.string.settings_tb,
+                neuBut = R.string.close_tb,
             )
         }
     }

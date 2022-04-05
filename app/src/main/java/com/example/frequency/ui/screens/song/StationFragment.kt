@@ -138,11 +138,11 @@ class StationFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActio
     }
 
     private fun unbindFrequencyService() {
-        if (frequencyRadioService != null) {
+       // if (frequencyRadioService != null) {
             stopPlaying()
             requireActivity().unbindService(boundServiceConnection)
-            frequencyRadioService = null
-        }
+            //frequencyRadioService = null
+        //}
     }
 
     private fun startPlaying() {

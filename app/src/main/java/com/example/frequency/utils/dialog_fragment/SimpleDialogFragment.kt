@@ -5,35 +5,50 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
-import com.example.frequency.R
 
 typealias SimpleDialogResultListener = (String) -> Unit
 
 class SimpleDialogFragment : DialogFragment() {
 
-    private val title get() = requireArguments().getString(ARG_TITLE)
-    private val requestMessage get() = requireArguments().getString(ARG_MESSAGE)
-    private val positiveButtonTxt get() = requireArguments().getString(ARG_POS_BUT)
-    private val neutralButtonTxt get() = requireArguments().getString(ARG_NEU_BUT)
-    private val negativeButtonTxt get() = requireArguments().getString(ARG_NEG_BUT)
+    private val icon get() = requireArguments().getInt(ARG_ICON)
+    private val title get() = requireArguments().getInt(ARG_TITLE)
+    private val message get() = requireArguments().getInt(ARG_MESSAGE)
+    private val positiveButtonTxt get() = requireArguments().getInt(ARG_POS_BUT)
+    private val neutralButtonTxt get() = requireArguments().getInt(ARG_NEU_BUT)
+    private val negativeButtonTxt get() = requireArguments().getInt(ARG_NEG_BUT)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(requireContext())
-            .setCancelable(true)
-            .setIcon(R.drawable.ic_crisis_alert)
+        val builder = AlertDialog.Builder(requireContext())
+            .setIcon(icon)
             .setTitle(title)
-            .setMessage(requestMessage)
+            .setMessage(message)
             .setPositiveButton(positiveButtonTxt) { _, _ ->
-                setFragmentResult("Confirmed")
+                setFragmentResult(POSITIVE_FRAG_RESPONSE)
             }
-            .setNeutralButton(neutralButtonTxt) { _, _ ->
+        if (neutralButtonTxt != 0) {
+            builder.setNeutralButton(neutralButtonTxt) { _, _ ->
+                setFragmentResult(NEUTRAL_FRAG_RESPONSE)
+            }
+        }
+        if (negativeButtonTxt != 0) {
+            builder.setNegativeButton(negativeButtonTxt) { _, _ ->
+                setFragmentResult(NEGATIVE_FRAG_RESPONSE)
+            }
+        }
+        if (negativeButtonTxt == 0 && neutralButtonTxt == 0) {
+            builder.setCancelable(false)
+        } else {
+            builder.setCancelable(true)
+        }
 
-            }
-            .create()
+        return builder.create()
+
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -67,6 +82,9 @@ class SimpleDialogFragment : DialogFragment() {
         private val ARG_TITLE = "ARG_TITLE"
 
         @JvmStatic
+        private val ARG_ICON = "ARG_ICON"
+
+        @JvmStatic
         private val ARG_NEG_BUT = "ARG_NEG_BUT"
 
         @JvmStatic
@@ -76,18 +94,29 @@ class SimpleDialogFragment : DialogFragment() {
         private val ARG_POS_BUT = "ARG_POS_BUT"
 
         @JvmStatic
+        val POSITIVE_FRAG_RESPONSE = "Confirmed"
+
+        @JvmStatic
+        val NEGATIVE_FRAG_RESPONSE = "Denied"
+
+        @JvmStatic
+        val NEUTRAL_FRAG_RESPONSE = "Ignore"
+
+        @JvmStatic
         val REQUEST_KEY = "$TAG:defaultRequestKey"
 
         fun show(
             fragmentManager: FragmentManager,
-            title: String,
-            message: String,
-            posBut: String,
-            neuBut: String,
-            negBut: String? = null
+            @DrawableRes icon: Int,
+            @StringRes title: Int,
+            @StringRes message: Int,
+            @StringRes posBut: Int,
+            @StringRes neuBut: Int? = null,
+            @StringRes negBut: Int? = null
         ) {
             val simpleDialog = SimpleDialogFragment()
             simpleDialog.arguments = bundleOf(
+                ARG_ICON to icon,
                 ARG_TITLE to title,
                 ARG_MESSAGE to message,
                 ARG_POS_BUT to posBut,

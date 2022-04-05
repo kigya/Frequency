@@ -1,53 +1,49 @@
 package com.example.frequency.ui.screens.home
 
+import android.annotation.SuppressLint
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.frequency.MainVM.Companion.GAUTH
+import com.example.frequency.R
 import com.example.frequency.datasource.network.CoroutineDispatcherProvider
-import com.example.frequency.datasource.network.radio_browser.radostation_list.NullableStations
+import com.example.frequency.datasource.network.radio_browser.models.Station
 import com.example.frequency.datasource.network.radio_browser.radostation_list.RadioBrowser
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.utils.Event
-import com.example.frequency.utils.MutableLiveEvent
-import com.example.frequency.utils.share
+import com.example.frequency.ui.screens.home.home_state_data.HomeErrorModel
+import com.example.frequency.ui.screens.home.home_state_data.HomeUIModel
+import com.example.frequency.ui.screens.home.home_state_data.HomeUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 
+@SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class HomeVM @Inject constructor(
     private val radioBrowser: RadioBrowser,
     private val shearedPreferences: AppDefaultPreferences,
-    private val savedStateHandle: SavedStateHandle,
-    private val coroutineDispatcher: CoroutineDispatcherProvider
+    private val coroutineDispatcher: CoroutineDispatcherProvider,
 ) : BaseVM(), LifecycleEventObserver {
 
-    private var _currentOffset = MutableLiveData(0)
-    val currentOffset = _currentOffset.share()
+    private val _uiState = MutableStateFlow<HomeUIState>(HomeUIState.Empty)
+    val uiState = _uiState.asStateFlow()
+
+    private var user = User("", "", Uri.EMPTY, "")
+    private var currentOffset = 0
     private var currentTag = ""
-
-    private val _userLD = savedStateHandle.getLiveData<User>(STATE_USER)
-    val userLD = _userLD.share()
-
-    private val _queryLD = savedStateHandle.getLiveData<String>(STATE_QUERY)
-    val queryLD = _queryLD.share()
-
-    private val _stationListLD = savedStateHandle.getLiveData<NullableStations>(STATIONS)
-    val stationListLD = _stationListLD.share()
-
-    private val _tagListLD = savedStateHandle.getLiveData<List<String>>(TAGS)
-    val tagListLD = _tagListLD.share()
-
-    private val _showPbLd = MutableLiveEvent<Boolean>()
-    val showPbLd = _showPbLd.share()
+    private var query = ""
+    private var stationList = emptyList<Station?>()
+    private var tagList = defaultTagsList
 
     init {
         updateUser()
-        _tagListLD.value = tagsList
     }
 
     private fun updateUser(user: User? = null) {
@@ -69,82 +65,81 @@ class HomeVM @Inject constructor(
     }
 
     private fun initializeUser(user: User) {
-        if (_userLD.value != user) {
-            _userLD.value = user
-            savedStateHandle.set(STATE_USER, user)
+        if (this.user != user) {
+            this.user = user
         }
     }
 
 
     private fun getStationList() {
-        if (stationListLD.value == null) {
+        if (stationList.isEmpty()) {
             loadStation()
         }
     }
 
     fun loadStation() {
-        Log.d(TAG, "offset ${currentOffset.value}")
+        Log.d(TAG, "offset $currentOffset")
+        _uiState.value = HomeUIState.Pending
         viewModelScope.launch(coroutineDispatcher.IO()) {
             try {
-                _showPbLd.postValue(Event(true))
                 val list = radioBrowser.getWideSearchStation(
-                    searchRequest = queryLD.value ?: "",
-                    offset = currentOffset.value,
+                    searchRequest = query,
+                    offset = currentOffset,
                     tag = currentTag,
                 ) ?: emptyList()
-                _stationListLD.postValue(list)
-                delay(400)
+                stationList = list
+                _uiState.value = HomeUIState.Loaded(
+                    HomeUIModel(
+                        this@HomeVM.user,
+                        this@HomeVM.currentOffset,
+                        this@HomeVM.query,
+                        this@HomeVM.stationList,
+                        this@HomeVM.tagList
+                    )
+                )
+                delay(300)
             } catch (ex: HttpException) {
                 Log.e(TAG, ex.message.toString())
-                loadStation()
+                httpExceptionDialog()
+            } catch (ex: IOException) {
+                Log.e(TAG, ex.message.toString())
+                onQueryTimeLimit()
             } catch (ex: Exception) {
                 Log.e(TAG, ex.message.toString())
-            } finally {
-                _showPbLd.postValue(Event(false))
+                onError()
             }
+
         }
     }
 
     fun riseOffset() {
-        val prevValue = currentOffset.value ?: 0
-        val listSize = stationListLD.value?.size ?: 0
+        val prevValue = currentOffset
+        val listSize = stationList.size
         if (listSize < 25) return
-        _currentOffset.value = stationListLD.value?.size?.plus(prevValue)
+        currentOffset = listSize + prevValue
     }
 
     fun decreaseOffset() {
-        val prevValue = currentOffset.value ?: 0
-        val listSize = stationListLD.value?.size ?: 0
+        val prevValue = currentOffset
+        val listSize = stationList.size
         if (prevValue - listSize <= 0) {
             dropOffset()
         } else {
-            _currentOffset.value = prevValue - listSize
+            currentOffset = prevValue - listSize
         }
     }
 
     fun dropOffset() {
-        _currentOffset.value = 0
+        currentOffset = 0
     }
 
     fun changeTag(tag: String) {
         currentTag = tag
     }
 
-    fun setUpdatedQuery(query: String?) {
-        if (queryLD.value != query) {
-            _queryLD.value = query
-        }
-    }
-
-    private fun initSSH() {
-        if (!savedStateHandle.contains(STATIONS)) {
-            savedStateHandle.set(STATIONS, stationListLD.value)
-        }
-        if (!savedStateHandle.contains(STATE_USER)) {
-            savedStateHandle.set(STATE_USER, userLD.value)
-        }
-        if (!savedStateHandle.contains(STATE_QUERY)) {
-            savedStateHandle.set(STATE_QUERY, queryLD.value)
+    fun setUpdatedQuery(query: String) {
+        if (this.query != query) {
+            this.query = query
         }
     }
 
@@ -155,10 +150,43 @@ class HomeVM @Inject constructor(
             }
 
             Lifecycle.Event.ON_DESTROY -> {
-                initSSH()
             }
             else -> {}
         }
+    }
+
+    private fun httpExceptionDialog() {
+        _uiState.value = HomeUIState.Error(
+            HomeErrorModel(
+                icon = R.drawable.ic_warning_24,
+                title = R.string.bad_gate_way,
+                message = R.string.bgw_msg,
+                positive = R.string.pos_try_again,
+            )
+        )
+    }
+
+
+    private fun onQueryTimeLimit() {
+        _uiState.value = HomeUIState.Error(
+            HomeErrorModel(
+                icon = R.drawable.ic_time_24,
+                title = R.string.nw_time_limit,
+                message = R.string.query_limit_reached,
+                positive = R.string.pos_try_again,
+            )
+        )
+    }
+
+    private fun onError() {
+        _uiState.value = HomeUIState.Error(
+            HomeErrorModel(
+                icon = R.drawable.ic_out_connection_24,
+                title = R.string.something_went_wrong,
+                message = R.string.something_went_wrong,
+                positive = R.string.pos_try_again,
+            )
+        )
     }
 
 
@@ -167,19 +195,10 @@ class HomeVM @Inject constructor(
         private val TAG = HomeVM::class.java.simpleName
 
         @JvmStatic
-        private val STATIONS = "STATIONS"
-
-        @JvmStatic
-        private val STATE_USER = "STATE_USER"
-
-        @JvmStatic
-        private val STATE_QUERY = "STATE_QUERY"
-
-        @JvmStatic
         private val TAGS = "TAGS"
 
         @JvmStatic
-        private val tagsList = listOf(
+        private val defaultTagsList = listOf(
             "rock",
             "pop",
             "metal",
