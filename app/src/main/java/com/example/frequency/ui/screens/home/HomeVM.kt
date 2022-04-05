@@ -16,8 +16,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.io.IOException
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +26,8 @@ class HomeVM @Inject constructor(
     private val coroutineDispatcher: CoroutineDispatcherProvider
 ) : BaseVM(), LifecycleEventObserver {
 
-    private var currentOffset = 0
+    private var _currentOffset = MutableLiveData(0)
+    val currentOffset = _currentOffset.share()
     private var currentTag = ""
 
     private val _userLD = savedStateHandle.getLiveData<User>(STATE_USER)
@@ -50,8 +49,6 @@ class HomeVM @Inject constructor(
         updateUser()
         _tagListLD.value = tagsList
     }
-
-
 
     private fun updateUser(user: User? = null) {
         if (user == null) {
@@ -86,43 +83,47 @@ class HomeVM @Inject constructor(
     }
 
     fun loadStation() {
-        Log.d(TAG, "offset $currentOffset")
+        Log.d(TAG, "offset ${currentOffset.value}")
         viewModelScope.launch(coroutineDispatcher.IO()) {
             try {
                 _showPbLd.postValue(Event(true))
                 val list = radioBrowser.getWideSearchStation(
                     searchRequest = queryLD.value ?: "",
-                    offset = currentOffset,
+                    offset = currentOffset.value,
                     tag = currentTag,
                 ) ?: emptyList()
                 _stationListLD.postValue(list)
                 delay(400)
-            }catch (ex: HttpException){
+            } catch (ex: HttpException) {
                 Log.e(TAG, ex.message.toString())
                 loadStation()
-            }catch (ex: Exception){
+            } catch (ex: Exception) {
                 Log.e(TAG, ex.message.toString())
-            }
-            finally {
+            } finally {
                 _showPbLd.postValue(Event(false))
             }
         }
     }
 
     fun riseOffset() {
-        currentOffset += 25
+        val prevValue = currentOffset.value ?: 0
+        val listSize = stationListLD.value?.size ?: 0
+        if (listSize < 25) return
+        _currentOffset.value = stationListLD.value?.size?.plus(prevValue)
     }
 
     fun decreaseOffset() {
-        if (currentOffset - 25 <= 0) {
+        val prevValue = currentOffset.value ?: 0
+        val listSize = stationListLD.value?.size ?: 0
+        if (prevValue - listSize <= 0) {
             dropOffset()
         } else {
-            currentOffset -= 25
+            _currentOffset.value = prevValue - listSize
         }
     }
 
     fun dropOffset() {
-        currentOffset = 0
+        _currentOffset.value = 0
     }
 
     fun changeTag(tag: String) {

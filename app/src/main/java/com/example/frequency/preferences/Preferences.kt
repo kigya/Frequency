@@ -46,7 +46,8 @@ class Preferences @Inject constructor() : AppDefaultPreferences {
         }
     }
 
-    /*private val rootPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    /*
+    private val rootPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     private val preferencesListeners = mutableSetOf<PreferencesListener>()
 

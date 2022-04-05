@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.frequency.R
 import com.example.frequency.databinding.FragmentSongBinding
+import com.example.frequency.datasource.network.radio_browser.models.Station
 import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.datasource.network.radio_browser.models.Station
 import com.example.frequency.services.FrequencyRadioService
 import com.example.frequency.services.MusicState
 import com.example.frequency.utils.ActionStore.menuAction
@@ -137,8 +138,11 @@ class StationFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActio
     }
 
     private fun unbindFrequencyService() {
-        stopPlaying()
-        requireActivity().unbindService(boundServiceConnection)
+        if (frequencyRadioService != null) {
+            stopPlaying()
+            requireActivity().unbindService(boundServiceConnection)
+            frequencyRadioService = null
+        }
     }
 
     private fun startPlaying() {

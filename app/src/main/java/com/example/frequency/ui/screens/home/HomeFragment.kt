@@ -9,13 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.frequency.R
 import com.example.frequency.databinding.FragmentHomeBinding
+import com.example.frequency.datasource.network.radio_browser.StationsRecyclerAdapter
+import com.example.frequency.datasource.network.radio_browser.TagsRecyclerAdapter
+import com.example.frequency.datasource.network.radio_browser.radostation_list.toStationsList
 import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.datasource.network.radio_browser.StationsRecyclerAdapter
-import com.example.frequency.datasource.network.radio_browser.TagsRecyclerAdapter
-import com.example.frequency.datasource.network.radio_browser.radostation_list.toStationsList
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
 import com.example.frequency.utils.observeEvent
@@ -63,12 +63,12 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
     private fun initiateListeners() {
         with(binding) {
             nextOffsetBt.setOnClickListener {
-                viewModel.riseOffset()
                 viewModel.loadStation()
+                viewModel.riseOffset()
             }
             previousOffsetBt.setOnClickListener {
-                viewModel.decreaseOffset()
                 viewModel.loadStation()
+                viewModel.decreaseOffset()
             }
             musicSearch.setOnQueryTextListener(object : OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -101,6 +101,8 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
                     navigator().openSong(station)
                 }
                 binding.radioStationListRw.adapter = stationsAdapter
+                val currentOffset = currentOffset.value ?: 0
+                binding.currentOffset.text = (currentOffset + stationList.size).toString()
             }
 
             tagListLD.observe(viewLifecycleOwner) { tags ->
