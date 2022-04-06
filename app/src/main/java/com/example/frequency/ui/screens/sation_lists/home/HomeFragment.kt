@@ -69,18 +69,18 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
     private fun initiateListeners() {
         with(binding) {
             nextOffsetBt.setOnClickListener {
-                viewModel.loadStation()
+                viewModel.loadStations()
                 viewModel.riseOffset()
             }
             previousOffsetBt.setOnClickListener {
-                viewModel.loadStation()
+                viewModel.loadStations()
                 viewModel.decreaseOffset()
             }
             musicSearch.setOnQueryTextListener(object : OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     viewModel.dropOffset()
                     viewModel.setUpdatedQuery((query ?: "").trim())
-                    viewModel.loadStation()
+                    viewModel.loadStations()
                     return false
                 }
 
@@ -123,7 +123,7 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
                                     setUpdatedQuery(it)
                                     changeTag(it)
                                     dropOffset()
-                                    loadStation()
+                                    loadStations()
                                 }
                             }
                             binding.tagsAdapter.adapter = tagsAdapter
@@ -164,7 +164,7 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
         SimpleDialogFragment.setUpListener(parentFragmentManager, viewLifecycleOwner) { response ->
             when (response) {
                 SimpleDialogFragment.POSITIVE_FRAG_RESPONSE -> {
-                    viewModel.loadStation()
+                    viewModel.loadStations()
                 }
                 SimpleDialogFragment.NEGATIVE_FRAG_RESPONSE -> {}
                 SimpleDialogFragment.NEUTRAL_FRAG_RESPONSE -> {}

@@ -11,7 +11,8 @@ class FavouriteStationsRepositoryImpl @Inject constructor(
 
     override suspend fun insertAll(vararg stations: Station) {
         return withContext(Dispatchers.IO) {
-            return@withContext favouriteStationsDao.insertAll(*stations.map { it.toStationEntity() }.toTypedArray())
+            return@withContext favouriteStationsDao.insertAll(*stations.map { it.toStationEntity() }
+                .toTypedArray())
         }
     }
 
@@ -29,14 +30,20 @@ class FavouriteStationsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addStation(entity: Station) {
-        return favouriteStationsDao.addStation(entity.toStationEntity())
+        return withContext(Dispatchers.IO) {
+            return@withContext favouriteStationsDao.addStation(entity.toStationEntity())
+        }
     }
 
     override suspend fun deleteStation(stationUuid: String): Int {
-        return favouriteStationsDao.deleteStation(stationUuid)
+        return withContext(Dispatchers.IO) {
+            return@withContext favouriteStationsDao.deleteStation(stationUuid)
+        }
     }
 
     override suspend fun deleteAllStations(): Int {
-        return favouriteStationsDao.deleteAllStations()
+        return withContext(Dispatchers.IO) {
+            return@withContext favouriteStationsDao.deleteAllStations()
+        }
     }
 }

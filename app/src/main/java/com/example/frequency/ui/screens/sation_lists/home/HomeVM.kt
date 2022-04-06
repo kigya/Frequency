@@ -17,7 +17,7 @@ import com.example.frequency.foundation.model.state.UIState
 import com.example.frequency.foundation.views.BaseVM
 import com.example.frequency.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
-import com.example.frequency.ui.screens.sation_lists.home.home_state_data.HomeUIModel
+import com.example.frequency.ui.screens.sation_lists.home.model.HomeUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -76,11 +76,11 @@ class HomeVM @Inject constructor(
 
     private fun getStationList() {
         if (stationList.isEmpty()) {
-            loadStation()
+            loadStations()
         }
     }
 
-    fun loadStation() {
+    fun loadStations() {
         Log.d(TAG, "offset $currentOffset")
         _uiState.value = UIState.Pending
         viewModelScope.launch(coroutineDispatcher.IO()) {
