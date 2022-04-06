@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import androidx.fragment.app.Fragment
 import com.example.frequency.foundation.services.BaseService
 import com.example.frequency.datasource.network.coronet.ICronetEngineProvider
 import com.example.frequency.datasource.network.radio_browser.models.Station
@@ -35,7 +36,7 @@ class FrequencyRadioService : BaseService() {
     private var stationBroadcastUri: String? = null
 
     init {
-        Log.d(TAG, "Service starts.")
+        Log.d(TAG, "Service init.")
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -44,25 +45,27 @@ class FrequencyRadioService : BaseService() {
 
         initializeMediaPlayer()
 
-        Log.d(TAG, "${station?.name}")
-        Log.d(TAG, "${station?.country}")
+        Log.d(TAG, "onBind ${station?.name}")
+        Log.d(TAG, "onBind ${station?.country}")
         return binder
     }
 
     override fun onCreate() {
         super.onCreate()
 
-
+        Log.d(TAG, "onCreate")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(TAG, "onStartCommand")
+
         return START_REDELIVER_INTENT
     }
 
     override fun onDestroy() {
         super.onDestroy()
         exoPlayer.release()
-        Log.d(TAG, "Service destroy.")
+        Log.d(TAG, "Service onDestroy.")
     }
 
     fun runAction(mState: MusicState) {
@@ -148,6 +151,7 @@ class FrequencyRadioService : BaseService() {
 
 
     override fun onUnbind(intent: Intent?): Boolean {
+        Log.d(TAG, "onUnbind")
         return super.onUnbind(intent)
     }
 
