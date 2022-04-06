@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.frequency.R
-import com.example.frequency.databinding.FragmentSongBinding
+import com.example.frequency.databinding.FragmentStationBinding
 import com.example.frequency.datasource.network.radio_browser.models.Station
 import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
@@ -28,13 +27,12 @@ import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class StationFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions {
 
     override val viewModel by viewModels<StationVM>()
 
-    private var _binding: FragmentSongBinding? = null
+    private var _binding: FragmentStationBinding? = null
     private val binding get() = _binding!!
 
     private var station: Station? = null
@@ -68,7 +66,7 @@ class StationFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActio
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSongBinding.inflate(inflater, container, false)
+        _binding = FragmentStationBinding.inflate(inflater, container, false)
         // initialise listeners
 
         return binding.root
@@ -89,21 +87,31 @@ class StationFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActio
     private fun initializeListeners() {
         with(binding) {
             buttonPlay.setOnClickListener {
-                sendCommandToBoundService(MusicState.PLAY)
-                startPlaying()
-                buttonPause.isVisible = true
-                buttonPlay.isVisible = false
+                onPlayButtonClick()
             }
             buttonPause.setOnClickListener {
-                sendCommandToBoundService(MusicState.PAUSE)
-                pausePlaying()
-                buttonPlay.isVisible = true
-                buttonPause.isVisible = false
+                onPauseButtonClick()
             }
-
 
         }
 
+    }
+
+    private fun playButtonState(playStatus: Boolean) {
+        binding.buttonPlay.isVisible = playStatus
+        binding.buttonPause.isVisible = !binding.buttonPlay.isVisible
+    }
+
+    private fun onPlayButtonClick() {
+        sendCommandToBoundService(MusicState.PLAY)
+        startPlaying()
+        playButtonState(false)
+    }
+
+    private fun onPauseButtonClick() {
+        sendCommandToBoundService(MusicState.PAUSE)
+        pausePlaying()
+        playButtonState(true)
     }
 
     private fun initializeObservers() {
@@ -120,9 +128,7 @@ class StationFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActio
 
         }
 
-
     }
-
 
     private fun sendCommandToBoundService(state: MusicState) {
         if (viewModel.isFrequencyRadioServiceBound.value != true) {
@@ -138,11 +144,15 @@ class StationFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActio
     }
 
     private fun unbindFrequencyService() {
-       // if (frequencyRadioService != null) {
-            stopPlaying()
-            requireActivity().unbindService(boundServiceConnection)
-            //frequencyRadioService = null
-        //}
+        val isServiceBound = viewModel.isFrequencyRadioServiceBound.value ?: false
+        if (isServiceBound) {
+            stopMusicAndService()
+        }
+    }
+
+    private fun stopMusicAndService() {
+        stopPlaying()
+        requireActivity().unbindService(boundServiceConnection)
     }
 
     private fun startPlaying() {
@@ -178,8 +188,8 @@ class StationFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActio
 
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         unbindFrequencyService()
     }
 
