@@ -1,4 +1,4 @@
-package com.example.frequency.ui.screens.song
+package com.example.frequency.ui.screens.station
 
 import androidx.lifecycle.*
 import com.example.frequency.MainVM.Companion.GAUTH

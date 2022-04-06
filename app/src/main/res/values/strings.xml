@@ -89,8 +89,8 @@
     <string name="sure_q">Are you sure?</string>
     <string name="tech_issue">Technical issue</string>
     <string name="already_got">You already got it</string>
-    <string name="bad_gate_way">Http bed gate way.</string>
-    <string name="bgw_msg">Network problems - too high latency. Check your connection and try again.</string>
+    <string name="bad_gate_way">Http bad gate way.</string>
+    <string name="bgw_msg">Network problems - too high ping. Check your connection and try again.</string>
     <string name="another_step">You are now %1$s step away from secret</string>
     <string name="lo_for_music">Looking for music</string>
     <string name="error_try_again_later">Error, try again later</string>

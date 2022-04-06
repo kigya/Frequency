@@ -1,8 +1,10 @@
 package com.example.frequency.datasource.network.radio_browser.models
 
 import android.os.Parcelable
+import com.example.frequency.datasource.local.repositories.favourite_stations_db.entites.StationEntity
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import java.util.*
 
 @Parcelize
 data class Station(
@@ -38,4 +40,39 @@ data class Station(
     @SerializedName("lastCheckOkTimeIso8601") val lastCheckOkTimeIso8601: String?,
     @SerializedName("lastLocalCheckTimeIso8601") val lastLocalCheckTimeIso8601: String?,
     @SerializedName("hasExtendedInfo") val hasExtendedInfo: String?,
-) : Parcelable
+) : Parcelable{
+    fun toStationEntity() = StationEntity(
+        name = this.name ?: "",
+        homepage = this.homepage ?: "",
+        url = this.url ?: "",
+        urlResolved = this.urlResolved ?: "",
+        bitrate = this.bitrate ?: "",
+        languageCodes = this.languageCodes ?: "",
+        language = this.language ?: "",
+        votes = this.votes ?: "",
+        tags = this.tags ?: "",
+        state = this.state ?: "",
+        country = this.country ?: "",
+        countryCode = this.countryCode ?: "",
+        clickTrend = this.clickTrend ?: "",
+        changeUuid = this.changeUuid ?: "",
+        lastCheckOk = this.lastCheckOk ?: "",
+        clickCount = this.clickCount ?: "",
+        favicon = this.favicon ?: "",
+        hls = this.hls ?: "",
+        codec = this.codec ?: "",
+        sslError = this.sslError ?: "",
+        stationUuid = this.stationUuid ?: UUID.randomUUID().toString(),
+        lastCheckTime = lastCheckTime ?: "",
+        lastChangeTime = this.lastChangeTime ?: "",
+        clickTimestamp = this.clickTimestamp ?: "",
+        lastCheckOkTime = this.lastCheckOkTime ?: "",
+        lastLocalCheckTime = this.lastLocalCheckTime ?: "",
+        lastCheckTimeIso8601 = this.lastCheckTimeIso8601 ?: "",
+        clickTimestampIso8601 = this.clickTimestampIso8601 ?: "",
+        lastChangeTimeIso8601 = this.lastChangeTimeIso8601 ?: "",
+        lastCheckOkTimeIso8601 = this.lastCheckOkTimeIso8601 ?: "",
+        lastLocalCheckTimeIso8601 = this.lastLocalCheckTimeIso8601 ?: "",
+        hasExtendedInfo = this.hasExtendedInfo ?: "",
+    )
+}

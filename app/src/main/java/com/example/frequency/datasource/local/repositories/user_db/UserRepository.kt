@@ -1,4 +1,4 @@
-package com.example.frequency.datasource.local.repositories.room.user_db
+package com.example.frequency.datasource.local.repositories.user_db
 
 import com.example.frequency.model.User
 

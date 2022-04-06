@@ -49,12 +49,12 @@ import com.example.frequency.ui.screens.WaitFragment
 import com.example.frequency.ui.screens.authorization.sign_in.SignInFragment
 import com.example.frequency.ui.screens.authorization.sign_up.SignUpFragment
 import com.example.frequency.ui.screens.authorization.welcome.WelcomeFragment
-import com.example.frequency.ui.screens.home.HomeFragment
+import com.example.frequency.ui.screens.sation_lists.home.HomeFragment
 import com.example.frequency.ui.screens.info.contact_us.ContactUsFragment
 import com.example.frequency.ui.screens.info.profile.ProfileFragment
 import com.example.frequency.ui.screens.lyrics.LyricsFragment
 import com.example.frequency.ui.screens.settings.SettingsFragment
-import com.example.frequency.ui.screens.song.StationFragment
+import com.example.frequency.ui.screens.station.StationFragment
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -399,7 +399,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     private fun homeCheck(fragment: Fragment) {
-        if (currentFragment is HomeFragment) {
+        if (currentFragment is HomeFragment || currentFragment is StationFragment ) {
             openFragment(fragment)
         } else {
             openFragment(fragment, addToBackStack = false)
@@ -434,7 +434,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    override fun openSong(station: Station) {
+    override fun openStation(station: Station) {
         homeCheck(StationFragment.newInstance(station))
     }
 

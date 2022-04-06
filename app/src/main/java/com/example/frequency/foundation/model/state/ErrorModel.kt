@@ -1,4 +1,4 @@
-package com.example.frequency.ui.screens.home.home_state_data
+package com.example.frequency.foundation.model.state
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
@@ -6,7 +6,7 @@ import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class HomeErrorModel(
+data class ErrorModel(
     @DrawableRes val icon: Int,
     @StringRes val title: Int,
     @StringRes val message: Int,

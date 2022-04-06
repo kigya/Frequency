@@ -1,10 +1,10 @@
-package com.example.frequency.datasource.local.repositories.room.user_db.room
+package com.example.frequency.datasource.local.repositories.user_db.room
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.frequency.datasource.local.repositories.room.user_db.entites.UserEntity
+import com.example.frequency.datasource.local.repositories.user_db.entites.UserEntity
 
 @Dao
 interface UserDao {

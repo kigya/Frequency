@@ -1,4 +1,4 @@
-package com.example.frequency.ui.screens.home.home_state_data
+package com.example.frequency.ui.screens.sation_lists.home.home_state_data
 
 import android.os.Parcelable
 import com.example.frequency.datasource.network.radio_browser.radostation_list.NullableStations

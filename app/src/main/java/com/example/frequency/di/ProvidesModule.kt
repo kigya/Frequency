@@ -1,10 +1,12 @@
 package com.example.frequency.di
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.frequency.BuildConfig
-import com.example.frequency.datasource.local.repositories.AppDB
-import com.example.frequency.datasource.local.repositories.room.user_db.room.UserDao
+import com.example.frequency.datasource.local.repositories.AppDataBase
+import com.example.frequency.datasource.local.repositories.favourite_stations_db.FavouriteStationsDao
+import com.example.frequency.datasource.local.repositories.user_db.room.UserDao
 import com.example.frequency.datasource.network.CoroutineDispatcherProvider
 import com.example.frequency.datasource.network.radio_browser.RadioBrowserService
 import com.example.frequency.datasource.network.radio_browser.radostation_list.RadioBrowser
@@ -49,17 +51,31 @@ class ProvidesModule {
         )
     }
 
+    @Singleton
     @Provides
     fun providePreferences(@ApplicationContext context: Context): AppDefaultPreferences {
         return Preferences.getDefaultPreferenceInstance(context)
     }
 
     @Provides
-    fun provideUserDao(@ApplicationContext context: Context): UserDao {
-        val appRoom = Room
-            .databaseBuilder(context, AppDB::class.java, "AppRoomDB")
+    @Singleton
+    fun provideAppDatabase(
+        application: Application,
+    ): AppDataBase{
+        return Room
+            .databaseBuilder(application, AppDataBase::class.java, "AppRoomDB")
             .build()
-        return appRoom.getUserDao()
+    }
+    @Singleton
+    @Provides
+    fun provideUserDao(appDataBase: AppDataBase): UserDao {
+        return appDataBase.getUserDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFavStationDao(appDataBase: AppDataBase): FavouriteStationsDao {
+        return appDataBase.getFavouriteStationsDao()
     }
 
     @Singleton

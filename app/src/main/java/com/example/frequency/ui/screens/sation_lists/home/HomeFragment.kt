@@ -1,4 +1,4 @@
-package com.example.frequency.ui.screens.home
+package com.example.frequency.ui.screens.sation_lists.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -20,7 +20,7 @@ import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.ui.screens.home.home_state_data.HomeUIState
+import com.example.frequency.foundation.model.state.UIState
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
 import com.example.frequency.utils.dialog_fragment.SimpleDialogFragment
@@ -98,18 +98,25 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
             uiState.asLiveData().observe(viewLifecycleOwner) { state ->
                 navigator().showProgress(false)
                 when (state) {
-                    is HomeUIState.Empty -> {
+                    is UIState.Empty -> {
 
                     }
-                    is HomeUIState.Pending -> {
+                    is UIState.Pending -> {
                         navigator().showProgress(true)
                     }
-                    is HomeUIState.Error -> {
-                        with(state.data) {
-                            showSimpleDialogFragment(icon, title, message, positive, neutral, negative)
+                    is UIState.Error -> {
+                        with(state.error) {
+                            showSimpleDialogFragment(
+                                icon,
+                                title,
+                                message,
+                                positive,
+                                neutral,
+                                negative
+                            )
                         }
                     }
-                    is HomeUIState.Loaded -> {
+                    is UIState.Success -> {
                         with(state.data) {
                             tagsAdapter = TagsRecyclerAdapter(tagList) {
                                 it.let {
@@ -122,7 +129,7 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
                             binding.tagsAdapter.adapter = tagsAdapter
                             stationsAdapter =
                                 StationsRecyclerAdapter(stationList.toStationsList()) { station ->
-                                    navigator().openSong(station)
+                                    navigator().openStation(station)
                                 }
                             binding.radioStationListRw.adapter = stationsAdapter
                             binding.currentOffset.text =

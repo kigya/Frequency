@@ -1,4 +1,4 @@
-package com.example.frequency.datasource.local.repositories.room.user_db.entites
+package com.example.frequency.datasource.local.repositories.user_db.entites
 
 import android.net.Uri
 import androidx.room.Entity

@@ -26,7 +26,7 @@ interface Navigator {
 
     fun openSettings()
 
-    fun openSong(station: Station)
+    fun openStation(station: Station)
 
     fun openLyrics()
 

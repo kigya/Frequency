@@ -5,11 +5,10 @@ import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import androidx.fragment.app.Fragment
 import com.example.frequency.foundation.services.BaseService
 import com.example.frequency.datasource.network.coronet.ICronetEngineProvider
 import com.example.frequency.datasource.network.radio_browser.models.Station
-import com.example.frequency.ui.screens.song.StationFragment.Companion.KEY_SER_STATION
+import com.example.frequency.ui.screens.station.StationFragment.Companion.KEY_SER_STATION
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player

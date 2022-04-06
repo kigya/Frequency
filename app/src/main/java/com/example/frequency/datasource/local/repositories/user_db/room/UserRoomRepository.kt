@@ -1,8 +1,8 @@
-package com.example.frequency.datasource.local.repositories.room.user_db.room
+package com.example.frequency.datasource.local.repositories.user_db.room
 
 import com.example.frequency.model.User
-import com.example.frequency.datasource.local.repositories.room.user_db.UserRepository
-import com.example.frequency.datasource.local.repositories.room.user_db.entites.toUserEntity
+import com.example.frequency.datasource.local.repositories.user_db.UserRepository
+import com.example.frequency.datasource.local.repositories.user_db.entites.toUserEntity
 import javax.inject.Inject
 
 class UserRoomRepository @Inject constructor(
