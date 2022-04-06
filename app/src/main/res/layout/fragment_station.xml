@@ -26,13 +26,18 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:text="@string/station_name"
         android:textAlignment="center"
         android:textColor="@color/foam"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/now_playing_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/preview_iv" />
+        app:layout_constraintTop_toBottomOf="@+id/preview_iv"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/now_playing_tv"
@@ -41,10 +46,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:maxLines="1"
         android:text="@string/now_playing"
         android:textAlignment="textStart"
         android:textColor="@color/foam"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/short_description_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,10 +65,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:maxLines="1"
         android:text="@string/about_station"
         android:textAlignment="textStart"
         android:textColor="@color/foam"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/additional_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +87,7 @@
         android:textAlignment="textStart"
         android:textColor="@color/foam"
         android:textSize="18sp"
+        android:maxLines="3"
         app:layout_constraintBottom_toTopOf="@+id/layoutPlaybackControls"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -90,7 +102,8 @@
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/additional_tv">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/buttonRecord"
@@ -100,11 +113,11 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/detail_previous_list"
             android:scaleType="centerInside"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_left_arrow_previous"
-            android:visibility="gone"/>
+            app:srcCompat="@drawable/ic_left_arrow_previous" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/buttonPrev"
@@ -114,11 +127,11 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/description_btn_skip_to_previous"
             android:scaleType="centerInside"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/buttonRecord"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_left_arrow"
-            android:visibility="gone"/>
+            app:srcCompat="@drawable/ic_left_arrow" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/buttonPlay"
@@ -133,7 +146,7 @@
             app:layout_constraintStart_toEndOf="@+id/buttonPrev"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_play_gray"
-            tools:visibility="gone"/>
+            tools:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/buttonPause"
@@ -149,7 +162,7 @@
             app:layout_constraintStart_toEndOf="@+id/buttonPrev"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_stop"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/buttonNext"
@@ -159,11 +172,11 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/description_btn_skip_to_next"
             android:scaleType="centerInside"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/next_offset_bt"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_right_arrow"
-            android:visibility="gone"/>
+            app:srcCompat="@drawable/ic_right_arrow" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/next_offset_bt"
@@ -173,11 +186,11 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/detail_next_list"
             android:scaleType="centerInside"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_right_arrow_next"
-            android:visibility="gone"/>
+            app:srcCompat="@drawable/ic_right_arrow_next" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
