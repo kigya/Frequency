@@ -1,4 +1,4 @@
-package com.example.frequency.datasource.local.repositories.user_db.room
+package com.example.frequency.datasource.local.repositories.user_db
 
 import androidx.room.Dao
 import androidx.room.Insert

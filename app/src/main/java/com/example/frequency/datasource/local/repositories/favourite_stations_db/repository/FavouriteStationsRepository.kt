@@ -1,4 +1,4 @@
-package com.example.frequency.datasource.local.repositories.favourite_stations_db
+package com.example.frequency.datasource.local.repositories.favourite_stations_db.repository
 
 import com.example.frequency.datasource.network.radio_browser.models.Station
 import com.example.frequency.datasource.network.radio_browser.radostation_list.NullableStations

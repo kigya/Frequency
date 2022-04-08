@@ -32,5 +32,5 @@ class WaitFragment : Fragment(), AuthFragments, ProvidesCustomTitle {
         _binding = null
     }
 
-    override fun getTitleRes() = R.string.tech_issue
+    override fun getTitleRes() = R.string.loading
 }

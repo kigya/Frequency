@@ -1,5 +1,6 @@
-package com.example.frequency.datasource.local.repositories.favourite_stations_db
+package com.example.frequency.datasource.local.repositories.favourite_stations_db.repository
 
+import com.example.frequency.datasource.local.repositories.favourite_stations_db.FavouriteStationsDao
 import com.example.frequency.datasource.network.radio_browser.models.Station
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

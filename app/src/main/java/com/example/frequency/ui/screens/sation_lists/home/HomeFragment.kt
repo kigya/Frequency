@@ -19,8 +19,8 @@ import com.example.frequency.datasource.network.radio_browser.radostation_list.t
 import com.example.frequency.foundation.contract.ProvidesCustomActions
 import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
-import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.foundation.model.state.UIState
+import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.utils.ActionStore.menuAction
 import com.example.frequency.utils.ActionStore.provideProfileAction
 import com.example.frequency.utils.dialog_fragment.SimpleDialogFragment
@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         // initialise listeners
-
+        binding.musicSearch.setQuery(viewModel.uiState.value.date?.queryLD, false)
 
         return binding.root
     }
@@ -68,27 +68,25 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
 
     private fun initiateListeners() {
         with(binding) {
-            nextOffsetBt.setOnClickListener {
-                viewModel.loadStations()
-                viewModel.riseOffset()
-            }
-            previousOffsetBt.setOnClickListener {
-                viewModel.loadStations()
-                viewModel.decreaseOffset()
-            }
-            musicSearch.setOnQueryTextListener(object : OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    viewModel.dropOffset()
-                    viewModel.setUpdatedQuery((query ?: "").trim())
-                    viewModel.loadStations()
-                    return false
+            with(viewModel) {
+                nextOffsetBt.setOnClickListener {
+                    onNextButtonClick()
                 }
+                previousOffsetBt.setOnClickListener {
+                    onPreviousButtonClick()
+                }
+                musicSearch.setOnQueryTextListener(object : OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        sendSearchRequest(query)
+                        return false
+                    }
 
-                override fun onQueryTextChange(query: String?): Boolean {
-                    viewModel.setUpdatedQuery((query ?: "").trim())
-                    return true
-                }
-            })
+                    override fun onQueryTextChange(query: String?): Boolean {
+                        setUpdatedQuery((query ?: "").trim())
+                        return true
+                    }
+                })
+            }
         }
     }
 
@@ -118,14 +116,7 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
                     }
                     is UIState.Success -> {
                         with(state.data) {
-                            tagsAdapter = TagsRecyclerAdapter(tagList) {
-                                it.let {
-                                    setUpdatedQuery(it)
-                                    changeTag(it)
-                                    dropOffset()
-                                    loadStations()
-                                }
-                            }
+                            tagsAdapter = TagsRecyclerAdapter(tagList) { onTagClick(it) }
                             binding.tagsAdapter.adapter = tagsAdapter
                             stationsAdapter =
                                 StationsRecyclerAdapter(stationList.toStationsList()) { station ->

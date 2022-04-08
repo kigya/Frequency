@@ -114,34 +114,57 @@ class HomeVM @Inject constructor(
         }
     }
 
-    fun riseOffset() {
+    fun onTagClick(tag: String){
+        setUpdatedQuery(tag)
+        changeTag(tag)
+        dropOffset()
+        loadStations()
+    }
+
+    fun onNextButtonClick() {
+        loadStations()
+        riseOffset()
+    }
+
+    fun onPreviousButtonClick() {
+        loadStations()
+        decreaseOffset()
+    }
+
+    fun setUpdatedQuery(query: String) {
+        if (this.query != query) {
+            this.query = query
+        }
+    }
+
+    fun sendSearchRequest(query: String?) {
+        dropOffset()
+        setUpdatedQuery((query ?: "").trim())
+        loadStations()
+    }
+
+    private fun dropOffset() {
+        currentOffset = 0
+    }
+
+    private fun changeTag(tag: String) {
+        currentTag = tag
+    }
+
+    private fun riseOffset() {
         val prevValue = currentOffset
         val listSize = stationList.size
         if (listSize < 25) return
         currentOffset = listSize + prevValue
     }
 
-    fun decreaseOffset() {
+    private fun decreaseOffset() {
         val prevValue = currentOffset
         val listSize = stationList.size
         if (prevValue - listSize <= 0) {
             dropOffset()
         } else {
             currentOffset = prevValue - listSize
-        }
-    }
-
-    fun dropOffset() {
-        currentOffset = 0
-    }
-
-    fun changeTag(tag: String) {
-        currentTag = tag
-    }
-
-    fun setUpdatedQuery(query: String) {
-        if (this.query != query) {
-            this.query = query
         }
     }
 

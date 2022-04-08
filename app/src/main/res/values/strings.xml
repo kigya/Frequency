@@ -104,6 +104,7 @@
     <string name="settings_tb">Settings</string>
     <string name="logout_tb">Logout</string>
     <string name="close_tb">Close</string>
+    <string name="loading">Loading...</string>
 
 
 </resources>

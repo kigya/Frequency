@@ -1,11 +1,11 @@
-package com.example.frequency.datasource.local.repositories.user_db.room
+package com.example.frequency.datasource.local.repositories.user_db.repository
 
 import com.example.frequency.model.User
-import com.example.frequency.datasource.local.repositories.user_db.UserRepository
 import com.example.frequency.datasource.local.repositories.user_db.entites.toUserEntity
+import com.example.frequency.datasource.local.repositories.user_db.UserDao
 import javax.inject.Inject
 
-class UserRoomRepository @Inject constructor(
+class UserRepositoryImpl @Inject constructor(
     private val userDao: UserDao
 ) : UserRepository {
     override suspend fun findUserById(userId: Long): User? {
