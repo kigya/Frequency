@@ -1,16 +1,10 @@
-pluginManagement {
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         gradlePluginPortal()
         google()
         mavenCentral()
     }
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
 rootProject.name = "Frequency"
-include ':app'
+include (":app")
