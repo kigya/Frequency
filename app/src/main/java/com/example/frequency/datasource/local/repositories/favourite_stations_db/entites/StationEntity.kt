@@ -1,0 +1,78 @@
+package com.example.frequency.datasource.local.repositories.favourite_stations_db.entites
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.frequency.datasource.network.radio_browser.models.Station
+
+@Entity(tableName = "fav_station_list")
+data class StationEntity(
+    @PrimaryKey
+    @ColumnInfo(name = "station_uuid") val stationUuid: String,
+    val name: String,
+    val homepage: String,
+    val url: String,
+    @ColumnInfo(name = "url_resolved") val urlResolved: String,
+    val bitrate: String,
+    @ColumnInfo(name = "language_codes") val languageCodes: String,
+    val language: String,
+    val votes: String,
+    val tags: String,
+    val state: String,
+    val country: String,
+    @ColumnInfo(name = "country_code") val countryCode: String,
+    @ColumnInfo(name = "click_trend") val clickTrend: String,
+    @ColumnInfo(name = "change_uuid") val changeUuid: String,
+    @ColumnInfo(name = "last_check_ok") val lastCheckOk: String,
+    @ColumnInfo(name = "click_count") val clickCount: String,
+    val favicon: String,
+    val hls: String,
+    val codec: String,
+    @ColumnInfo(name = "ssl_error") val sslError: String,
+    @ColumnInfo(name = "last_check_time") val lastCheckTime: String,
+    @ColumnInfo(name = "last_change_time") val lastChangeTime: String,
+    @ColumnInfo(name = "click_timestamp") val clickTimestamp: String,
+    @ColumnInfo(name = "last_check_ok_time") val lastCheckOkTime: String,
+    @ColumnInfo(name = "last_local_check_time") val lastLocalCheckTime: String,
+    @ColumnInfo(name = "last_check_time_iso8601") val lastCheckTimeIso8601: String,
+    @ColumnInfo(name = "click_timestamp_iso8601") val clickTimestampIso8601: String,
+    @ColumnInfo(name = "last_change_time_iso8601") val lastChangeTimeIso8601: String,
+    @ColumnInfo(name = "last_check_ok_time_iso8601") val lastCheckOkTimeIso8601: String?,
+    @ColumnInfo(name = "last_local_check_time_iso8601") val lastLocalCheckTimeIso8601: String,
+    @ColumnInfo(name = "has_extended_info") val hasExtendedInfo: String,
+) {
+    fun toStation() = Station(
+        name = this.name,
+        homepage = this.homepage,
+        url = this.url,
+        urlResolved = this.urlResolved,
+        bitrate = this.bitrate,
+        languageCodes = this.languageCodes,
+        language = this.language,
+        votes = this.votes,
+        tags = this.tags,
+        state = this.state,
+        country = this.country,
+        countryCode = this.countryCode,
+        clickTrend = this.clickTrend,
+        changeUuid = this.changeUuid,
+        lastCheckOk = this.lastCheckOk,
+        clickCount = this.clickCount,
+        favicon = this.favicon,
+        hls = this.hls,
+        codec = this.codec,
+        sslError = this.sslError,
+        stationUuid = this.stationUuid,
+        lastCheckTime = lastCheckTime,
+        lastChangeTime = this.lastChangeTime,
+        clickTimestamp = this.clickTimestamp,
+        lastCheckOkTime = this.lastCheckOkTime,
+        lastLocalCheckTime = this.lastLocalCheckTime,
+        lastCheckTimeIso8601 = this.lastCheckTimeIso8601,
+        clickTimestampIso8601 = this.clickTimestampIso8601,
+        lastChangeTimeIso8601 = this.lastChangeTimeIso8601,
+        lastCheckOkTimeIso8601 = this.lastCheckOkTimeIso8601,
+        lastLocalCheckTimeIso8601 = this.lastLocalCheckTimeIso8601,
+        hasExtendedInfo = this.hasExtendedInfo,
+    )
+}

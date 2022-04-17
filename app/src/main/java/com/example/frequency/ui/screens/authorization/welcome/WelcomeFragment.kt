@@ -17,7 +17,7 @@ import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
 import com.example.frequency.ui.screens.authorization.sign_in.SignInFragment
-import com.example.frequency.ui.screens.home.HomeFragment
+import com.example.frequency.ui.screens.sation_lists.home.HomeFragment
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,7 +1,6 @@
 package com.example.frequency.ui.screens.authorization.sign_in
 
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
 import com.example.frequency.foundation.views.AuthFragments
 import com.example.frequency.foundation.views.BaseFragment
-import com.example.frequency.ui.screens.home.HomeFragment
+import com.example.frequency.ui.screens.sation_lists.home.HomeFragment
 import com.example.frequency.utils.SummaryUtils.showSnackbar
 import com.example.frequency.utils.observeEvent
 import com.google.firebase.auth.FirebaseAuth

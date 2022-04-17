@@ -31,19 +31,22 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toStartOf="@+id/end_guideline"
         app:layout_constraintStart_toStartOf="@+id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/musicSearch" />
+        app:layout_constraintTop_toBottomOf="@+id/musicSearch"
+        tools:itemCount="6"
+        tools:listitem="@layout/tag_adapter_item" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/radio_station_list_rw"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/layoutPlaybackControls"
         app:layout_constraintEnd_toStartOf="@+id/end_guideline"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/start_guideline"
         app:layout_constraintTop_toBottomOf="@+id/tags_adapter"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:itemCount="5"
+        tools:listitem="@layout/rv_item_station" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutPlaybackControls"
@@ -70,10 +73,10 @@
             android:id="@+id/currentOffset"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:padding="4dp"
             android:textAlignment="center"
             android:textColor="@color/foam"
             android:textSize="18sp"
-            android:padding="4dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/next_offset_bt"
