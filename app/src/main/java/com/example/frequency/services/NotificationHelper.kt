@@ -8,8 +8,8 @@ import android.content.Intent
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import com.example.frequency.FrequencyApplication.Companion.FREQUENCY_MUSIC_CHANNEL
-import com.example.frequency.MainActivity
+import com.example.frequency.app.FrequencyApplication.Companion.FREQUENCY_MUSIC_CHANNEL
+import com.example.frequency.presentation.ui.MainActivity
 import com.example.frequency.R
 
 class NotificationHelper(

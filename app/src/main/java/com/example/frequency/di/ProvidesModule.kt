@@ -2,8 +2,8 @@ package com.example.frequency.di
 
 import android.content.Context
 import com.example.frequency.BuildConfig
-import com.example.frequency.datasource.network.radio_browser.RadioBrowserService
-import com.example.frequency.datasource.network.radio_browser.radostation_list.RadioBrowser
+import com.example.frequency.data.remote.RadioBrowserServiceImpl
+import com.example.frequency.data.remote.RadioBrowserApi
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -24,8 +24,8 @@ object ProvidesModule {
 
     @Singleton
     @Provides
-    fun provideRadioBrowserService(): RadioBrowser {
-        return RadioBrowserService().getRadioBrowser()
+    fun provideRadioBrowserService(): RadioBrowserApi {
+        return RadioBrowserServiceImpl().getRadioBrowser()
     }
 
     @Provides

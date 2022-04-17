@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screens.PreviewFragment">
+    tools:context=".presentation.ui.screens.PreviewFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/preview_iv"

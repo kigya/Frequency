@@ -5,17 +5,16 @@ import android.content.SharedPreferences
 import android.net.Uri
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.example.frequency.utils.PreferenceTags.AUTOLOGIN
-import com.example.frequency.utils.PreferenceTags.DISABLE_NOTIFICATIONS
-import com.example.frequency.utils.PreferenceTags.EMAIL
-import com.example.frequency.utils.PreferenceTags.ICON_URI
-import com.example.frequency.utils.PreferenceTags.LANGUAGE
-import com.example.frequency.utils.PreferenceTags.NOTIFICATION_VOLUME
-import com.example.frequency.utils.PreferenceTags.PASS
-import com.example.frequency.utils.PreferenceTags.REG_TYPE
-import com.example.frequency.utils.PreferenceTags.TOKEN
-import com.example.frequency.utils.PreferenceTags.USERNAME
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.example.frequency.common.utils.PreferenceTags.AUTOLOGIN
+import com.example.frequency.common.utils.PreferenceTags.DISABLE_NOTIFICATIONS
+import com.example.frequency.common.utils.PreferenceTags.EMAIL
+import com.example.frequency.common.utils.PreferenceTags.ICON_URI
+import com.example.frequency.common.utils.PreferenceTags.LANGUAGE
+import com.example.frequency.common.utils.PreferenceTags.NOTIFICATION_VOLUME
+import com.example.frequency.common.utils.PreferenceTags.PASS
+import com.example.frequency.common.utils.PreferenceTags.REG_TYPE
+import com.example.frequency.common.utils.PreferenceTags.TOKEN
+import com.example.frequency.common.utils.PreferenceTags.USERNAME
 import javax.inject.Inject
 
 class Preferences @Inject constructor() : AppDefaultPreferences {

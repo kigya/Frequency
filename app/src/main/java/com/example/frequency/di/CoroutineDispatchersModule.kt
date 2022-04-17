@@ -1,6 +1,6 @@
 package com.example.frequency.di
 
-import com.example.frequency.datasource.network.CoroutineDispatcherProvider
+import com.example.frequency.data.other.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,6 +11,6 @@ import dagger.hilt.components.SingletonComponent
 object CoroutineDispatchersModule {
 
     @Provides
-    fun provideCoroutineDispatcher() = CoroutineDispatcherProvider()
+    fun provideCoroutineDispatcher() = DispatcherProvider()
 
 }

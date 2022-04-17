@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ebony_clay"
-    tools:context=".ui.screens.lyrics.LyricsFragment">
+    tools:context=".presentation.ui.screens.lyrics.LyricsFragment">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

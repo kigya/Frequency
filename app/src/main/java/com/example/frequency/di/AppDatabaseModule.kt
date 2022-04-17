@@ -2,13 +2,13 @@ package com.example.frequency.di
 
 import android.app.Application
 import androidx.room.Room
-import com.example.frequency.datasource.local.AppDatabase
-import com.example.frequency.datasource.local.repositories.favourite_stations_db.FavouriteStationsDao
-import com.example.frequency.datasource.local.repositories.favourite_stations_db.repository.FavouriteStationsRepository
-import com.example.frequency.datasource.local.repositories.favourite_stations_db.repository.FavouriteStationsRepositoryImpl
-import com.example.frequency.datasource.local.repositories.user_db.UserDao
-import com.example.frequency.datasource.local.repositories.user_db.repository.UserRepository
-import com.example.frequency.datasource.local.repositories.user_db.repository.UserRepositoryImpl
+import com.example.frequency.data.local.FrequencyDatabase
+import com.example.frequency.data.local.dao.station.FavouriteStationsDao
+import com.example.frequency.domain.repository.local.station_repository.FavouriteStationsRepository
+import com.example.frequency.data.repository.local.station.FavouriteStationsRepositoryImpl
+import com.example.frequency.data.local.dao.user.UserDao
+import com.example.frequency.domain.repository.local.user_repository.UserRepository
+import com.example.frequency.data.repository.local.user.UserRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,20 +21,20 @@ object AppDatabaseModule {
 
     @Singleton
     @Provides
-    fun provideAppDatabase(application: Application, ): AppDatabase {
+    fun provideAppDatabase(application: Application, ): FrequencyDatabase {
         return Room
-            .databaseBuilder(application, AppDatabase::class.java, "AppRoomDB")
+            .databaseBuilder(application, FrequencyDatabase::class.java, "AppRoomDB")
             .build()
     }
     @Singleton
     @Provides
-    fun provideUserDao(appDataBase: AppDatabase): UserDao {
+    fun provideUserDao(appDataBase: FrequencyDatabase): UserDao {
         return appDataBase.getUserDao()
     }
 
     @Singleton
     @Provides
-    fun provideFavStationDao(appDataBase: AppDatabase): FavouriteStationsDao {
+    fun provideFavStationDao(appDataBase: FrequencyDatabase): FavouriteStationsDao {
         return appDataBase.getFavouriteStationsDao()
     }
 
