@@ -58,6 +58,7 @@ import com.example.frequency.presentation.ui.screens.settings.SettingsFragment
 import com.example.frequency.presentation.ui.screens.station.StationFragment
 import com.example.frequency.common.utils.SummaryUtils.showSnackbar
 import com.example.frequency.common.utils.observeEvent
+import com.example.frequency.presentation.ui.screens.sation_lists.favourite.FavouriteStationsFragment
 import dagger.hilt.android.AndroidEntryPoint
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -125,8 +126,9 @@ class MainActivity : AppCompatActivity(), Navigator {
             navProfileMb.setOnClickListener {
                 openProfile()
             }
-            navLikedStationMb.setOnClickListener {
+            navFavouriteStationMb.setOnClickListener {
                 sendNotification()
+                openFavourite()
             }
             navContactUsMb.setOnClickListener {
                 openContactUs()
@@ -187,7 +189,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         ) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
             updateUI()
-
         }
     }
 
@@ -446,6 +447,12 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun openProfile() {
         if (currentFragment !is ProfileFragment) {
             homeCheck(ProfileFragment.newInstance())
+        }
+    }
+
+    override fun openFavourite() {
+        if (currentFragment !is FavouriteStationsFragment) {
+            homeCheck(FavouriteStationsFragment.newInstance())
         }
     }
 

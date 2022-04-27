@@ -6,15 +6,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
-import com.example.frequency.presentation.ui.MainVM
 import com.example.frequency.R
-import com.example.frequency.data.local.dao.station.FavouriteStationsDao
+import com.example.frequency.data.model.User
 import com.example.frequency.data.model.network.station.Station
+import com.example.frequency.domain.usecase.get_station_from_local.GetFavoriteStationsUseCase
+import com.example.frequency.domain.usecase.store_station_to_local.ChangeFavouriteStationStatusUseCase
 import com.example.frequency.foundation.model.state.ErrorModel
 import com.example.frequency.foundation.model.state.UIState
 import com.example.frequency.foundation.views.BaseVM
-import com.example.frequency.data.model.User
 import com.example.frequency.preferences.AppDefaultPreferences
+import com.example.frequency.presentation.ui.MainVM
 import com.example.frequency.presentation.ui.screens.sation_lists.favourite.model.FavouriteStationsUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -27,7 +28,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FavouriteStationsVM @Inject constructor(
     private val shearedPreferences: AppDefaultPreferences,
-    private val favouriteStationsDao: FavouriteStationsDao
+    private val getFavoriteStationsUseCase: GetFavoriteStationsUseCase,
+    private val changeFavouriteStationStatusUseCase: ChangeFavouriteStationStatusUseCase,
 ) : BaseVM(), LifecycleEventObserver {
 
     private val _uiState = MutableStateFlow<UIState<FavouriteStationsUIModel>>(UIState.Empty)
@@ -38,6 +40,7 @@ class FavouriteStationsVM @Inject constructor(
 
     init {
         updateUser()
+        loadFavouriteStation()
     }
 
     private fun updateUser(user: User? = null) {
@@ -76,8 +79,8 @@ class FavouriteStationsVM @Inject constructor(
         viewModelScope.launch {
             try {
                 stationList =
-                    favouriteStationsDao.getListOfFavouriteStations().map { it?.toStation() }
-                        .toList()
+                    getFavoriteStationsUseCase()
+
                 _uiState.value = UIState.Success(
                     FavouriteStationsUIModel(
                         this@FavouriteStationsVM.user,
@@ -86,7 +89,7 @@ class FavouriteStationsVM @Inject constructor(
                 )
                 delay(200)
 
-            }  catch (ex: IOException) {
+            } catch (ex: IOException) {
                 Log.d(TAG, ex.message.toString())
                 onQueryTimeLimit()
             } catch (ex: Exception) {

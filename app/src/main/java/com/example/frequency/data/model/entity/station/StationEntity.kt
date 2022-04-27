@@ -2,12 +2,10 @@ package com.example.frequency.data.model.entity.station
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.example.frequency.data.model.network.station.Station
 
-@Entity(tableName = "fav_station_list")
+@Entity(tableName = "station_list", primaryKeys = ["name", "homepage", "station_uuid", "country"])
 data class StationEntity(
-    @PrimaryKey
     @ColumnInfo(name = "station_uuid") val stationUuid: String,
     val name: String,
     val homepage: String,
@@ -40,6 +38,7 @@ data class StationEntity(
     @ColumnInfo(name = "last_check_ok_time_iso8601") val lastCheckOkTimeIso8601: String?,
     @ColumnInfo(name = "last_local_check_time_iso8601") val lastLocalCheckTimeIso8601: String,
     @ColumnInfo(name = "has_extended_info") val hasExtendedInfo: String,
+    @ColumnInfo(name = "is_favourite")val isFavourite: Boolean
 ) {
     fun toStation() = Station(
         name = this.name,
@@ -74,5 +73,6 @@ data class StationEntity(
         lastCheckOkTimeIso8601 = this.lastCheckOkTimeIso8601,
         lastLocalCheckTimeIso8601 = this.lastLocalCheckTimeIso8601,
         hasExtendedInfo = this.hasExtendedInfo,
+        isFavourite = this.isFavourite
     )
 }

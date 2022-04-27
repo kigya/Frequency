@@ -40,7 +40,8 @@ data class Station(
     @SerializedName("lastCheckOkTimeIso8601") val lastCheckOkTimeIso8601: String?,
     @SerializedName("lastLocalCheckTimeIso8601") val lastLocalCheckTimeIso8601: String?,
     @SerializedName("hasExtendedInfo") val hasExtendedInfo: String?,
-) : Parcelable{
+    @SerializedName("isFavourite") val isFavourite: Boolean?
+) : Parcelable {
     fun toStationEntity() = StationEntity(
         name = this.name ?: "",
         homepage = this.homepage ?: "",
@@ -74,5 +75,6 @@ data class Station(
         lastCheckOkTimeIso8601 = this.lastCheckOkTimeIso8601 ?: "",
         lastLocalCheckTimeIso8601 = this.lastLocalCheckTimeIso8601 ?: "",
         hasExtendedInfo = this.hasExtendedInfo ?: "",
+        isFavourite = this.isFavourite ?: false,
     )
 }

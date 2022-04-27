@@ -32,6 +32,8 @@ interface Navigator {
 
     fun openProfile()
 
+    fun openFavourite()
+
     fun openContactUs()
 
     fun openFaqs()

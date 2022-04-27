@@ -6,14 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
-import com.example.frequency.databinding.FragmentFavouriteBinding
-import com.example.frequency.presentation.common.StationsRecyclerAdapter
+import com.example.frequency.R
+import com.example.frequency.common.utils.ActionStore.menuAction
+import com.example.frequency.common.utils.ActionStore.provideProfileAction
 import com.example.frequency.data.remote.toStationsList
+import com.example.frequency.databinding.FragmentFavouriteBinding
+import com.example.frequency.foundation.contract.ProvidesCustomActions
+import com.example.frequency.foundation.contract.ProvidesCustomTitle
 import com.example.frequency.foundation.contract.navigator
+import com.example.frequency.foundation.model.Action
 import com.example.frequency.foundation.model.state.UIState
 import com.example.frequency.foundation.views.BaseFragment
+import com.example.frequency.presentation.common.StationsRecyclerAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-class FavouriteStationsFragment : BaseFragment() {
+@AndroidEntryPoint
+class FavouriteStationsFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions {
+
     override val viewModel by viewModels<FavouriteStationsVM>()
 
     private var _binding: FragmentFavouriteBinding? = null
@@ -42,11 +51,11 @@ class FavouriteStationsFragment : BaseFragment() {
         initializeObservers()
     }
 
-    private fun initializeObservers() {
+    private fun initializeListeners() {
 
     }
 
-    private fun initializeListeners() {
+    private fun initializeObservers() {
         viewModel.uiState.asLiveData().observe(viewLifecycleOwner) { state ->
             navigator().showProgress(false)
             when (state) {
@@ -63,7 +72,8 @@ class FavouriteStationsFragment : BaseFragment() {
                 }
                 is UIState.Success -> {
                     with(state.data) {
-                        stationsAdapter = StationsRecyclerAdapter(stationList.toStationsList()) { station ->
+                        stationsAdapter =
+                            StationsRecyclerAdapter(stationList.toStationsList()) { station ->
                                 navigator().openStation(station)
                             }
                         binding.radioStationListRw.adapter = stationsAdapter
@@ -71,14 +81,31 @@ class FavouriteStationsFragment : BaseFragment() {
                 }
             }
         }
-
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    companion object {
+
+        @JvmStatic
+        private val TAG = "FavouriteStationsFragment"
+
+        fun newInstance() = FavouriteStationsFragment().apply {
+            arguments = Bundle().apply {
+
+            }
+        }
+
+    }
+
+    override fun getCustomActions() = listOf(
+        menuAction,
+        provideProfileAction { navigator().openProfile() }
+    )
+
+    override fun getTitleRes() = R.string.favourite_stations
 
 }

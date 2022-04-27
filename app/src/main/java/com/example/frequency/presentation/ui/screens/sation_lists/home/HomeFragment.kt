@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment(), ProvidesCustomTitle, ProvidesCustomActions 
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         // initialise listeners
-        binding.musicSearch.setQuery(viewModel.uiState.value.date?.queryLD, false)
+        binding.musicSearch.setQuery(viewModel.uiState.value.data?.queryLD, false)
 
         return binding.root
     }

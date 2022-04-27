@@ -138,14 +138,14 @@
                 tools:ignore="RtlSymmetry" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/nav_liked_station_mb"
+                android:id="@+id/nav_favourite_station_mb"
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:padding="0dp"
                 android:paddingStart="4dp"
-                android:text="@string/liked_songs"
+                android:text="@string/favourite_stations"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"
                 android:textColor="@color/foam"
@@ -171,9 +171,9 @@
                 android:textColor="@color/foam"
                 app:icon="@drawable/ic_message_22"
                 app:iconTint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/nav_liked_station_mb"
+                app:layout_constraintEnd_toEndOf="@+id/nav_favourite_station_mb"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nav_liked_station_mb"
+                app:layout_constraintTop_toBottomOf="@id/nav_favourite_station_mb"
                 tools:ignore="RtlSymmetry" />
 
             <com.google.android.material.button.MaterialButton
@@ -191,7 +191,7 @@
                 android:textColor="@color/foam"
                 app:icon="@drawable/ic_flashlight_22"
                 app:iconTint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/nav_liked_station_mb"
+                app:layout_constraintEnd_toEndOf="@+id/nav_favourite_station_mb"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nav_contact_us_mb"
                 tools:ignore="RtlSymmetry" />
@@ -210,7 +210,7 @@
                 android:textColor="@color/foam"
                 app:icon="@drawable/ic_settings_22"
                 app:iconTint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/nav_liked_station_mb"
+                app:layout_constraintEnd_toEndOf="@+id/nav_favourite_station_mb"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nav_faqs_mb"
                 tools:ignore="RtlSymmetry" />
